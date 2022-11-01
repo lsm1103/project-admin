@@ -1,0 +1,28 @@
+syntax = "v1"
+
+info(
+    title: "项目管理系统"
+    desc: "用来管理项目，自动生成接口mock，自动生成项目后台；支持http/rpc/websocket/tcp协议接口"
+    author: "lsm"
+    email: "18370872400@163.com"
+    version: "v0.1.1"
+
+	host: 0.0.0.0
+	port: 800
+	dataSource: root:pujian123@tcp(172.16.10.183:4306)/project-admin
+	cacheHost: 172.16.10.183:6379
+)
+
+@server(
+	prefix: msg/v1
+	group: msg
+	module: groupMsg
+)
+service project-admin {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler CreateGroupMsg
+	post /createGroupMsg(createGroupMsgReq)
+}

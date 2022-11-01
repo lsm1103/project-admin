@@ -1,0 +1,225 @@
+import "swagger.api"
+
+syntax = "v1"
+
+info(
+	title: "项目1"
+	desc: "通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果"
+	author: "lsm"
+	email: "18370872400@163.com"
+	version: "v0.1.1"
+)
+
+type (
+	DeleteReq {
+		Id int64 `json:"id"` // 序列号
+	}
+
+	GetReq {
+		Id int64 `form:"id"` // 序列号
+	}
+
+	createSingleMsgReq {
+		//Id               int64  `json:"id"`                 // 序列号
+		SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`            // 发送者类型：1发消息，2打招呼，3转发
+		SenderId         int64  `json:"sender_id"tag:"uuid"`                            // 发送者id
+		SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`                     // 发送设备id
+		ReceiverId       int64  `json:"receiver_id"tag:"uuid"`                          // 接收者id
+		ReceiverDeviceId string `json:"receiver_device_id"tag:"char"fixed_len:"18|100"` // 接收设备id：多个设备id"，"隔开，*表示全部设备
+		MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`      // 消息类型
+		Content          string `json:"content"tag:"chineseChar"fixed_len:"18|150"`     // 消息内容
+		ParentId         int64  `json:"parent_id"tag:"uuid"`                            // 父级id，引用功能
+		SendTime         string `json:"send_time"tag:"dateTime"`                        // 消息发送时间
+	}
+
+	updateSingleMsgReq {
+		Id               int64  `json:"id"`                                             // 序列号
+		SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`            // 发送者类型：1发消息，2打招呼，3转发
+		SenderId         int64  `json:"sender_id"tag:"uuid"`                            // 发送者id
+		SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`                     // 发送设备id
+		ReceiverId       int64  `json:"receiver_id"tag:"uuid"`                          // 接收者id
+		ReceiverDeviceId string `json:"receiver_device_id"tag:"char"fixed_len:"18|100"` // 接收设备id：多个设备id"，"隔开，*表示全部设备
+		MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`      // 消息类型
+		Content          string `json:"content"tag:"chineseChar"fixed_len:"18|150"`     // 消息内容
+		ParentId         int64  `json:"parent_id"tag:"uuid"`                            // 父级id，引用功能
+		SendTime         string `json:"send_time"tag:"dateTime"`                        // 消息发送时间
+		State            int64  `json:"state"tag:"uint"min:"-1"max:"1"`                 // 消息状态：-1撤回，0未处理，1已读
+	}
+	SingleMsg {
+		Id               int64  `json:"id"tag:"uuid"`                                   // 序列号
+		Seq              int64  `json:"seq"tag:"uuid"`                                  // 消息序列号,每个单聊都维护一个消息序列号
+		SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`            // 发送者类型：1发消息，2打招呼，3转发
+		SenderId         int64  `json:"sender_id"tag:"uuid"`                            // 发送者id
+		SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`                     // 发送设备id
+		ReceiverId       int64  `json:"receiver_id"tag:"uuid"`                          // 接收者id
+		ReceiverDeviceId string `json:"receiver_device_id"tag:"char"fixed_len:"18|100"` // 接收设备id：多个设备id"，"隔开，*表示全部设备
+		MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`      // 消息类型
+		Content          string `json:"content"tag:"chineseChar"fixed_len:"18|150"`     // 消息内容
+		ParentId         int64  `json:"parent_id"tag:"uuid"`                            // 父级id，引用功能
+		SendTime         string `json:"send_time"tag:"dateTime"`                        // 消息发送时间
+		State            int64  `json:"state"tag:"uint"min:"-1"max:"1"`                 // 消息状态：-1撤回，0未处理，1已读
+		CreateTime       string `json:"createTime"tag:"dateTime"`                       // 创建时间
+		UpdateTime       string `json:"updateTime"tag:"dateTime"`                       // 更新时间
+	}
+
+	// 查询列表；
+	GetsQueryItem {
+		Key        string `json:"key"`                                   // key
+		Val        string `json:"val"`                                   // val int/str('xxx')/list('xx,xx,xx')
+		Handle     string `json:"handle"`                                // 操作方法 =/>/</like
+		NextHandle string `json:"nextHandle,options=or|and,default=and"` // 与下一个条件的操作方法 or/and
+	}
+	GetsReq {
+		Query    []*GetsQueryItem `json:"query"`                              //查询
+		OrderBy  string           `json:"orderBy,default=id"`                 //分组
+		Sort     string           `json:"sort,options=desc|asc,default=desc"` //排序 desc/asc
+		Current  int64            `json:"current,default=1"`                  //当前页
+		PageSize int64            `json:"pageSize,default=10"`                //页面大小
+	}
+	// 查询列表结果
+	SingleMsgList {
+		List     []*SingleMsg `json:"list"tag:"list"`                       // 数据列表
+		Current  int64        `json:"current"tag:"uint"min:"1"max:"10"`     // 当前页
+		PageSize int64        `json:"pageSize"tag:"uint"content:"10|20"`    // 页面大小
+		IsNext   bool         `json:"isNext"tag:"char"content:"true|false"` // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+
+	//=========================
+	createGroupMsgReq {
+		//Id               int64  `json:"id"`                 // 序列号
+		SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`            // 发送者类型：1发消息，2打招呼，3转发
+		SenderId         int64  `json:"sender_id"tag:"uuid"`                            // 发送者id
+		SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`                     // 发送设备id
+		ReceiverId       int64  `json:"receiver_id"tag:"uuid"`                          // 接收者id
+		ReceiverDeviceId string `json:"receiver_device_id"tag:"char"fixed_len:"18|100"` // 接收设备id：多个设备id"，"隔开，*表示全部设备
+		MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`      // 消息类型
+		Content          string `json:"content"tag:"chineseChar"fixed_len:"18|150"`     // 消息内容
+		ParentId         int64  `json:"parent_id"tag:"uuid"`                            // 父级id，引用功能
+		SendTime         string `json:"send_time"tag:"dateTime"`                        // 消息发送时间
+	}
+
+	updateGroupMsgReq {
+		Id               int64  `json:"id"`                                             // 序列号
+		SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`            // 发送者类型：1发消息，2打招呼，3转发
+		SenderId         int64  `json:"sender_id"tag:"uuid"`                            // 发送者id
+		SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`                     // 发送设备id
+		ReceiverId       int64  `json:"receiver_id"tag:"uuid"`                          // 接收者id
+		ReceiverDeviceId string `json:"receiver_device_id"tag:"char"fixed_len:"18|100"` // 接收设备id：多个设备id"，"隔开，*表示全部设备
+		MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`      // 消息类型
+		Content          string `json:"content"tag:"chineseChar"fixed_len:"18|150"`     // 消息内容
+		ParentId         int64  `json:"parent_id"tag:"uuid"`                            // 父级id，引用功能
+		SendTime         string `json:"send_time"tag:"dateTime"`                        // 消息发送时间
+		State            int64  `json:"state"tag:"uint"min:"-1"max:"1"`                 // 消息状态：-1撤回，0未处理，1已读
+	}
+
+	GroupMsg {
+		Id               int64  `json:"id"tag:"uuid"`                                   // 序列号
+		Seq              int64  `json:"seq"tag:"uuid"`                                  // 消息序列号,每个单聊都维护一个消息序列号
+		SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`            // 发送者类型：1发消息，2打招呼，3转发
+		SenderId         int64  `json:"sender_id"tag:"uuid"`                            // 发送者id
+		SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`                     // 发送设备id
+		ReceiverId       int64  `json:"receiver_id"tag:"uuid"`                          // 接收者id
+		ReceiverDeviceId string `json:"receiver_device_id"tag:"char"fixed_len:"18|100"` // 接收设备id：多个设备id"，"隔开，*表示全部设备
+		MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`      // 消息类型
+		Content          string `json:"content"tag:"chineseChar"fixed_len:"18|150"`     // 消息内容
+		ParentId         int64  `json:"parent_id"tag:"uuid"`                            // 父级id，引用功能
+		SendTime         string `json:"send_time"tag:"dateTime"`                        // 消息发送时间
+		State            int64  `json:"state"tag:"uint"min:"-1"max:"1"`                 // 消息状态：-1撤回，0未处理，1已读
+		CreateTime       string `json:"createTime"tag:"dateTime"`                       // 创建时间
+		UpdateTime       string `json:"updateTime"tag:"dateTime"`                       // 更新时间
+	}
+
+	// 查询列表结果
+	GroupMsgList {
+		List     []*SingleMsg `json:"list"tag:"list"`                       // 数据列表
+		Current  int64        `json:"current"tag:"uint"min:"1"max:"10"`     // 当前页
+		PageSize int64        `json:"pageSize"tag:"uint"content:"10|20"`    // 页面大小
+		IsNext   bool         `json:"isNext"tag:"char"content:"true|false"` // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+@server(
+	prefix: msg1/v1
+	group: msg1
+	module: singleMsg
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler CreateSingleMsg
+	post /createSingleMsg(createSingleMsgReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler UpdateSingleMsg
+	put /updateSingleMsg(updateSingleMsgReq)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler DeleteSingleMsg
+	delete /deleteSingleMsg(DeleteReq)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler GetSingleMsg
+	get /getSingleMsg(GetReq) returns(SingleMsg)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler GetsSingleMsg
+	post /getsSingleMsg(GetsReq) returns(SingleMsgList)
+}
+
+@server(
+	prefix: msg/v1
+	group: msg
+	module: groupMsg
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler CreateGroupMsg
+	post /createGroupMsg(createGroupMsgReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler UpdateGroupMsg
+	put /updateGroupMsg(updateGroupMsgReq)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler DeleteGroupMsg
+	delete /deleteGroupMsg(DeleteReq)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler GetGroupMsg
+	get /getGroupMsg(GetReq) returns(GroupMsg)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler GetsGroupMsg
+	post /getsGroupMsg(GetsReq) returns(GroupMsgList)
+}

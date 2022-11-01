@@ -1,0 +1,89 @@
+
+## 业务功能
+### 组管理
+- 组的增删改查
+### 项目管理
+- 项目的增删改查？
+### application 管理
+- application的增删改查
+- application的数据库表设计文件 application.sql
+- application的接口设计文件 application.api
+- 自动生成文档，且可以修改，导出，全文搜索
+- 记录测试用例，且可以修改，导出
+- 增加新需求时，需要更新api文件
+- application开发进度监控功能, 在github/gitlab通过定时获取commit或者webhook更新commit
+- application持续集成，建议通过webhook推送后，拉代码，然后测试、打包；
+- application部署；通过点击按钮一键部署，通过配置ci后自动部署；
+
+
+## 核心功能
+- 项目设计评审、数据库设计之后，先实现接口设计；
+- 由数据库表自动生成基础curd函数；
+- 由数据库设计，自动生成相关表的基础后台管理系统；
+>w
+1、通过数据库表sql，自动生成增删改查的curl代码； @已实现
+2、通过数据库表sql，自动生成xxx.api文件；
+3、然后由该api文件自动生成一一对接由1生成的curl代码的接口服务； @已实现
+4、部署运行（go run/docker）
+
+- 由接口设计，自动生成接口mock服务，这时前端可以借助该服务进行调试开发； @已实现, mock字段的丰富性还需增加
+>w
+1、改造goctl，在生成接口基础服务的基础上，默认为每个接口接入通过配置的出参类型和特定的mock（如电话、邮箱、人名）的mock；
+2、部署运行（go run/docker）
+
+- 生成的mock服务也是该项目的网关，集成认证、鉴权；后端只需要编写相关的业务逻辑无需管理网关；
+>i
+mock服务的生成，在logic.tpl引入一个mock类方法，该方法可以通过传入的出参（特殊字段要求可以写在字段tag里面）用反射，
+获取每个字段的类型和特殊要求进行随机生成相应的值； @已实现
+
+>i TODO 通过中间价集成认证、鉴权到网关；
+1、通过 etc/config.yml动态修改认证、鉴权服务的地址、appKey、secretKey;
+2、代码集成该认证鉴权sdk
+
+>w
+1、开发可以下载上面生成的mock服务代码，删除mock代码，再加入自己的代码即可；
+
+- 实现生成python代码，而不仅仅是go
+
+- 数据库表自动生成方案要点
+  - 再读取数据库表时，需要对数据库表进行检查，涉及到用户相关等敏感信息，需要进行提醒、处理；
+  - 是否软删除，如果选择软删除则必须要添加 state 字段
+
+## 持续集成
+- 实现一个镜像管理服务，由ci执行自动测试自动打包，然后出现在管理平台的版本列表里面，自动通知测试人员进行测试然后发行正式版本；
+
+## 问题
+### 数据库相关
+- 需要对查询的接口参数，在拼接sql的时候进行处理，把直接写的符号换成eq这些，防止xss攻击；
+- 对一些随便写的参数进行过滤
+  gt：表示大于>。即greater than
+  ge：表示大于等于>=。即greater than or equals to
+  lt：表示小于<。即less than
+  le：表示小于等于<=。即less than or equals to
+  eq：表示等于=。即equals
+  ne：表示不等于!=。即not equals
+
+## 新增功能
+- 支持关系型、非关系型、大数据数据库
+- 支持集群部署，拥有优异的访问性能
+- API 支持设置筛选条件、分页等选项
+- 支持通过界面创建 API
+- 自带请求校验、防SQL注入、HTTPS
+- 支持不同集群配置不同的连接信息
+- 生成规范的 API 文档以及调用代码
+- 支持关系型、非关系型、大数据数据库
+  支持 Mysql、Oracle、MariaDB、 SQL Server、PostgreSQL、MongoDB、Redis、Impala 等常见关系型、非关系型、大数据数据库中间件。对于新的的数据库类型可以动态扩充。
+
+## 命令
+- goctl model mysql ddl -src=test1.sql  -dir="dataModel/." -c --home libs/template && cp -r common/sqlUtils/* dataModel/
+
+- goctl api go -style goZero --home libs/template -dir test1/. -api test1.api
+
+- mockgen库运行示例
+mockgen -destination="mocks/mock_test2.go" -package="mocks" project-admin/test2/mocks Test2Mock
+
+- mockgen代码运行示例
+go run . -source /Users/xm/Desktop/go_package/project-admin/common/mocks/tag_v2.go -destination /Users/xm/Desktop/go_package/project-admin/t2.go
+
+- goctl-swagger
+goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -api xxx.api -dir .

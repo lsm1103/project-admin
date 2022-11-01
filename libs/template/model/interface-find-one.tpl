@@ -1,0 +1,1 @@
+FindOne(ctx context.Context, session sqlx.Session, {{.lowerStartCamelPrimaryKey}} {{.dataType}}, resp interface{}) (err error)

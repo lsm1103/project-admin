@@ -1,0 +1,852 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "项目1",
+    "description": "通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+    "version": "v0.1.1"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/OfflineMsg/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createOfflineMsgReq"
+            }
+          }
+        ],
+        "tags": [
+          "OfflineMsg"
+        ]
+      }
+    },
+    "/admin/OfflineMsg/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "OfflineMsg"
+        ]
+      }
+    },
+    "/admin/OfflineMsg/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/OfflineMsg"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "OfflineMsg"
+        ]
+      }
+    },
+    "/admin/OfflineMsg/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/OfflineMsgList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "OfflineMsg"
+        ]
+      }
+    },
+    "/admin/OfflineMsg/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateOfflineMsgReq"
+            }
+          }
+        ],
+        "tags": [
+          "OfflineMsg"
+        ]
+      }
+    },
+    "/admin/SingleMsg/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createSingleMsgReq"
+            }
+          }
+        ],
+        "tags": [
+          "SingleMsg"
+        ]
+      }
+    },
+    "/admin/SingleMsg/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "SingleMsg"
+        ]
+      }
+    },
+    "/admin/SingleMsg/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SingleMsg"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "SingleMsg"
+        ]
+      }
+    },
+    "/admin/SingleMsg/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SingleMsgList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "SingleMsg"
+        ]
+      }
+    },
+    "/admin/SingleMsg/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateSingleMsgReq"
+            }
+          }
+        ],
+        "tags": [
+          "SingleMsg"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "DeleteReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        }
+      },
+      "title": "DeleteReq",
+      "required": [
+        "id"
+      ]
+    },
+    "GetReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        }
+      },
+      "title": "GetReq",
+      "required": [
+        "id"
+      ]
+    },
+    "GetsQueryItem": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": " key"
+        },
+        "val": {
+          "type": "string",
+          "description": " val int/str('xxx')/list('xx,xx,xx')"
+        },
+        "handle": {
+          "type": "string",
+          "description": " 操作方法 =/\u003e/\u003c/like"
+        },
+        "nextHandle": {
+          "type": "string",
+          "enum": [
+            "or",
+            "and"
+          ],
+          "default": "and",
+          "description": " 与下一个条件的操作方法 or/and"
+        }
+      },
+      "title": "GetsQueryItem",
+      "required": [
+        "key",
+        "val",
+        "handle",
+        "nextHandle"
+      ]
+    },
+    "GetsReq": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetsQueryItem"
+          },
+          "description": "查询"
+        },
+        "orderBy": {
+          "type": "string",
+          "default": "id",
+          "description": "分组"
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "default": "desc",
+          "description": "排序 desc/asc"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "default": "1",
+          "description": "当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "default": "10",
+          "description": "页面大小"
+        }
+      },
+      "title": "GetsReq",
+      "required": [
+        "query",
+        "orderBy",
+        "sort",
+        "current",
+        "pageSize"
+      ]
+    },
+    "OfflineMsg": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "device_id": {
+          "type": "string",
+          "description": " 设备id"
+        },
+        "object_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 对象类型,1:friend；2：群组"
+        },
+        "object_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 对象id, friendId/groupId"
+        },
+        "last_ack_seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 最后确认序列号"
+        },
+        "newest_seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 最新的消息序列号"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息状态：-1撤回，0未处理，1已读"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "OfflineMsg",
+      "required": [
+        "id",
+        "user_id",
+        "device_id",
+        "object_type",
+        "object_id",
+        "last_ack_seq",
+        "newest_seq",
+        "state",
+        "create_time",
+        "update_time"
+      ]
+    },
+    "OfflineMsgList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OfflineMsg"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "OfflineMsgList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "10",
+        "pageSize",
+        "10|20",
+        "isNext",
+        "char",
+        "true|false"
+      ]
+    },
+    "SingleMsg": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息序列号,每个单聊都维护一个消息序列号"
+        },
+        "sender_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 发送者类型：1朋友，2打招呼，3转发"
+        },
+        "sender_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 发送者id"
+        },
+        "sender_device_id": {
+          "type": "string",
+          "description": " 发送设备id"
+        },
+        "receiver_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 接收者id(friendId)"
+        },
+        "receiver_device_id": {
+          "type": "string",
+          "description": " 接收设备id：多个设备id\"，\"隔开，*表示全部设备"
+        },
+        "msg_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息类型：0文本、1图文、2语音、3视频、4链接"
+        },
+        "content": {
+          "type": "string",
+          "description": " 消息内容"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 父级id，引用功能"
+        },
+        "send_time": {
+          "type": "string",
+          "description": " 消息发送时间"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息状态：-1撤回，0未处理，1已读"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "SingleMsg",
+      "required": [
+        "id",
+        "seq",
+        "sender_type",
+        "sender_id",
+        "sender_device_id",
+        "receiver_id",
+        "receiver_device_id",
+        "msg_type",
+        "content",
+        "parent_id",
+        "send_time",
+        "state",
+        "create_time",
+        "update_time"
+      ]
+    },
+    "SingleMsgList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SingleMsg"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "SingleMsgList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "10",
+        "pageSize",
+        "10|20",
+        "isNext",
+        "char",
+        "true|false"
+      ]
+    },
+    "createOfflineMsgReq": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "device_id": {
+          "type": "string",
+          "description": " 设备id"
+        },
+        "object_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 对象类型,1:friend；2：群组"
+        },
+        "object_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 对象id, friendId/groupId"
+        },
+        "last_ack_seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 最后确认序列号"
+        },
+        "newest_seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 最新的消息序列号"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息状态：-1撤回，0未处理，1已读"
+        }
+      },
+      "title": "createOfflineMsgReq",
+      "required": [
+        "user_id",
+        "device_id",
+        "object_type",
+        "object_id",
+        "last_ack_seq",
+        "newest_seq",
+        "state"
+      ]
+    },
+    "createSingleMsgReq": {
+      "type": "object",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息序列号,每个单聊都维护一个消息序列号"
+        },
+        "sender_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 发送者类型：1朋友，2打招呼，3转发"
+        },
+        "sender_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 发送者id"
+        },
+        "sender_device_id": {
+          "type": "string",
+          "description": " 发送设备id"
+        },
+        "receiver_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 接收者id(friendId)"
+        },
+        "receiver_device_id": {
+          "type": "string",
+          "description": " 接收设备id：多个设备id\"，\"隔开，*表示全部设备"
+        },
+        "msg_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息类型：0文本、1图文、2语音、3视频、4链接"
+        },
+        "content": {
+          "type": "string",
+          "description": " 消息内容"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 父级id，引用功能"
+        },
+        "send_time": {
+          "type": "string",
+          "description": " 消息发送时间"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息状态：-1撤回，0未处理，1已读"
+        }
+      },
+      "title": "createSingleMsgReq",
+      "required": [
+        "seq",
+        "sender_type",
+        "sender_id",
+        "sender_device_id",
+        "receiver_id",
+        "receiver_device_id",
+        "msg_type",
+        "content",
+        "parent_id",
+        "send_time",
+        "state"
+      ]
+    },
+    "updateOfflineMsgReq": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "device_id": {
+          "type": "string",
+          "description": " 设备id"
+        },
+        "object_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 对象类型,1:friend；2：群组"
+        },
+        "object_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 对象id, friendId/groupId"
+        },
+        "last_ack_seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 最后确认序列号"
+        },
+        "newest_seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 最新的消息序列号"
+        }
+      },
+      "title": "updateOfflineMsgReq",
+      "required": [
+        "user_id",
+        "device_id",
+        "object_type",
+        "object_id",
+        "last_ack_seq",
+        "newest_seq"
+      ]
+    },
+    "updateSingleMsgReq": {
+      "type": "object",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息序列号,每个单聊都维护一个消息序列号"
+        },
+        "sender_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 发送者类型：1朋友，2打招呼，3转发"
+        },
+        "sender_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 发送者id"
+        },
+        "sender_device_id": {
+          "type": "string",
+          "description": " 发送设备id"
+        },
+        "receiver_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 接收者id(friendId)"
+        },
+        "receiver_device_id": {
+          "type": "string",
+          "description": " 接收设备id：多个设备id\"，\"隔开，*表示全部设备"
+        },
+        "msg_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 消息类型：0文本、1图文、2语音、3视频、4链接"
+        },
+        "content": {
+          "type": "string",
+          "description": " 消息内容"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 父级id，引用功能"
+        },
+        "send_time": {
+          "type": "string",
+          "description": " 消息发送时间"
+        }
+      },
+      "title": "updateSingleMsgReq",
+      "required": [
+        "seq",
+        "sender_type",
+        "sender_id",
+        "sender_device_id",
+        "receiver_id",
+        "receiver_device_id",
+        "msg_type",
+        "content",
+        "parent_id",
+        "send_time"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+syntax = "v1"
+
+info(
+    title: "swagger模块"
+    desc: "接口文档+接口调试工具"
+    author: "lsm"
+    email: "18370872400@163.com"
+    version: "v1"
+)
+
+@server(
+    group: swaggerDoc
+)
+service project {
+	@doc "获取文档数据"
+	@handler docData
+	get /docData
+
+	@doc "打开文档"
+	@handler doc
+	get /doc
+}
