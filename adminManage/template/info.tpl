@@ -1,7 +1,13 @@
 info(
 	title: "{{.Title}}"
 	desc: "{{.Desc}}"
+	version: "{{.Version}}"
 	author: "{{.Author}}"
 	email: "{{.Email}}"
-	version: "{{.Version}}"
+
+	host: {{.Host}}
+	port: {{.Port}}
+	commonPkgPath: {{.CommonPkgPath}}
+	dataSource: {{.DataSource}}
+	cacheHost: {{.CacheHost}}
 )

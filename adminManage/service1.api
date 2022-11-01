@@ -6,10 +6,10 @@ info(
 	version: "v0.1.1"
 	author: "lsm"
 	email: "18370872400@163.com"
-	commonPkgPath: project-admin
 	
 	host: 0.0.0.0
 	port: 801
+	commonPkgPath: project-admin
 	dataSource: root:pujian123@tcp(172.16.10.183:4306)/im-center
 	cacheHost: 172.16.10.183:6379
 )
@@ -47,16 +47,17 @@ type (
 		ObjectId   int64  `json:"object_id"`    // 对象id, friendId/groupId
 		LastAckSeq int64  `json:"last_ack_seq"` // 最后确认序列号
 		NewestSeq  int64  `json:"newest_seq"`   // 最新的消息序列号
-		State      int64  `json:"state"`        // 消息状态：-1撤回，0未处理，1已读
 	}
 
 	updateOfflineMsgReq {
+	    Id         int64  `json:"id"`           // 主键
 		UserId     int64  `json:"user_id"`      // 用户id
 		DeviceId   string `json:"device_id"`    // 设备id
 		ObjectType int64  `json:"object_type"`  // 对象类型,1:friend；2：群组
 		ObjectId   int64  `json:"object_id"`    // 对象id, friendId/groupId
 		LastAckSeq int64  `json:"last_ack_seq"` // 最后确认序列号
 		NewestSeq  int64  `json:"newest_seq"`   // 最新的消息序列号
+		State      int64  `json:"state"`        // 消息状态：-1撤回，0未处理，1已读
 	}
 	OfflineMsg {
 		Id         int64  `json:"id"`           // 主键
@@ -69,22 +70,6 @@ type (
 		State      int64  `json:"state"`        // 消息状态：-1撤回，0未处理，1已读
 		CreateTime string `json:"create_time"`  // 创建时间
 		UpdateTime string `json:"update_time"`  // 更新时间
-		/*
-		Id               int64  `json:"id"`                                     // 主键
-		Seq              int64  `json:"seq"`                                    // 消息主键,每个单聊都维护一个消息主键
-		SenderType       string `json:"sender_type"`                            // 发送者类型：1发消息，2打招呼，3转发
-		SenderId         int64  `json:"sender_id"`                              // 发送者id
-		SenderDeviceId   string `json:"sender_device_id"`                       // 发送设备id
-		ReceiverId       int64  `json:"receiver_id"`                            // 接收者id
-		ReceiverDeviceId string `json:"receiver_device_id"`                     // 接收设备id：多个设备id"，"隔开，*表示全部设备
-		MsgType          string `json:"msg_type"`                               // 消息类型
-		Content          string `json:"content"`                                // 消息内容
-		ParentId         int64  `json:"parent_id"`                              // 父级id，引用功能
-		SendTime         string `json:"send_time"`                              // 消息发送时间
-		State            int64  `json:"state"`                                  // 消息状态：-1撤回，0未处理，1已读
-		CreateTime       string `json:"createTime"`                             // 创建时间
-		UpdateTime       string `json:"updateTime"`                             // 更新时间
-		*/
 	}
 
 	// 查询列表结果
@@ -109,10 +94,10 @@ type (
 		Content          string `json:"content"`            // 消息内容
 		ParentId         int64  `json:"parent_id"`          // 父级id，引用功能
 		SendTime         string `json:"send_time"`          // 消息发送时间
-		State            int64  `json:"state"`              // 消息状态：-1撤回，0未处理，1已读
 	}
 
 	updateSingleMsgReq {
+	    Id         int64  `json:"id"`           // 主键
 		Seq              int64  `json:"seq"`                // 消息序列号,每个单聊都维护一个消息序列号
 		SenderType       int64  `json:"sender_type"`        // 发送者类型：1朋友，2打招呼，3转发
 		SenderId         int64  `json:"sender_id"`          // 发送者id
@@ -123,6 +108,7 @@ type (
 		Content          string `json:"content"`            // 消息内容
 		ParentId         int64  `json:"parent_id"`          // 父级id，引用功能
 		SendTime         string `json:"send_time"`          // 消息发送时间
+		State      int64  `json:"state"`        // 消息状态：-1撤回，0未处理，1已读
 	}
 	SingleMsg {
 		Id               int64  `json:"id"`                 // 主键
@@ -139,22 +125,6 @@ type (
 		State            int64  `json:"state"`              // 消息状态：-1撤回，0未处理，1已读
 		CreateTime       string `json:"create_time"`        // 创建时间
 		UpdateTime       string `json:"update_time"`        // 更新时间
-		/*
-		Id               int64  `json:"id"`                                     // 主键
-		Seq              int64  `json:"seq"`                                    // 消息主键,每个单聊都维护一个消息主键
-		SenderType       string `json:"sender_type"`                            // 发送者类型：1发消息，2打招呼，3转发
-		SenderId         int64  `json:"sender_id"`                              // 发送者id
-		SenderDeviceId   string `json:"sender_device_id"`                       // 发送设备id
-		ReceiverId       int64  `json:"receiver_id"`                            // 接收者id
-		ReceiverDeviceId string `json:"receiver_device_id"`                     // 接收设备id：多个设备id"，"隔开，*表示全部设备
-		MsgType          string `json:"msg_type"`                               // 消息类型
-		Content          string `json:"content"`                                // 消息内容
-		ParentId         int64  `json:"parent_id"`                              // 父级id，引用功能
-		SendTime         string `json:"send_time"`                              // 消息发送时间
-		State            int64  `json:"state"`                                  // 消息状态：-1撤回，0未处理，1已读
-		CreateTime       string `json:"createTime"`                             // 创建时间
-		UpdateTime       string `json:"updateTime"`                             // 更新时间
-		*/
 	}
 
 	// 查询列表结果

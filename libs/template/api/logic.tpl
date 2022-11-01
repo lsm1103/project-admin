@@ -8,6 +8,8 @@ import (
 	{{if eq .handlerType "create"}}"github.com/jinzhu/copier"{{end}}
 	{{if eq .handlerType "update"}}"{{.rootPkgName}}/dataModel"{{end}}
 	{{if eq .handlerType "update"}}"github.com/jinzhu/copier"{{end}}
+	{{if eq .handlerType "get"}}"{{.rootPkgName}}/common/xerr"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"{{end}}
 	{{if eq .handlerType "gets"}}"{{.rootPkgName}}/common/sqlUtils"{{end}}
 )
 
@@ -50,7 +52,11 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
     if err != nil {
         return err
     }
-    {{ else if eq .handlerType "get" }}err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
+    {{ else if eq .handlerType "get" }}resp  = &types.{{.moduleName}}{}
+    err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
+    if err == sqlx.ErrNotFound {
+        return nil, xerr.NewErrCode(xerr.DATA_NOT_FIND)
+    }
     if err != nil {
         return nil, err
     }
@@ -63,5 +69,5 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
         resp.IsNext = true
         resp.List = resp.List[:req.PageSize]
     }{{ end }}
-	{{.returnString}}
+    {{.returnString}}
 }

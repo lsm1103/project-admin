@@ -41,6 +41,12 @@ func genInsert(table Table, withCache, postgreSql bool) (string, string, error) 
 			}
 		}
 
+		// add
+		if field.Name.Source() == "state" {
+			continue
+		}
+		// end
+
 		count += 1
 		if postgreSql {
 			expressions = append(expressions, fmt.Sprintf("$%d", count))

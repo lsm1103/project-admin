@@ -4,12 +4,13 @@ import (
 	"flag"
 	"fmt"
 
-	"project-admin/buildProject/t1/internal/config"
-	"project-admin/buildProject/t1/internal/handler"
-	"project-admin/buildProject/t1/internal/svc"
-
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
+
+	"project-admin/common/middleware"
+	"project-admin/projectBuilds/t1/internal/config"
+	"project-admin/projectBuilds/t1/internal/handler"
+	"project-admin/projectBuilds/t1/internal/svc"
 )
 
 var configFile = flag.String("f", "etc/project.yaml", "the config file")
@@ -21,7 +22,7 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	ctx := svc.NewServiceContext(c)
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(middleware.AllowedFn, nil))
 	defer server.Stop()
 
 	handler.RegisterHandlers(server, ctx)

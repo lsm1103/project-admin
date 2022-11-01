@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"project-admin/buildProject/t1/internal/logic/SingleMsg"
-	"project-admin/buildProject/t1/internal/svc"
-	"project-admin/buildProject/t1/internal/types"
+	"project-admin/projectBuilds/t1/internal/logic/SingleMsg"
+	"project-admin/projectBuilds/t1/internal/svc"
+	"project-admin/projectBuilds/t1/internal/types"
 
 	"project-admin/common/result"
 	"project-admin/common/sqlUtils"

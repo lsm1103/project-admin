@@ -3,8 +3,8 @@ package SingleMsg
 import (
 	"context"
 
-	"project-admin/buildProject/t1/internal/svc"
-	"project-admin/buildProject/t1/internal/types"
+	"project-admin/projectBuilds/t1/internal/svc"
+	"project-admin/projectBuilds/t1/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

@@ -3,8 +3,8 @@ package svc
 import (
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 
-	"project-admin/buildProject/t1/internal/config"
 	"project-admin/dataModel"
+	"project-admin/projectBuilds/t1/internal/config"
 )
 
 type ServiceContext struct {

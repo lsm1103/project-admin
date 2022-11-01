@@ -4,9 +4,9 @@ package handler
 import (
 	"net/http"
 
-	OfflineMsg "project-admin/buildProject/t1/internal/handler/OfflineMsg"
-	SingleMsg "project-admin/buildProject/t1/internal/handler/SingleMsg"
-	"project-admin/buildProject/t1/internal/svc"
+	OfflineMsg "project-admin/projectBuilds/t1/internal/handler/OfflineMsg"
+	SingleMsg "project-admin/projectBuilds/t1/internal/handler/SingleMsg"
+	"project-admin/projectBuilds/t1/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

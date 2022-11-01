@@ -52,7 +52,7 @@ type (
 		MsgType          int64     `db:"msg_type"`           // 消息类型：0文本、1图文、2语音、3视频、4链接
 		Content          string    `db:"content"`            // 消息内容
 		ParentId         int64     `db:"parent_id"`          // 父级id，引用功能
-		SendTime         time.Time `db:"send_time"`          // 消息发送时间
+		SendTime         string    `db:"send_time"`          // 消息发送时间
 		State            int64     `db:"state"`              // 消息状态：-1撤回，0未处理，1已读
 		CreateTime       time.Time `db:"create_time"`        // 创建时间
 		UpdateTime       time.Time `db:"update_time"`        // 更新时间
@@ -127,11 +127,11 @@ func (m *defaultSingleMsgModel) Insert(ctx context.Context, session sqlx.Session
 	singleMsgIdKey := fmt.Sprintf("%s%v", cacheSingleMsgIdPrefix, data.Id)
 	singleMsgSenderIdReceiverIdKey := fmt.Sprintf("%s%v:%v", cacheSingleMsgSenderIdReceiverIdPrefix, data.SenderId, data.ReceiverId)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, singleMsgRowsExpectAutoSet)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, singleMsgRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Id, data.Seq, data.SenderType, data.SenderId, data.SenderDeviceId, data.ReceiverId, data.ReceiverDeviceId, data.MsgType, data.Content, data.ParentId, data.SendTime, data.State)
+			return session.ExecCtx(ctx, query, data.Id, data.Seq, data.SenderType, data.SenderId, data.SenderDeviceId, data.ReceiverId, data.ReceiverDeviceId, data.MsgType, data.Content, data.ParentId, data.SendTime)
 		}
-		return conn.ExecCtx(ctx, query, data.Id, data.Seq, data.SenderType, data.SenderId, data.SenderDeviceId, data.ReceiverId, data.ReceiverDeviceId, data.MsgType, data.Content, data.ParentId, data.SendTime, data.State)
+		return conn.ExecCtx(ctx, query, data.Id, data.Seq, data.SenderType, data.SenderId, data.SenderDeviceId, data.ReceiverId, data.ReceiverDeviceId, data.MsgType, data.Content, data.ParentId, data.SendTime)
 	}, singleMsgIdKey, singleMsgSenderIdReceiverIdKey)
 	return ret, err
 }

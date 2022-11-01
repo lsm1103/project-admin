@@ -3,78 +3,13 @@ package handler
 
 import (
 	"net/http"
-
-	msg "project-admin/test2/internal/handler/msg"
-	msg1 "project-admin/test2/internal/handler/msg1"
-	swaggerDoc "project-admin/test2/internal/handler/swaggerDoc"
-	"project-admin/test2/internal/svc"
-
 	"github.com/zeromicro/go-zero/rest"
+
+	"project-admin/test2/internal/svc"
+	"project-admin/test2/internal/handler/swaggerDoc"
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/createSingleMsg",
-				Handler: msg1.CreateSingleMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPut,
-				Path:    "/updateSingleMsg",
-				Handler: msg1.UpdateSingleMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodDelete,
-				Path:    "/deleteSingleMsg",
-				Handler: msg1.DeleteSingleMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/getSingleMsg",
-				Handler: msg1.GetSingleMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/getsSingleMsg",
-				Handler: msg1.GetsSingleMsgHandler(serverCtx),
-			},
-		},
-		rest.WithPrefix("/msg1/v1"),
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/createGroupMsg",
-				Handler: msg.CreateGroupMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPut,
-				Path:    "/updateGroupMsg",
-				Handler: msg.UpdateGroupMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodDelete,
-				Path:    "/deleteGroupMsg",
-				Handler: msg.DeleteGroupMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/getGroupMsg",
-				Handler: msg.GetGroupMsgHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/getsGroupMsg",
-				Handler: msg.GetsGroupMsgHandler(serverCtx),
-			},
-		},
-		rest.WithPrefix("/msg/v1"),
-	)
-
 	server.AddRoutes(
 		[]rest.Route{
 			{

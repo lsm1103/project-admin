@@ -5,6 +5,7 @@
     "description": "通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
     "version": "v0.1.1"
   },
+  "host": "172.16.10.87:802",
   "schemes": [
     "http",
     "https"
@@ -848,5 +849,9 @@
       "name": "Authorization",
       "in": "header"
     }
+  },
+  "externalDocs": {
+    "description": "文档",
+    "url": "http://doc.pj-ai.com/share_doc/?token=ce67940ae226fe53a640b7750e0bdf73"
   }
 }

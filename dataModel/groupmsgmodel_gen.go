@@ -53,7 +53,7 @@ type (
 		MsgType          int64     `db:"msg_type"`           // 消息类型：0文本、1图文、2语音、3视频、地址、4链接
 		Content          string    `db:"content"`            // 消息内容
 		ParentId         int64     `db:"parent_id"`          // 父级id，引用功能
-		SendTime         time.Time `db:"send_time"`          // 消息发送时间
+		SendTime         string    `db:"send_time"`          // 消息发送时间
 		State            int64     `db:"state"`              // 消息状态，-3接收者删除，-2发送者删除，-1撤回，0未处理，1已读
 		CreateTime       time.Time `db:"create_time"`        // 创建时间
 		UpdateTime       time.Time `db:"update_time"`        // 更新时间

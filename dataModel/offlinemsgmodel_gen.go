@@ -123,11 +123,11 @@ func (m *defaultOfflineMsgModel) Insert(ctx context.Context, session sqlx.Sessio
 	offlineMsgIdKey := fmt.Sprintf("%s%v", cacheOfflineMsgIdPrefix, data.Id)
 	offlineMsgUserIdDeviceIdObjectTypeObjectIdKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheOfflineMsgUserIdDeviceIdObjectTypeObjectIdPrefix, data.UserId, data.DeviceId, data.ObjectType, data.ObjectId)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, offlineMsgRowsExpectAutoSet)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, offlineMsgRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Id, data.UserId, data.DeviceId, data.ObjectType, data.ObjectId, data.LastAckSeq, data.NewestSeq, data.State)
+			return session.ExecCtx(ctx, query, data.Id, data.UserId, data.DeviceId, data.ObjectType, data.ObjectId, data.LastAckSeq, data.NewestSeq)
 		}
-		return conn.ExecCtx(ctx, query, data.Id, data.UserId, data.DeviceId, data.ObjectType, data.ObjectId, data.LastAckSeq, data.NewestSeq, data.State)
+		return conn.ExecCtx(ctx, query, data.Id, data.UserId, data.DeviceId, data.ObjectType, data.ObjectId, data.LastAckSeq, data.NewestSeq)
 	}, offlineMsgIdKey, offlineMsgUserIdDeviceIdObjectTypeObjectIdKey)
 	return ret, err
 }

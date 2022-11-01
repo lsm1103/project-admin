@@ -27,11 +27,16 @@ type (
 		Author string
 		Email string
 		Version string
+		Host string
+		Port string
+		CommonPkgPath string
+		DataSource string
+		CacheHost string
 	}
 )
 
-var ignoreColumns = []string{"id", "create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
-var updateColumns = []string{"state",}
+var ignoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
+var updateColumns = []string{"id", "state",}
 
 func main() {
 	//info模版
@@ -41,6 +46,12 @@ func main() {
 		Author:  "lsm",
 		Email:   "18370872400@163.com",
 		Version: "v0.1.1",
+
+		Host: "0.0.0.0",
+		Port: "801",
+		CommonPkgPath: "project-admin",
+		DataSource: "root:pujian123@tcp(172.16.10.183:4306)/im-center",
+		CacheHost: "172.16.10.183:6379",
 	}
 	infoText,err := LoadTemplate("template/info.tpl")
 	if err != nil {
@@ -52,7 +63,7 @@ func main() {
 	}
 
 	//解析数据库sql文件
-	sqlFile := "/Users/xm/Desktop/go_package/project-admin/test1.sql"
+	sqlFile := "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql"
 	database := ""
 	strict := false
 	tables, err := parser.Parse(sqlFile, database, strict)
@@ -66,7 +77,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		allFields, err := genFields(fieldText, item.Fields)
+		allFields, err := genFields(fieldText, item.Fields, "")
 		if err != nil {
 			panic(err)
 		}
@@ -75,19 +86,19 @@ func main() {
 		updateList := []*parser.Field{}
 		for _,item := range item.Fields{
 			if !stringx.Contains(ignoreColumns, item.Name.Source()){
-				createList = append(createList, item)
+				updateList = append(updateList, item)
 				if !stringx.Contains(updateColumns, item.Name.Source()){
-					updateList = append(updateList, item)
+					createList = append(createList, item)
 				}
 			}
 		}
 		//createFields
-		createFields, err := genFields(fieldText, createList)
+		createFields, err := genFields(fieldText, createList, "")
 		if err != nil {
 			panic(err)
 		}
 		//updateFields
-		updateFields, err := genFields(fieldText, updateList)
+		updateFields, err := genFields(fieldText, updateList, ",optional")
 		if err != nil {
 			panic(err)
 		}
@@ -139,22 +150,28 @@ func main() {
 	//fmt.Printf("output:%s", output.String())
 
 	//为每个表创建api文件
-	err = ioutil.WriteFile("service1.api", output.Bytes(), os.ModePerm)
+	err = ioutil.WriteFile("service2.api", output.Bytes(), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("sqlFile:%s is build done\n", sqlFile)
 }
 
-func genFields(fieldTemplate string, fields []*parser.Field) (string, error) {
+func genFields(fieldTemplate string, fields []*parser.Field, tag string) (string, error) {
 	var list []string
+
 
 	for _, field := range fields {
 		fieldData := map[string]interface{}{
 			"name":       util.SafeString(field.Name.ToCamel()),
-			"tag":        fmt.Sprintf("`json:\"%s\"`",field.Name.Source()),
+			//"tag":        fmt.Sprintf(fieldTpl,field.Name.Source(), ""),
 			"hasComment": field.Comment != "",
 			"comment":    field.Comment,
+		}
+		if field.Name.Source() != "id"{
+			fieldData["tag"] = fmt.Sprintf("`json:\"%s%s\"`",field.Name.Source(), tag)
+		} else {
+			fieldData["tag"] = fmt.Sprintf("`json:\"%s\"`",field.Name.Source() )
 		}
 		if field.DataType == "time.Time"{
 			fieldData["type"] = "string"

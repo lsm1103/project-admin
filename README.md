@@ -87,3 +87,9 @@ go run . -source /Users/xm/Desktop/go_package/project-admin/common/mocks/tag_v2.
 
 - goctl-swagger
 goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -api xxx.api -dir .
+
+- go run goctl.go api go
+go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/t2 -api ../../adminManage/service1.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/t2 -api ../../adminManage/service1.api
+
+- go run goctl.go mysql ddl  TODO还需要整理一番
+go run goctl.go mysql ddl -src=test1.sql  -dir="dataModel/." -c --home libs/template && cp -r common/sqlUtils/* dataModel/
