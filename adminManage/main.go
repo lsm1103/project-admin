@@ -160,7 +160,6 @@ func main() {
 func genFields(fieldTemplate string, fields []*parser.Field, tag string) (string, error) {
 	var list []string
 
-
 	for _, field := range fields {
 		fieldData := map[string]interface{}{
 			"name":       util.SafeString(field.Name.ToCamel()),
@@ -220,4 +219,3 @@ func build(strTemplate string, data interface{}) (*bytes.Buffer, error) {
 	//buf.Write(formatOutput)
 	return buf, nil
 }
-

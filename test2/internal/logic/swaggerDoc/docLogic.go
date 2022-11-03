@@ -30,7 +30,7 @@ func (l *DocLogic) Doc(w http.ResponseWriter) error {
 			<head>
 			<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui.css">
 			<link rel="shortcut icon" href="https://fastapi.tiangolo.com/img/favicon.png">
-			<title>dispatcher - Swagger UI</title>
+			<title>Swagger UI</title>
 			</head>
 			<body>
 			<div id="swagger-ui">
