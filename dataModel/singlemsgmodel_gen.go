@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"project-admin/common/sqlUtils"
 	"strings"
 	"time"
 
@@ -146,11 +147,17 @@ func (m *defaultSingleMsgModel) Update(ctx context.Context, session sqlx.Session
 	singleMsgIdKey := fmt.Sprintf("%s%v", cacheSingleMsgIdPrefix, data.Id)
 	singleMsgSenderIdReceiverIdKey := fmt.Sprintf("%s%v:%v", cacheSingleMsgSenderIdReceiverIdPrefix, data.SenderId, data.ReceiverId)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, singleMsgRowsWithPlaceHolder)
+		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(newData, sqlUtils.IsEmptyValue),", "))
 		if session != nil {
-			return session.ExecCtx(ctx, query, newData.Seq, newData.SenderType, newData.SenderId, newData.SenderDeviceId, newData.ReceiverId, newData.ReceiverDeviceId, newData.MsgType, newData.Content, newData.ParentId, newData.SendTime, newData.State, newData.Id)
+			return session.Exec(query, newData.Id)
 		}
-		return conn.ExecCtx(ctx, query, newData.Seq, newData.SenderType, newData.SenderId, newData.SenderDeviceId, newData.ReceiverId, newData.ReceiverDeviceId, newData.MsgType, newData.Content, newData.ParentId, newData.SendTime, newData.State, newData.Id)
+		return conn.Exec(query, newData.Id)
+
+		//query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, singleMsgRowsWithPlaceHolder)
+		//if session != nil {
+		//	return session.ExecCtx(ctx, query, newData.Seq, newData.SenderType, newData.SenderId, newData.SenderDeviceId, newData.ReceiverId, newData.ReceiverDeviceId, newData.MsgType, newData.Content, newData.ParentId, newData.SendTime, newData.State, newData.Id)
+		//}
+		//return conn.ExecCtx(ctx, query, newData.Seq, newData.SenderType, newData.SenderId, newData.SenderDeviceId, newData.ReceiverId, newData.ReceiverDeviceId, newData.MsgType, newData.Content, newData.ParentId, newData.SendTime, newData.State, newData.Id)
 	}, singleMsgIdKey, singleMsgSenderIdReceiverIdKey)
 	return err
 }

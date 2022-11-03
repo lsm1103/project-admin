@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"project-admin/common/sqlUtils"
 	"strings"
 	"time"
 
@@ -142,11 +143,17 @@ func (m *defaultOfflineMsgModel) Update(ctx context.Context, session sqlx.Sessio
 	offlineMsgIdKey := fmt.Sprintf("%s%v", cacheOfflineMsgIdPrefix, data.Id)
 	offlineMsgUserIdDeviceIdObjectTypeObjectIdKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheOfflineMsgUserIdDeviceIdObjectTypeObjectIdPrefix, data.UserId, data.DeviceId, data.ObjectType, data.ObjectId)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, offlineMsgRowsWithPlaceHolder)
+		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue),", "))
 		if session != nil {
-			return session.ExecCtx(ctx, query, newData.UserId, newData.DeviceId, newData.ObjectType, newData.ObjectId, newData.LastAckSeq, newData.NewestSeq, newData.State, newData.Id)
+			return session.Exec(query, data.Id)
 		}
-		return conn.ExecCtx(ctx, query, newData.UserId, newData.DeviceId, newData.ObjectType, newData.ObjectId, newData.LastAckSeq, newData.NewestSeq, newData.State, newData.Id)
+		return conn.Exec(query, data.Id)
+
+		//query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, offlineMsgRowsWithPlaceHolder)
+		//if session != nil {
+		//	return session.ExecCtx(ctx, query, newData.UserId, newData.DeviceId, newData.ObjectType, newData.ObjectId, newData.LastAckSeq, newData.NewestSeq, newData.State, newData.Id)
+		//}
+		//return conn.ExecCtx(ctx, query, newData.UserId, newData.DeviceId, newData.ObjectType, newData.ObjectId, newData.LastAckSeq, newData.NewestSeq, newData.State, newData.Id)
 	}, offlineMsgIdKey, offlineMsgUserIdDeviceIdObjectTypeObjectIdKey)
 	return err
 }
