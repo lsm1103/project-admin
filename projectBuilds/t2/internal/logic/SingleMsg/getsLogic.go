@@ -2,11 +2,9 @@ package SingleMsg
 
 import (
 	"context"
-
+	"github.com/zeromicro/go-zero/core/logx"
 	"project-admin/projectBuilds/t2/internal/svc"
 	"project-admin/projectBuilds/t2/internal/types"
-
-	"github.com/zeromicro/go-zero/core/logx"
 
 	"project-admin/common/sqlUtils"
 )
@@ -32,6 +30,7 @@ func (l *GetsLogic) Gets(req *sqlUtils.GetsReq) (resp *types.SingleMsgList, err 
 	if err != nil {
 		return nil, err
 	}
+	//strconv.FormatInt(item.Id, 10),
 	if int64(len(resp.List)) > req.PageSize {
 		resp.IsNext = true
 		resp.List = resp.List[:req.PageSize]

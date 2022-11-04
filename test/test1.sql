@@ -40,7 +40,7 @@ CREATE TABLE `single_msg`
     `update_time`   datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
     KEY `k_send_time_state_msg_type_sender_type` (`send_time`,`state`,`msg_type`,`sender_type`),
-    UNIQUE KEY `uk_seq_sender_id_receiver_id` (`sender_id`, `receiver_id`) USING BTREE
+    UNIQUE KEY `uk_seq_sender_id_receiver_id` (`seq`,`sender_id`, `receiver_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin COMMENT ='单聊消息表';

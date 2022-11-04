@@ -4,12 +4,15 @@ import (
 	"github.com/sony/sonyflake"
 	"github.com/zeromicro/go-zero/core/logx"
 	"strconv"
+	"time"
 )
 
 var flake *sonyflake.Sonyflake
 
 func init()  {
-	flake = sonyflake.NewSonyflake(sonyflake.Settings{})
+	flake = sonyflake.NewSonyflake(sonyflake.Settings{
+		StartTime: time.Now(),
+	})
 }
 
 func GenId() int64 {
