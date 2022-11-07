@@ -3,14 +3,16 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
+	"text/template"
+	
 	"github.com/zeromicro/go-zero/core/errorx"
 	"github.com/zeromicro/go-zero/core/stringx"
 	"github.com/zeromicro/go-zero/tools/goctl/util"
-	"io/ioutil"
-	"os"
+
 	"project-admin/adminManage/parser"
-	"strings"
-	"text/template"
 )
 
 type (
@@ -150,7 +152,7 @@ func main() {
 	//fmt.Printf("output:%s", output.String())
 
 	//为每个表创建api文件
-	err = ioutil.WriteFile("service2.api", output.Bytes(), os.ModePerm)
+	err = ioutil.WriteFile("service3.api", output.Bytes(), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}

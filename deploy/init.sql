@@ -36,7 +36,43 @@ CREATE TABLE `user_group`
     KEY `index_filter` (`create_time`, `state`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT ='用户、组、角色关系表';
+  COLLATE = utf8mb4_bin COMMENT ='用户、组关系表';
+
+-- ------------group_group_relation 表----------------
+DROP TABLE IF EXISTS `group_group_relation`;
+CREATE TABLE `group_group_relation` (
+    `id`              bigint unsigned NOT NULL COMMENT '自增主键',
+    `create_user`     bigint NOT NULL COMMENT '创建者id',
+    `master_group_id` bigint NOT NULL COMMENT '主组id',
+    `from_group_id`   bigint NOT NULL COMMENT '从组id',
+    `relation`        tinyint(4) NOT NULL DEFAULT '1' COMMENT '关系，-1不允许，1允许读写(非自己)，2只允许读(非自己)',
+    `state`           tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `create_time`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `index_unique` (`create_user`,`master_group_id`,`from_group_id`,`relation`),
+    KEY `index_filter` (`create_time`, `state`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='组与组关系描述表';
+
+-- ------------config 表----------------
+DROP TABLE IF EXISTS `application_config`;
+CREATE TABLE `application_config`
+(
+    `id`             bigint unsigned NOT NULL COMMENT '主键',
+    `user_id`        bigint NOT NULL COMMENT '用户id',
+    `key`            bigint NOT NULL COMMENT 'key',
+    `value`          bigint NOT NULL COMMENT 'value',
+    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `index_unique` (`user_id`,`key`),
+    KEY `index_filter` (`create_time`, `state`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='配置表';
 
 -- ------------project 表，类似于机构、saas里面的公司，作为数据隔离的作用----------------
 DROP TABLE IF EXISTS `project`;
@@ -89,24 +125,6 @@ CREATE TABLE `application`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin COMMENT ='应用表';
 
--- ------------config 表----------------
-DROP TABLE IF EXISTS `application_config`;
-CREATE TABLE `application_config`
-(
-    `id`             bigint unsigned NOT NULL COMMENT '主键',
-    `user_id`        bigint NOT NULL COMMENT '用户id',
-    `key`            bigint NOT NULL COMMENT 'key',
-    `value`          bigint NOT NULL COMMENT 'value',
-    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
-    `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `index_unique` (`user_id`,`key`),
-    KEY `index_filter` (`create_time`, `state`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT ='配置表';
-
 -- ------------application-config 表----------------
 # 配置github/gitlab代码仓库；配置webhook
 DROP TABLE IF EXISTS `application_config`;
@@ -125,15 +143,49 @@ CREATE TABLE `application_config`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin COMMENT ='应用配置表';
 
-
 -- ------------doc 表----------------
--- ------------docGroup 表----------------
+DROP TABLE IF EXISTS `doc`;
+CREATE TABLE `doc` (
+    `id`            bigint unsigned NOT NULL COMMENT '主键',
+    `name`          char(50) NOT NULL COMMENT '文档标题',
+    `create_user`   int(20) NOT NULL COMMENT '所属用户',
+    `pre_content`   text NOT NULL COMMENT '编辑内容',
+    `content`       text NOT NULL COMMENT '文档内容',
+    `parent_doc`    int(20) NOT NULL COMMENT '上级文档',
+    `group_id`       int(20) NOT NULL COMMENT '所属文档组',
+    `sort`          int(20) NOT NULL COMMENT '排序',
+    `editor_mode`   tinyint(4) NOT NULL COMMENT '编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器',
+    `open_children` tinyint(4) NOT NULL COMMENT '展开下级目录',
+    `show_children` tinyint(4) NOT NULL COMMENT '显示下级文档',
+    `state`         tinyint(4) NOT NULL DEFAULT '1' COMMENT '文档状态，-2删除，-1禁用，待审核-草稿0，启用1',
+    `create_time`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `index_unique` (`name`,`create_user`),
+    KEY `index_filter` (`create_time`, `state`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='文档表';
+-- ------------dochistory 文档历史表----------------
+DROP TABLE IF EXISTS `doc_history`;
+CREATE TABLE `doc_history` (
+    `id`            bigint unsigned NOT NULL COMMENT '主键',
+    `pre_content`   text NOT NULL COMMENT '编辑内容',
+    `create_user`   int(20) NOT NULL COMMENT '所属用户',
+    `doc_id`        int(20) NOT NULL COMMENT '文档id',
+    `create_time`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    KEY `index_filter` (`create_time`,`create_user`, `doc_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT ='文档历史表';
+
+
+-- ------------demand 表----------------
+-- ------------demandGroup 表----------------
+
 
 -- ------------testCase 表----------------
 
-
--- ------------demandDoc 表----------------
--- ------------demandDocGroup 表----------------
 
 -- ------------bug 表----------------
 -- ------------bugGroup 表----------------
