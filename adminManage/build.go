@@ -1,4 +1,4 @@
-package main
+package adminManage
 
 import (
 	"bytes"
@@ -35,40 +35,30 @@ type (
 		DataSource string
 		CacheHost string
 	}
+
+	SqlParseCfg struct {
+		filename string
+		database string
+		strict bool
+	}
 )
 
 var ignoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
 var updateColumns = []string{"id", "state",}
 
-func main() {
+func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
 	//info模版
-	serviceInfo := ServiceInfo{
-		Title:   "项目1",
-		Desc:    "通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
-		Author:  "lsm",
-		Email:   "18370872400@163.com",
-		Version: "v0.1.1",
-
-		Host: "0.0.0.0",
-		Port: "801",
-		CommonPkgPath: "project-admin",
-		DataSource: "root:pujian123@tcp(172.16.10.183:4306)/im-center",
-		CacheHost: "172.16.10.183:6379",
-	}
 	infoText,err := LoadTemplate("template/info.tpl")
 	if err != nil {
 		panic(err)
 	}
-	infoOutput, err := build(infoText, serviceInfo)
+	infoOutput, err := buildCode(infoText, serviceInfo)
 	if err != nil {
 		panic(err)
 	}
 
 	//解析数据库sql文件
-	sqlFile := "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql"
-	database := ""
-	strict := false
-	tables, err := parser.Parse(sqlFile, database, strict)
+	tables, err := parser.Parse(sqlCfg.filename, sqlCfg.database, sqlCfg.strict)
 
 	typesOutputs := []string{}
 	moduleHandlerOutputs := []string{}
@@ -115,7 +105,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		typesOutput, err := build(typesText, typesData)
+		typesOutput, err := buildCode(typesText, typesData)
 		if err != nil {
 			panic(err)
 		}
@@ -126,7 +116,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		moduleHandlerOutput, err := build(moduleHandlerText, map[string]string{
+		moduleHandlerOutput, err := buildCode(moduleHandlerText, map[string]string{
 			"tableName":item.Name.ToCamel(),
 		})
 		if err != nil {
@@ -145,18 +135,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	output, err := build(text, data)
+	output, err := buildCode(text, data)
 	if err != nil {
 		panic(err)
 	}
-	//fmt.Printf("output:%s", output.String())
 
 	//为每个表创建api文件
-	err = ioutil.WriteFile("service3.api", output.Bytes(), os.ModePerm)
+	err = ioutil.WriteFile(outFile, output.Bytes(), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("sqlFile:%s is build done\n", sqlFile)
+	fmt.Printf("sqlFile:%s is build done\n", sqlCfg.filename)
 }
 
 func genFields(fieldTemplate string, fields []*parser.Field, tag string) (string, error) {
@@ -179,7 +168,7 @@ func genFields(fieldTemplate string, fields []*parser.Field, tag string) (string
 		} else{
 			fieldData["type"] = field.DataType
 		}
-		result, err := build(fieldTemplate, fieldData)
+		result, err := buildCode(fieldTemplate, fieldData)
 		if err != nil {
 			return "", err
 		}
@@ -198,26 +187,15 @@ func LoadTemplate(filePath string) (string, error) {
 	return string(content), nil
 }
 
-func build(strTemplate string, data interface{}) (*bytes.Buffer, error) {
+func buildCode(strTemplate string, data interface{}) (*bytes.Buffer, error) {
 	tpl, err := template.New("templateOne").Parse(strTemplate)                                                               // （2）解析模板
 	if err != nil {
 		panic(err)
 	}
-	//err = tpl.Execute(os.Stdout, data) //（3）数据驱动模板，将name的值填充到模板中
-	//if err != nil {
-	//	panic(err)
-	//}
 
 	buf := new(bytes.Buffer)
 	if err = tpl.Execute(buf, data); err != nil {
-		return nil, errorx.Wrapf(err, "template execute error:%s", tpl)
+		return nil, errorx.Wrapf(err, "template execute error:%+v", tpl)
 	}
-
-	//formatOutput, err := goformat.Source(buf.Bytes())
-	//if err != nil {
-	//	return nil, errorx.Wrapf(err, "go format error:%s", tpl)
-	//}
-	//buf.Reset()
-	//buf.Write(formatOutput)
 	return buf, nil
 }

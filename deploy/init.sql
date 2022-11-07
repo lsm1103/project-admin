@@ -57,8 +57,8 @@ CREATE TABLE `group_group_relation` (
   COLLATE = utf8mb4_bin COMMENT ='组与组关系描述表';
 
 -- ------------config 表----------------
-DROP TABLE IF EXISTS `application_config`;
-CREATE TABLE `application_config`
+DROP TABLE IF EXISTS `config`;
+CREATE TABLE `config`
 (
     `id`             bigint unsigned NOT NULL COMMENT '主键',
     `user_id`        bigint NOT NULL COMMENT '用户id',
@@ -131,13 +131,14 @@ DROP TABLE IF EXISTS `application_config`;
 CREATE TABLE `application_config`
 (
     `id`             bigint unsigned NOT NULL COMMENT '主键',
+    `create_user`   int(20) NOT NULL COMMENT '所属用户',
     `application_id` bigint NOT NULL COMMENT '应用id',
     `config_id`      bigint NOT NULL COMMENT '配置id',
     `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `index_unique` (`application_id`,`config_id`),
+    UNIQUE KEY `index_unique` (`create_user`,`application_id`,`config_id`),
     KEY `index_filter` (`create_time`, `state`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -174,6 +175,7 @@ CREATE TABLE `doc_history` (
     `create_user`   int(20) NOT NULL COMMENT '所属用户',
     `doc_id`        int(20) NOT NULL COMMENT '文档id',
     `create_time`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`),
     KEY `index_filter` (`create_time`,`create_user`, `doc_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
