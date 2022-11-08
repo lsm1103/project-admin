@@ -21,6 +21,7 @@ type (
 
 var (
 	ErrNotFound = errors.New("找不到数据")
+	ErrNotState = errors.New("没有state字段")
 
 	//状态
 	Del     int64 = -2 //删除
