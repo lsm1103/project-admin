@@ -27,7 +27,7 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-func (l *CreateLogic) Create(req *types.CreateProjectReq) error {
+func (l *CreateLogic) Create(req *sqlUtils.GetsReq) error {
 	// 自动生成的后台管理接口  req *types.CreateProjectReq
 	sqlReq := &dataModel.Project{}
 	err := copier.Copy(sqlReq, req)

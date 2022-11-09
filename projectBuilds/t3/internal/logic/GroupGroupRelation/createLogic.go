@@ -27,7 +27,7 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-func (l *CreateLogic) Create(req *types.CreateGroupGroupRelationReq) error {
+func (l *CreateLogic) Create(req *sqlUtils.GetsReq) error {
 	// 自动生成的后台管理接口  req *types.CreateGroupGroupRelationReq
 	sqlReq := &dataModel.GroupGroupRelation{}
 	err := copier.Copy(sqlReq, req)

@@ -62,6 +62,8 @@ func genLogicByRoute(dir, rootPkg string, cfg *config.Config, group spec.Group, 
 	if strings.Contains(rootPkg, "/") {
 		rootPkgName = strings.Split(rootPkg, "/")[0]
 	}
+	dirList := strings.Split(dir,"/")
+	projectName := dirList[len(dirList)-1]
 
 	fmt.Printf("【moduleName:%+v, handlerType:%+v, respType:%+v】\n", moduleName, handlerType, respType)
 	return genFile(fileGenConfig{
@@ -78,6 +80,7 @@ func genLogicByRoute(dir, rootPkg string, cfg *config.Config, group spec.Group, 
 			"logic":        strings.Title(logic),
 			"function":     strings.Title(strings.TrimSuffix(logic, "Logic")),
 			"rootPkgName": 	rootPkgName,
+			"projectName": 	projectName,
 			"moduleName":   strings.Title(moduleName),
 			"handlerType":  handlerType,
 			"respType":     respType,

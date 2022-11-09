@@ -351,6 +351,16 @@ func (g *defaultGenerator) genModelCustom(in parser.Table, withCache bool) (stri
 		return "", err
 	}
 
+	//================2022.11.09================
+	isState := false
+	for _,item := range in.Fields{
+		if item.NameOriginal == "state"{
+			isState = true
+			break
+		}
+	}
+	//================end================
+
 	t := util.With("model-custom").
 		Parse(text).
 		GoFmt(true)
@@ -359,6 +369,7 @@ func (g *defaultGenerator) genModelCustom(in parser.Table, withCache bool) (stri
 		"withCache":             withCache,
 		"upperStartCamelObject": in.Name.ToCamel(),
 		"lowerStartCamelObject": stringx.From(in.Name.ToCamel()).Untitle(),
+		"isState":				 isState,
 	})
 	if err != nil {
 		return "", err

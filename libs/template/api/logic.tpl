@@ -3,14 +3,12 @@ package {{.pkgName}}
 import (
 	{{.imports}}
 
-	{{if eq .handlerType "create"}}"{{.rootPkgName}}/common/uniqueid"{{end}}
-	{{if eq .handlerType "create"}}"{{.rootPkgName}}/dataModel"{{end}}
+	{{if eq .handlerType "create"}}"project-admin/common/uniqueid"{{end}}
+	{{if eq .handlerType "create"}}"project-admin/dataModel"{{end}}
 	{{if eq .handlerType "create"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "update"}}"{{.rootPkgName}}/dataModel"{{end}}
+	{{if eq .handlerType "update"}}dataModel "project-admin/dataModel/{{.projectName}}Model"{{end}}
 	{{if eq .handlerType "update"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "get"}}"{{.rootPkgName}}/common/xerr"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"{{end}}
-	{{if eq .handlerType "gets"}}"{{.rootPkgName}}/common/sqlUtils"{{end}}
+	{{if eq .handlerType "gets"}}"project-admin/common/sqlUtils"{{end}}
 )
 
 type {{.logic}} struct {
@@ -27,7 +25,7 @@ func New{{.logic}}(ctx context.Context, svcCtx *svc.ServiceContext) {{.logic}} {
 	}
 }
 
-func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.GetsReq{{else}}{{.request}}{{end}}) {{.responseType}} {
+func (l *{{.logic}}) {{.function}}(req *sqlUtils.GetsReq) {{.responseType}} {
     // 自动生成的后台管理接口  {{.request}}
     {{ if eq .handlerType "create" }}sqlReq := &dataModel.{{.moduleName}}{}
     err := copier.Copy(sqlReq, req)
@@ -52,11 +50,7 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
     if err != nil {
         return err
     }
-    {{ else if eq .handlerType "get" }}resp  = &types.{{.moduleName}}{}
-    err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
-    if err == sqlx.ErrNotFound {
-        return nil, xerr.NewErrCode(xerr.DATA_NOT_FIND)
-    }
+    {{ else if eq .handlerType "get" }}err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
     if err != nil {
         return nil, err
     }
@@ -69,5 +63,5 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
         resp.IsNext = true
         resp.List = resp.List[:req.PageSize]
     }{{ end }}
-    {{.returnString}}
+	{{.returnString}}
 }

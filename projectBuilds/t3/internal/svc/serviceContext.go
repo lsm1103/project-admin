@@ -3,7 +3,7 @@ package svc
 import (
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 
-	dataModel "project-admin/dataModel_"
+	"project-admin/dataModel"
 	"project-admin/projectBuilds/t3/internal/config"
 )
 

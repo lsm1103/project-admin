@@ -1,4 +1,4 @@
-package dataModel
+package t3Model
 
 import (
 	"context"

@@ -8,8 +8,8 @@ import (
 	"project-admin/common/sqlUtils"
 )
 {{else}}
-import "github.com/zeromicro/go-zero/core/stores/sqlx"
-{{end}}
+import "github.com/zeromicro/go-zero/core/stores/sqlx"{{end}}
+
 var _ {{.upperStartCamelObject}}Model = (*custom{{.upperStartCamelObject}}Model)(nil)
 
 type (
@@ -41,8 +41,6 @@ func (m *custom{{.upperStartCamelObject}}Model) FindAll(in *sqlUtils.GetsReq, re
 }
 
 func (m *custom{{.upperStartCamelObject}}Model) SoftDelete(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) error {
-	{{if .{{.upperStartCamelObject}}}}data.State = sqlUtils.Del
-	return m.Update(ctx, session, data){{else}}
-	return sqlUtils.ErrNotState
-	{{end}}
+	{{if .isState}}data.State = sqlUtils.Del
+	return m.Update(ctx, session, data){{else}}return sqlUtils.ErrNotState{{end}}
 }

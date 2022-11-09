@@ -1,4 +1,4 @@
-package dataModel
+package test1
 
 import "github.com/zeromicro/go-zero/core/stores/sqlx"
 

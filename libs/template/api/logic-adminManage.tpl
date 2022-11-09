@@ -6,7 +6,7 @@ import (
 	{{if eq .handlerType "create"}}"project-admin/common/uniqueid"{{end}}
 	{{if eq .handlerType "create"}}"project-admin/dataModel"{{end}}
 	{{if eq .handlerType "create"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "update"}}"project-admin/dataModel"{{end}}
+	{{if eq .handlerType "update"}}dataModel "project-admin/dataModel/{{projectName}}Model"{{end}}
 	{{if eq .handlerType "update"}}"github.com/jinzhu/copier"{{end}}
 	{{if eq .handlerType "gets"}}"project-admin/common/sqlUtils"{{end}}
 )
