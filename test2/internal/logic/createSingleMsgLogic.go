@@ -32,7 +32,7 @@ func (l *CreateSingleMsgLogic) CreateSingleMsg(req *types.CreateSingleMsgReq) er
 		return err
 	}
 	sqlReq.Id = uniqueid.GenId()
-	_, err = l.svcCtx.SingleMsgModel.Insert(l.ctx,nil, sqlReq)
+	_, err = l.svcCtx.SingleMsgModel.Insert(l.ctx, nil, sqlReq)
 	if err != nil {
 		return err
 	}

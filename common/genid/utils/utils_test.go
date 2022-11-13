@@ -52,6 +52,3 @@ func TestGenFixedLengthChineseChars(t *testing.T) {
 		t.Logf("GenFixedLengthChineseChars() = %v", GenFixedLengthChineseChars(10))
 	}
 }
-
-
-

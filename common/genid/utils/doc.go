@@ -1,15 +1,14 @@
 package utils
 
 import (
-	"time"
 	"math/rand"
+	"time"
 )
 
-func init()  {
+func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
 func docGoRandInt32(maxN int) int {
 	return rand.Intn(maxN)
 }
-

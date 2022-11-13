@@ -9,7 +9,7 @@ info(
 	
 	host: 0.0.0.0
 	port: 801
-	commonPkgPath: project-admin
+	projectName: project1
 	dataSource: root:pujian123@tcp(172.16.10.183:4306)/im-center
 	cacheHost: 172.16.10.183:6379
 )

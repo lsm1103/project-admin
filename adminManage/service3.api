@@ -6,7 +6,6 @@ info(
 	version: "v0.1.1"
 	author: "lsm"
 	email: "18370872400@163.com"
-	commonPkgPath: project-admin
 	
 	projectName: project
 	host: 0.0.0.0
@@ -422,7 +421,7 @@ type (
 )
 
 @server(
-	prefix: admin/Group/v1
+	prefix: /admin/Group/v1
 	group: Group
 	module: Group  //SingleMsg
 )
@@ -464,7 +463,7 @@ service project {
 }
 
 @server(
-	prefix: admin/UserGroup/v1
+	prefix: /admin/UserGroup/v1
 	group: UserGroup
 	module: UserGroup  //SingleMsg
 )
@@ -506,7 +505,7 @@ service project {
 }
 
 @server(
-	prefix: admin/GroupGroupRelation/v1
+	prefix: /admin/GroupGroupRelation/v1
 	group: GroupGroupRelation
 	module: GroupGroupRelation  //SingleMsg
 )
@@ -548,7 +547,7 @@ service project {
 }
 
 @server(
-	prefix: admin/Config/v1
+	prefix: /admin/Config/v1
 	group: Config
 	module: Config  //SingleMsg
 )
@@ -590,7 +589,7 @@ service project {
 }
 
 @server(
-	prefix: admin/Project/v1
+	prefix: /admin/Project/v1
 	group: Project
 	module: Project  //SingleMsg
 )
@@ -632,7 +631,7 @@ service project {
 }
 
 @server(
-	prefix: admin/Application/v1
+	prefix: /admin/Application/v1
 	group: Application
 	module: Application  //SingleMsg
 )
@@ -674,7 +673,7 @@ service project {
 }
 
 @server(
-	prefix: admin/ApplicationConfig/v1
+	prefix: /admin/ApplicationConfig/v1
 	group: ApplicationConfig
 	module: ApplicationConfig  //SingleMsg
 )
@@ -716,7 +715,7 @@ service project {
 }
 
 @server(
-	prefix: admin/Doc/v1
+	prefix: /admin/Doc/v1
 	group: Doc
 	module: Doc  //SingleMsg
 )
@@ -758,7 +757,7 @@ service project {
 }
 
 @server(
-	prefix: admin/DocHistory/v1
+	prefix: /admin/DocHistory/v1
 	group: DocHistory
 	module: DocHistory  //SingleMsg
 )

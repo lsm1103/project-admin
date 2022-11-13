@@ -90,6 +90,8 @@ goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -api xxx
 
 - go run goctl.go api go
 go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/t2 -api ../../adminManage/service1.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/t2 -api ../../adminManage/service1.api
+  
+go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/t3 -api ../../adminManage/service3.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/t3 -api ../../adminManage/service3.api
 
 - go run goctl.go mysql ddl  TODO还需要整理一番
 go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/deploy/init.sql  -dir="../../dataModel_/." -c --home libs/template

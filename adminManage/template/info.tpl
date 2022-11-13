@@ -5,9 +5,10 @@ info(
 	author: "{{.Author}}"
 	email: "{{.Email}}"
 
+
+	projectName: {{.ProjectName}}
 	host: {{.Host}}
 	port: {{.Port}}
-	commonPkgPath: {{.CommonPkgPath}}
 	dataSource: {{.DataSource}}
 	cacheHost: {{.CacheHost}}
 )

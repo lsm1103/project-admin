@@ -40,7 +40,7 @@ func TestMySQL_CreateSingleMsg(t *testing.T) {
 		MsgContent:       "",
 	})
 	if err != nil {
-		return 
+		return
 	}
 }
 
@@ -59,7 +59,7 @@ func TestMySQL_GetSingleMsg(t *testing.T) {
 	if err != nil {
 		return
 	}
-	fmt.Print("r:",r)
+	fmt.Print("r:", r)
 }
 
 func TestMySQL_GetsSingleMsg(t *testing.T) {
@@ -90,9 +90,8 @@ func TestMySQL_GetsSingleMsg(t *testing.T) {
 	if err != nil {
 		return
 	}
-	fmt.Printf("r:%#v",r)
+	fmt.Printf("r:%#v", r)
 }
-
 
 var lastName = []string{
 	"赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈", "褚", "卫", "蒋",
@@ -133,9 +132,10 @@ var firstName = []string{
 	"宗", "曼", "紫", "逸", "贤", "蝶", "菡", "绿", "蓝", "儿", "翠", "烟", "小", "轩"}
 var lastNameLen = len(lastName)
 var firstNameLen = len(firstName)
+
 func GetFullName() string {
-	rand.Seed(time.Now().UnixNano()) //设置随机数种子
-	var first string                 //名
+	rand.Seed(time.Now().UnixNano())     //设置随机数种子
+	var first string                     //名
 	for i := 0; i <= rand.Intn(1); i++ { //随机产生2位或者3位的名
 		first = fmt.Sprint(firstName[rand.Intn(firstNameLen-1)])
 	}

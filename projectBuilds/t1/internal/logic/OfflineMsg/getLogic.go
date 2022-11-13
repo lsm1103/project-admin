@@ -27,10 +27,10 @@ func NewGetLogic(ctx context.Context, svcCtx *svc.ServiceContext) GetLogic {
 
 func (l *GetLogic) Get(req *types.GetReq) (resp *types.OfflineMsg, err error) {
 	// 自动生成的后台管理接口
-	resp  = &types.OfflineMsg{}
+	resp = &types.OfflineMsg{}
 	err = l.svcCtx.OfflineMsgModel.FindOne(l.ctx, nil, req.Id, resp)
 	if err == sqlx.ErrNotFound {
-		return nil,xerr.NewErrCode(xerr.DATA_NOT_FIND)
+		return nil, xerr.NewErrCode(xerr.DATA_NOT_FIND)
 	}
 	if err != nil {
 		return nil, err

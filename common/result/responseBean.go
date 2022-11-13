@@ -3,7 +3,7 @@ package result
 import "google.golang.org/grpc/codes"
 
 type ResponseSuccessBean struct {
-	Code codes.Code      `json:"code"`
+	Code codes.Code  `json:"code"`
 	Msg  string      `json:"msg"`
 	Data interface{} `json:"data"`
 }
@@ -15,7 +15,7 @@ func Success(data interface{}) *ResponseSuccessBean {
 
 type ResponseErrorBean struct {
 	Code codes.Code `json:"code"`
-	Msg  string `json:"msg"`
+	Msg  string     `json:"msg"`
 }
 
 func Error(errCode codes.Code, errMsg string) *ResponseErrorBean {

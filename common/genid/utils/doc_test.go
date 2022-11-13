@@ -21,8 +21,8 @@ func Benchmark_docGoRandInt32(b *testing.B) {
 }
 
 func Test_go_docRandInt32(t *testing.T) {
-	setTrace("docGoRandInt32_trace.out", func(){
-		goHander(10, func()  {
+	setTrace("docGoRandInt32_trace.out", func() {
+		goHander(10, func() {
 			docGoRandInt32(26)
 			//t.Logf("docGoRandInt32() = %v", docGoRandInt32(26))
 		})
@@ -31,7 +31,7 @@ func Test_go_docRandInt32(t *testing.T) {
 
 func Benchmark_go_docRandInt32(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		goHander(10, func()  {
+		goHander(10, func() {
 			docGoRandInt32(26)
 		})
 	}
@@ -39,8 +39,8 @@ func Benchmark_go_docRandInt32(b *testing.B) {
 
 func TestRNG_Int32(t *testing.T) {
 	var rg RNG
-	setTrace("docRngInt_trace.out", func(){
-		goHander(10, func()  {
+	setTrace("docRngInt_trace.out", func() {
+		goHander(10, func() {
 			for i := 0; i < 10; i++ {
 				rg.Uint32n(26)
 			}
@@ -50,7 +50,7 @@ func TestRNG_Int32(t *testing.T) {
 func BenchmarkRNG_Int32(b *testing.B) {
 	var rg RNG
 	for i := 0; i < b.N; i++ {
-		goHander(10, func()  {
+		goHander(10, func() {
 			for i := 0; i < 10; i++ {
 				rg.Uint32n(26)
 			}
@@ -59,16 +59,16 @@ func BenchmarkRNG_Int32(b *testing.B) {
 }
 
 func TestRNG_Int32Hander(t *testing.T) {
-	setTrace("docRngInt_trace.out", func(){
-		goHander(10, func()  {
-			RandIntHandler(26,10, func(a,i int) {})
+	setTrace("docRngInt_trace.out", func() {
+		goHander(10, func() {
+			RandIntHandler(26, 10, func(a, i int) {})
 		})
 	})
 }
 func BenchmarkRNG_Int32Hander(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		goHander(10, func()  {
-			RandIntHandler(26,10, func(a,i int) {})
+		goHander(10, func() {
+			RandIntHandler(26, 10, func(a, i int) {})
 		})
 	}
 }
@@ -79,7 +79,7 @@ func Test_timeUinx(t *testing.T) {
 	}
 }
 
-func goHander(workerNum int, handler func() )  {
+func goHander(workerNum int, handler func()) {
 	var sg sync.WaitGroup
 	for i := 0; i < workerNum; i++ {
 		sg.Add(1)

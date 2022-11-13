@@ -17,7 +17,7 @@ func RespMock(resp interface{}) {
 	fmt.Printf("*【resp: %+v】\n", resp)
 }
 
-func mockCore(dt reflect.Type, dv reflect.Value)  {
+func mockCore(dt reflect.Type, dv reflect.Value) {
 	if dv.Kind() == reflect.Invalid {
 		dv = reflect.New(dt).Elem()
 	}
@@ -42,10 +42,10 @@ func mockCore(dt reflect.Type, dv reflect.Value)  {
 			//设置随机数种子，由于种子数值，每次启动都不一样
 			rand.Seed(time.Now().UnixNano())
 			count := rand.Intn(10)
-			if count == 0{
+			if count == 0 {
 				count = 1
 			}
-			for i_:=0; i_<count; i_++{
+			for i_ := 0; i_ < count; i_++ {
 
 				listItemStructT := fieldValue.Type().Elem()
 				//确定列表的子项类型：指针｜结构体
@@ -62,7 +62,7 @@ func mockCore(dt reflect.Type, dv reflect.Value)  {
 				if listItemKind == reflect.Struct {
 					listItemStructV_ = listItemStructV_.Elem()
 				}
-				if !val_.IsValid(){
+				if !val_.IsValid() {
 					val_ = reflect.Append(fieldValue, listItemStructV_)
 				} else {
 					val_ = reflect.Append(val_, listItemStructV_)
@@ -85,7 +85,7 @@ func mockCore(dt reflect.Type, dv reflect.Value)  {
 			if len_label != "" {
 				len_, err = strconv.Atoi(len_label)
 				if err != nil {
-					fmt.Printf("err:%+v",err)
+					fmt.Printf("err:%+v", err)
 				}
 			}
 			var fixed_len_ interface{}
@@ -95,18 +95,18 @@ func mockCore(dt reflect.Type, dv reflect.Value)  {
 			if min_label != "" {
 				min_, err = strconv.Atoi(min_label)
 				if err != nil {
-					fmt.Printf("err:%+v",err)
+					fmt.Printf("err:%+v", err)
 				}
 			}
 			if max_label != "" {
 				max_, err = strconv.Atoi(max_label)
 				if err != nil {
-					fmt.Printf("err:%+v",err)
+					fmt.Printf("err:%+v", err)
 				}
 			}
 			content_ := []interface{}{}
 			if content_label != "" {
-				for _,item := range strings.Split(content_label,"|"){
+				for _, item := range strings.Split(content_label, "|") {
 					content_ = append(content_, item)
 				}
 			}
@@ -117,7 +117,7 @@ func mockCore(dt reflect.Type, dv reflect.Value)  {
 				FixedLen: fixed_len_,
 				Max:      max_,
 				Min:      min_,
-				Content: content_,
+				Content:  content_,
 			})
 
 			//转化成反射格式

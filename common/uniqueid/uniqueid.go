@@ -9,16 +9,16 @@ import (
 
 var flake *sonyflake.Sonyflake
 
-func init()  {
+func init() {
 	flake = sonyflake.NewSonyflake(sonyflake.Settings{
 		StartTime: time.Now(),
 	})
 }
 
 func GenId() int64 {
-	id,err:= flake.NextID()
-	if err != nil{
-		logx.Severef("flake NextID failed with %s \n",err)
+	id, err := flake.NextID()
+	if err != nil {
+		logx.Severef("flake NextID failed with %s \n", err)
 		panic(err)
 	}
 

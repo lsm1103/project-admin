@@ -8,8 +8,8 @@ import (
 func TestGeneratorData_randDate(t *testing.T) {
 
 	tests := []struct {
-		name   string
-		want   time.Time
+		name string
+		want time.Time
 	}{
 		{"1", time.Time{}},
 	}

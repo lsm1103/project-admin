@@ -16,7 +16,6 @@ import (
 	"project-admin/common/uniqueid"
 )
 
-
 type Tag interface {
 	Name() string
 	Handler(column *Column) string
@@ -60,27 +59,28 @@ var tags = []Tag{
 }
 
 var TagMap = map[string]Tag{
-	"uuid":new(Uuid),
-	"uint":new(Uint),
-	"char":new(Char),
-	"phone":new(Phone),
-	"email":new(Email),
-	"name":new(Name),
-	"address":new(Address),
-	"bankID":new(BankID),
-	"city":new(City),
-	"idCart":new(IdCart),
-	"chineseChar":new(ChineseChar),
-	"english":new(English),
-	"orderNo":new(OrderNo),
-	"password":new(Password),
-	"time":new(Time),
-	"timeStamp":new(TimeStamp),
-	"date":new(Date),
-	"dateTime":new(DateTime),
+	"uuid":        new(Uuid),
+	"uint":        new(Uint),
+	"char":        new(Char),
+	"phone":       new(Phone),
+	"email":       new(Email),
+	"name":        new(Name),
+	"address":     new(Address),
+	"bankID":      new(BankID),
+	"city":        new(City),
+	"idCart":      new(IdCart),
+	"chineseChar": new(ChineseChar),
+	"english":     new(English),
+	"orderNo":     new(OrderNo),
+	"password":    new(Password),
+	"time":        new(Time),
+	"timeStamp":   new(TimeStamp),
+	"date":        new(Date),
+	"dateTime":    new(DateTime),
 }
 
 type Uuid struct{}
+
 func (*Uuid) Name() string {
 	return "uuid"
 }
@@ -92,6 +92,7 @@ func (*Uuid) Desc() string {
 }
 
 type Uint struct{}
+
 func (*Uint) Name() string {
 	return "uint"
 }
@@ -101,7 +102,7 @@ func (*Uint) Handler(column *Column) string {
 		return "0"
 	}
 
-	if len(column.Content) >0 {
+	if len(column.Content) > 0 {
 		return column.Content[rand.Intn(len(column.Content))].(string)
 	}
 
@@ -128,7 +129,7 @@ func (*Uint) Handler(column *Column) string {
 		}
 	}
 	r := utils.RUint(max-min+1) + min
-	if r > max{
+	if r > max {
 		r = max
 	}
 	return strconv.Itoa(r)
@@ -138,6 +139,7 @@ func (*Uint) Desc() string {
 }
 
 type Char struct{}
+
 func (*Char) Name() string {
 	return "char"
 }
@@ -165,6 +167,7 @@ func (*Char) Desc() string {
 }
 
 type Phone struct{}
+
 func (*Phone) Name() string {
 	return "phone"
 }
@@ -176,6 +179,7 @@ func (*Phone) Desc() string {
 }
 
 type Email struct{}
+
 func (*Email) Name() string {
 	return "email"
 }
@@ -187,6 +191,7 @@ func (*Email) Desc() string {
 }
 
 type Name struct{}
+
 func (*Name) Name() string {
 	return "name"
 }
@@ -198,6 +203,7 @@ func (*Name) Desc() string {
 }
 
 type Address struct{}
+
 func (*Address) Name() string {
 	return "address"
 }
@@ -209,6 +215,7 @@ func (*Address) Desc() string {
 }
 
 type BankID struct{}
+
 func (*BankID) Name() string {
 	return "bankid"
 }
@@ -220,6 +227,7 @@ func (*BankID) Desc() string {
 }
 
 type City struct{}
+
 func (*City) Name() string {
 	return "city"
 }
@@ -231,6 +239,7 @@ func (*City) Desc() string {
 }
 
 type IdCart struct{}
+
 func (*IdCart) Name() string {
 	return "idcart"
 }
@@ -243,11 +252,12 @@ func (*IdCart) Desc() string {
 }
 
 type ChineseChar struct{}
+
 func (*ChineseChar) Name() string {
 	return "chinese_char"
 }
 func (*ChineseChar) Handler(column *Column) string {
-	return utils.GenRandomLengthChineseChars(6,column.PrepareFixedLen())
+	return utils.GenRandomLengthChineseChars(6, column.PrepareFixedLen())
 	//return utils.GenFixedLengthChineseChars(column.PrepareFixedLen())
 }
 func (*ChineseChar) Desc() string {
@@ -255,6 +265,7 @@ func (*ChineseChar) Desc() string {
 }
 
 type English struct{}
+
 func (*English) Name() string {
 	return "english"
 }
@@ -287,6 +298,7 @@ func (*English) Desc() string {
 //}
 
 type OrderNo struct{}
+
 func (*OrderNo) Name() string {
 	return "order_no"
 }
@@ -298,7 +310,6 @@ func (*OrderNo) Handler(column *Column) string {
 func (*OrderNo) Desc() string {
 	return "随机订单编号"
 }
-
 
 type Password struct {
 	pass string
@@ -316,7 +327,7 @@ func (p *Password) Handler(column *Column) string {
 	if !ok {
 		param = "hash"
 	}
-	pass,ok := column.Default.Value.(string)
+	pass, ok := column.Default.Value.(string)
 	if !ok {
 		pass = "0000"
 	}
@@ -334,7 +345,7 @@ func (*Password) Desc() string {
 	return "密码支持md5、hash加密方式；配置Default.Value为指定密码，默认为0000，目前仅支持密码为固定统一密码"
 }
 func (p *Password) Hash(pass string) string {
-	bpass,err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
+	bpass, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
 	if err != nil {
 		return ""
 	}
@@ -346,14 +357,15 @@ func (p *Password) Md5(pass string) string {
 	h.Write([]byte(p.pass))
 	return hex.EncodeToString(h.Sum(nil))
 }
+
 // 时间值或持续时间
-type Time struct {}
+type Time struct{}
 
 func (*Time) Name() string {
 	return "time"
 }
 func (*Time) Handler(column *Column) string {
-	if now, ok := column.Default.Value.(string); ok && now == "now"{
+	if now, ok := column.Default.Value.(string); ok && now == "now" {
 		return time.Now().Format("15:04:05")
 	}
 	return genid.GeneratorDate().Format("15:04:05")
@@ -361,14 +373,15 @@ func (*Time) Handler(column *Column) string {
 func (*Time) Desc() string {
 	return "随机时间，格式：15:04:05,配置Default.Value为now获取当前时间"
 }
+
 // 日期
-type Date struct {}
+type Date struct{}
 
 func (*Date) Name() string {
 	return "date"
 }
 func (*Date) Handler(column *Column) string {
-	if now, ok := column.Default.Value.(string); ok && now == "now"{
+	if now, ok := column.Default.Value.(string); ok && now == "now" {
 		return time.Now().Format("2006-01-02")
 	}
 	return genid.GeneratorDate().Format("2006-01-02")
@@ -376,14 +389,16 @@ func (*Date) Handler(column *Column) string {
 func (*Date) Desc() string {
 	return "随机时间，格式：2006-01-02,配置Default.Value为now获取当前时间"
 }
+
 // 时间戳
-type TimeStamp struct {}
+type TimeStamp struct{}
+
 func (*TimeStamp) Name() string {
 	return "timestamp"
 }
 func (s *TimeStamp) Handler(column *Column) string {
 
-	if now, ok := column.Default.Value.(string); ok && now == "now"{
+	if now, ok := column.Default.Value.(string); ok && now == "now" {
 		return strconv.Itoa(int(time.Now().Unix()))
 	}
 
@@ -393,13 +408,13 @@ func (s *TimeStamp) Desc() string {
 	return "随机时间戳,配置Default.Value为now获取当前时间"
 }
 
-type DateTime struct {}
+type DateTime struct{}
 
 func (*DateTime) Name() string {
 	return "datetime"
 }
 func (t *DateTime) Handler(column *Column) string {
-	if now, ok := column.Default.Value.(string); ok && now == "now"{
+	if now, ok := column.Default.Value.(string); ok && now == "now" {
 		return time.Now().Format("2006-01-02 15:04:05")
 	}
 	return genid.GeneratorDate().Format("2006-01-02 15:04:05")

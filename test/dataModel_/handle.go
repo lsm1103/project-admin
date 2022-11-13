@@ -31,7 +31,6 @@ func (m defaultModelHandle) Trans(fn func(session sqlx.Session) error) error {
 	return err
 }
 
-
 // 模版
 //func (m *default{{.upperStartCamelObject}}Model) Trans(fn func(session sqlx.Session)error) error  {
 //	err := m.Transact(func(session sqlx.Session) error {

@@ -10,7 +10,7 @@ type (
 		BuildQuery(in *GetsReq, ListRows string, tableName string) string
 	}
 
-	defaultModelTool struct {}
+	defaultModelTool struct{}
 
 	GetsQueryItem struct {
 		Key        string `json:"key"`                                   // key
@@ -38,7 +38,7 @@ func (t defaultModelTool) BuildQuery(in *GetsReq, ListRows string, tableName str
 	filter_ := ""
 	tmp_ := ""
 	if in.Query != nil {
-		for index,value := range in.Query {
+		for index, value := range in.Query {
 			Key := strings.TrimSpace(value.Key)
 			Val := strings.TrimSpace(value.Val)
 			Handle := strings.TrimSpace(value.Handle)
@@ -86,6 +86,6 @@ func (t defaultModelTool) BuildQuery(in *GetsReq, ListRows string, tableName str
 		in.OrderBy,
 		in.Sort,
 		in.PageSize+1,
-		(in.Current - 1) * in.PageSize,
+		(in.Current-1)*in.PageSize,
 	)
 }

@@ -38,7 +38,7 @@ func BenchmarkNum_Handler(b *testing.B) {
 	nu := &Uint{}
 	args := &Column{Max: 10, Min: 0}
 	for i := 0; i < b.N; i++ {
-		 nu.Handler(args)
+		nu.Handler(args)
 	}
 }
 
@@ -102,23 +102,23 @@ func BenchmarkDate_Handler(b *testing.B) {
 
 func TestPassword_Handler(t *testing.T) {
 	tests := []struct {
-		name   string
-		args   *Column
+		name string
+		args *Column
 	}{
 		{"1", &Column{
-			Params:   "md5",
+			Params: "md5",
 			Default: struct {
 				Value     interface{} `json:"value"`
 				Frequency int         `json:"frequency"`
 			}{"9999", 1},
-		} },
+		}},
 		{"2", &Column{
-			Params:   nil,
+			Params: nil,
 			Default: struct {
 				Value     interface{} `json:"value"`
 				Frequency int         `json:"frequency"`
 			}{},
-		} },
+		}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -143,7 +143,6 @@ func TestTimeStamp_Handler(t *testing.T) {
 		}},
 		{"2", &Column{}},
 		{"3", &Column{}},
-
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -155,28 +154,27 @@ func TestTimeStamp_Handler(t *testing.T) {
 	}
 }
 
-
 type SingleMsgList struct {
-	List     []*SingleMsg `json:"list"tag:"list"`     // 数据列表
+	List     []*SingleMsg `json:"list"tag:"list"`                           // 数据列表
 	Current  int64        `json:"current"tag:"uint"len:"2"min:"1"max:"10"`  // 当前页
 	PageSize int64        `json:"pageSize"tag:"uint"len:"2"content:"10|20"` // 页面大小
-	IsNext   bool         `json:"isNext"tag:"char"content:"true|false"`   // 是否有下一页
+	IsNext   bool         `json:"isNext"tag:"char"content:"true|false"`     // 是否有下一页
 }
 
 type SingleMsg struct {
-	Id               int64  `json:"id"tag:"uuid"`                 // 序列号
-	SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`        // 发送者类型：1发消息，2打招呼，3转发
-	SenderId         int64  `json:"sender_id"tag:"uuid"`          // 发送者id
-	SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`   // 发送设备id
-	ReceiverId       int64  `json:"receiver_id"tag:"uuid"`        // 接收者id
+	Id               int64  `json:"id"tag:"uuid"`                                   // 序列号
+	SenderType       string `json:"sender_type"tag:"uint"min:"1"max:"3"`            // 发送者类型：1发消息，2打招呼，3转发
+	SenderId         int64  `json:"sender_id"tag:"uuid"`                            // 发送者id
+	SenderDeviceId   string `json:"sender_device_id"tag:"uuid"`                     // 发送设备id
+	ReceiverId       int64  `json:"receiver_id"tag:"uuid"`                          // 接收者id
 	ReceiverDeviceId string `json:"receiver_device_id"tag:"char"fixed_len:"18|100"` // 接收设备id：多个设备id"，"隔开，*表示全部设备
-	ParentId         int64  `json:"parent_id"tag:"uuid"`          // 父级id，引用功能
-	SendTime         string `json:"send_time"tag:"dateTime"`          // 消息发送时间
-	MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`           // 消息类型
-	MsgContent       string `json:"msg_content"tag:"chineseChar"fixed_len:"18|150"`        // 消息内容
-	Status           int64  `json:"status"tag:"uint"content:"-1|0|1"`             // 消息状态：-1撤回，0未处理，1已读
-	CreateTime       string `json:"createTime"tag:"dateTime"`         // 创建时间
-	UpdateTime       string `json:"updateTime"tag:"dateTime"`         // 更新时间
+	ParentId         int64  `json:"parent_id"tag:"uuid"`                            // 父级id，引用功能
+	SendTime         string `json:"send_time"tag:"dateTime"`                        // 消息发送时间
+	MsgType          string `json:"msg_type"tag:"char"content:"text|img|link"`      // 消息类型
+	MsgContent       string `json:"msg_content"tag:"chineseChar"fixed_len:"18|150"` // 消息内容
+	Status           int64  `json:"status"tag:"uint"content:"-1|0|1"`               // 消息状态：-1撤回，0未处理，1已读
+	CreateTime       string `json:"createTime"tag:"dateTime"`                       // 创建时间
+	UpdateTime       string `json:"updateTime"tag:"dateTime"`                       // 更新时间
 	//Min int `json:"min"tag:"uint"`
 	//Params interface{} `json:"params"tag:"char"`
 	//Struct_       	 sss `json:"struct_"tag:"struct"`         // struct_
@@ -186,11 +184,11 @@ type SingleMsg struct {
 }
 
 type sss struct {
-	D string `json:"msg_content"tag:"chineseChar"fixed_len:"18|150"`
-	BTime       string `json:"updateTime"tag:"dateTime"`         // 更新时间
+	D     string `json:"msg_content"tag:"chineseChar"fixed_len:"18|150"`
+	BTime string `json:"updateTime"tag:"dateTime"` // 更新时间
 }
 
-func Test_RespMock(t *testing.T)  {
+func Test_RespMock(t *testing.T) {
 	resp := &SingleMsgList{}
 	RespMock(resp)
 	marshal, err := json.Marshal(resp)
@@ -209,7 +207,7 @@ func interfaceT0(data interface{}) {
 	mockT0(ty, v)
 	fmt.Printf("*【data: %+v】\n", data)
 }
-func mockT0(dt reflect.Type, dv reflect.Value)  {
+func mockT0(dt reflect.Type, dv reflect.Value) {
 	//if dt.Kind() == reflect.Ptr {
 	//	if dv.IsNil() {
 	//		panic("nil ptr")
@@ -240,10 +238,10 @@ func mockT0(dt reflect.Type, dv reflect.Value)  {
 		//}
 		tag_label := tag.Get("tag")
 		switch tag_label {
-		case "struct":				//结构体类型处理
+		case "struct": //结构体类型处理
 			struct_ := field.Type
 			mockT0(struct_, fieldValue)
-		case "list":				//列表类型处理
+		case "list": //列表类型处理
 			// 根据反射类型对象创建类型实例
 			listItemStructT := fieldValue.Type().Elem()
 			listItemKind := listItemStructT.Kind()
@@ -294,7 +292,7 @@ func mockT0(dt reflect.Type, dv reflect.Value)  {
 			if len_label != "" {
 				len_, err = strconv.Atoi(len_label)
 				if err != nil {
-					fmt.Printf("err:%+v",err)
+					fmt.Printf("err:%+v", err)
 				}
 			}
 			var fixed_len_ interface{}
@@ -304,18 +302,18 @@ func mockT0(dt reflect.Type, dv reflect.Value)  {
 			if min_label != "" {
 				min_, err = strconv.Atoi(min_label)
 				if err != nil {
-					fmt.Printf("err:%+v",err)
+					fmt.Printf("err:%+v", err)
 				}
 			}
 			if max_label != "" {
 				max_, err = strconv.Atoi(max_label)
 				if err != nil {
-					fmt.Printf("err:%+v",err)
+					fmt.Printf("err:%+v", err)
 				}
 			}
 			content_ := []interface{}{}
 			if content_label != "" {
-				for _,item := range strings.Split(content_label,"|"){
+				for _, item := range strings.Split(content_label, "|") {
 					content_ = append(content_, item)
 				}
 			}
@@ -326,7 +324,7 @@ func mockT0(dt reflect.Type, dv reflect.Value)  {
 				FixedLen: fixed_len_,
 				Max:      min_,
 				Min:      max_,
-				Content: content_,
+				Content:  content_,
 			})
 
 			//转化成反射格式

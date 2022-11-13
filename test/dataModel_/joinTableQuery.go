@@ -18,17 +18,17 @@ type (
 	}
 
 	UserJoinUserAuths struct {
-		UserId         int64     `db:"user_id"`
-		Nickname       string    `db:"nickname"`
-		RealName       string    `db:"realName"`
-		Password       string    `db:"password"`
-		LoginSalt      string    `db:"login_salt"`
-		RegisterDevice string    `db:"register_device"`
-		Sex            int64     `db:"sex"`
-		Ico            string    `db:"ico"`
-		IdentityType   string    `db:"identity_type"`
-		Identifier     string    `db:"identifier"`
-		UStatus        int64     `db:"uStatus"`
+		UserId         int64  `db:"user_id"`
+		Nickname       string `db:"nickname"`
+		RealName       string `db:"realName"`
+		Password       string `db:"password"`
+		LoginSalt      string `db:"login_salt"`
+		RegisterDevice string `db:"register_device"`
+		Sex            int64  `db:"sex"`
+		Ico            string `db:"ico"`
+		IdentityType   string `db:"identity_type"`
+		Identifier     string `db:"identifier"`
+		UStatus        int64  `db:"uStatus"`
 		//CreateTime     time.Time `db:"create_time"`
 		//UpdateTime     time.Time `db:"update_time"`
 	}
@@ -43,7 +43,7 @@ func NewJoinTableQuery(conn sqlx.SqlConn, c cache.CacheConf) JoinTableQuery {
 func (m *defaultJoinTableQuery) FindUserJoinUserAuthsById(keyType string, key string) (*UserJoinUserAuths, error) {
 	var resp UserJoinUserAuths
 	UserJoinUserAuthsRows := ""
-	for _,str := range builder.RawFieldNames(&resp) {
+	for _, str := range builder.RawFieldNames(&resp) {
 		if str != "`uStatus`" {
 			if stringx.Contains([]string{"`user_id`", "`uStatus`", "`identity_type`", "`identifier`"}, str) {
 				UserJoinUserAuthsRows += fmt.Sprintf("ua.%s,", str[1:len(str)-1])

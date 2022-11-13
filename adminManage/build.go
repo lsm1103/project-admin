@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
 	"strings"
 	"text/template"
-	
+
 	"github.com/zeromicro/go-zero/core/errorx"
 	"github.com/zeromicro/go-zero/core/stringx"
 	"github.com/zeromicro/go-zero/tools/goctl/util"
@@ -17,38 +18,39 @@ import (
 
 type (
 	adminManage struct {
-		Syntax string
-		Info string
-		Types string
+		Syntax        string
+		Info          string
+		Types         string
 		ModuleHandler string
 	}
 
 	ServiceInfo struct {
-		Title string
-		Desc string
-		Author string
-		Email string
+		Title   string
+		Desc    string
+		Author  string
+		Email   string
 		Version string
-		Host string
-		Port string
-		CommonPkgPath string
-		DataSource string
-		CacheHost string
+
+		ProjectName string
+		Host        string
+		Port        string
+		DataSource  string
+		CacheHost   string
 	}
 
 	SqlParseCfg struct {
 		filename string
 		database string
-		strict bool
+		strict   bool
 	}
 )
 
 var ignoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
-var updateColumns = []string{"id", "state",}
+var updateColumns = []string{"id", "state"}
 
-func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
+func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 	//info模版
-	infoText,err := LoadTemplate("template/info.tpl")
+	infoText, err := LoadTemplate("template/info.tpl")
 	if err != nil {
 		panic(err)
 	}
@@ -59,13 +61,15 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
 
 	//解析数据库sql文件
 	tables, err := parser.Parse(sqlCfg.filename, sqlCfg.database, sqlCfg.strict)
-
+	if err != nil {
+		panic(err)
+	}
 	typesOutputs := []string{}
 	moduleHandlerOutputs := []string{}
 	//循环表的列表
-	for _,item := range tables{
+	for _, item := range tables {
 		//types模版
-		fieldText,err := LoadTemplate("template/field.tpl")
+		fieldText, err := LoadTemplate("template/field.tpl")
 		if err != nil {
 			panic(err)
 		}
@@ -76,10 +80,10 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
 
 		createList := []*parser.Field{}
 		updateList := []*parser.Field{}
-		for _,item := range item.Fields{
-			if !stringx.Contains(ignoreColumns, item.Name.Source()){
+		for _, item := range item.Fields {
+			if !stringx.Contains(ignoreColumns, item.Name.Source()) {
 				updateList = append(updateList, item)
-				if !stringx.Contains(updateColumns, item.Name.Source()){
+				if !stringx.Contains(updateColumns, item.Name.Source()) {
 					createList = append(createList, item)
 				}
 			}
@@ -96,10 +100,10 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
 		}
 
 		typesData := map[string]string{
-			"tableName":item.Name.ToCamel(),
-			"createFields":createFields,
-			"updateFields":updateFields,
-			"allFields":allFields,
+			"tableName":    item.Name.ToCamel(),
+			"createFields": createFields,
+			"updateFields": updateFields,
+			"allFields":    allFields,
 		}
 		typesText, err := LoadTemplate("template/types.tpl")
 		if err != nil {
@@ -117,7 +121,7 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
 			panic(err)
 		}
 		moduleHandlerOutput, err := buildCode(moduleHandlerText, map[string]string{
-			"tableName":item.Name.ToCamel(),
+			"tableName": item.Name.ToCamel(),
 		})
 		if err != nil {
 			panic(err)
@@ -126,12 +130,12 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
 	}
 	//adminManage根模版
 	data := adminManage{
-		Syntax:         "v1",
-		Info:           infoOutput.String(),
-		Types:          strings.Join(typesOutputs, "\n"),
+		Syntax:        "v1",
+		Info:          infoOutput.String(),
+		Types:         strings.Join(typesOutputs, "\n"),
 		ModuleHandler: strings.Join(moduleHandlerOutputs, "\n"),
 	}
-	text,err := LoadTemplate("template/adminManage.tpl")
+	text, err := LoadTemplate("template/adminManage.tpl")
 	if err != nil {
 		panic(err)
 	}
@@ -139,6 +143,12 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg, outFile string) {
 	if err != nil {
 		panic(err)
 	}
+
+	outDir := path.Join("../projectBuilds", serviceInfo.ProjectName)
+	if err = os.MkdirAll(outDir, os.ModePerm); err != nil {
+		fmt.Printf("MkdirAll outDir: %s", err.Error())
+	}
+	outFile := path.Join(outDir, "service.api")
 
 	//为每个表创建api文件
 	err = ioutil.WriteFile(outFile, output.Bytes(), os.ModePerm)
@@ -153,19 +163,19 @@ func genFields(fieldTemplate string, fields []*parser.Field, tag string) (string
 
 	for _, field := range fields {
 		fieldData := map[string]interface{}{
-			"name":       util.SafeString(field.Name.ToCamel()),
+			"name": util.SafeString(field.Name.ToCamel()),
 			//"tag":        fmt.Sprintf(fieldTpl,field.Name.Source(), ""),
 			"hasComment": field.Comment != "",
 			"comment":    field.Comment,
 		}
-		if field.Name.Source() != "id"{
-			fieldData["tag"] = fmt.Sprintf("`json:\"%s%s\"`",field.Name.Source(), tag)
+		if field.Name.Source() != "id" {
+			fieldData["tag"] = fmt.Sprintf("`json:\"%s%s\"`", field.Name.Source(), tag)
 		} else {
-			fieldData["tag"] = fmt.Sprintf("`json:\"%s\"`",field.Name.Source() )
+			fieldData["tag"] = fmt.Sprintf("`json:\"%s\"`", field.Name.Source())
 		}
-		if field.DataType == "time.Time"{
+		if field.DataType == "time.Time" {
 			fieldData["type"] = "string"
-		} else{
+		} else {
 			fieldData["type"] = field.DataType
 		}
 		result, err := buildCode(fieldTemplate, fieldData)
@@ -188,7 +198,7 @@ func LoadTemplate(filePath string) (string, error) {
 }
 
 func buildCode(strTemplate string, data interface{}) (*bytes.Buffer, error) {
-	tpl, err := template.New("templateOne").Parse(strTemplate)                                                               // （2）解析模板
+	tpl, err := template.New("templateOne").Parse(strTemplate) // （2）解析模板
 	if err != nil {
 		panic(err)
 	}
