@@ -66,6 +66,14 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 	}
 	typeFields := strings.Join(typeFieldList, "\n")
 	valueFields := strings.Join(valueFieldList, "\n")
+
+	rootPkgName := rootPkg
+	if strings.Contains(rootPkg, "/") {
+		rootPkgName = strings.Split(rootPkg, "/")[0]
+	}
+
+	dirList := strings.Split(dir,"/")
+	projectName := dirList[len(dirList)-1]
 	// ==========add==========
 	return genFile(fileGenConfig{
 		dir:             dir,
@@ -77,7 +85,9 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 		builtinTemplate: contextTemplate,
 		data: map[string]string{
 			"configImport":         configImport,
-			"commonPkgPath":     	api.Info.Properties["commonPkgPath"],
+			//"commonPkgPath":     	api.Info.Properties["commonPkgPath"],
+			"rootPkgName":     		rootPkgName,
+			"projectName":     		projectName,
 			"config":               "config.Config",
 			"middleware":           middlewareStr,
 			"middlewareAssignment": middlewareAssignment,
