@@ -14,7 +14,7 @@ func (m *default{{.upperStartCamelObject}}Model) FindOne(ctx context.Context, se
 	case nil:
 		return nil
 	case sqlc.ErrNotFound:
-		return ErrNotFound
+		return sqlUtils.ErrNotFound
 	default:
 		return err
 	}

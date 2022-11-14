@@ -1,6 +1,9 @@
 package sqlUtils
 
-import "errors"
+import (
+	"errors"
+	"project-admin/common/xerr"
+)
 
 type (
 	GetsQueryItem struct {
@@ -20,7 +23,7 @@ type (
 )
 
 var (
-	ErrNotFound = errors.New("找不到数据")
+	ErrNotFound = xerr.NewErrCode(xerr.DATA_NOT_FIND)
 	ErrNotState = errors.New("没有state字段")
 
 	//状态

@@ -3,12 +3,12 @@ package {{.pkgName}}
 import (
 	{{.imports}}
 
-	{{if eq .handlerType "create"}}"project-admin/common/uniqueid"{{end}}
+	{{if eq .handlerType "create"}}"{{.rootPkgName}}/common/uniqueid"{{end}}
 	{{if eq .handlerType "create"}}"github.com/jinzhu/copier"{{end}}
 	{{if eq .handlerType "update"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "create"}}dataModel "project-admin/dataModel/{{.projectName}}Model"{{end}}
-	{{if eq .handlerType "update"}}dataModel "project-admin/dataModel/{{.projectName}}Model"{{end}}
-	{{if eq .handlerType "gets"}}dataModel "project-admin/dataModel/{{.projectName}}Model"{{end}}
+	{{if eq .handlerType "create"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}"{{end}}
+	{{if eq .handlerType "update"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}"{{end}}
+	{{if eq .handlerType "gets"}}"{{.rootPkgName}}/common/sqlUtils"{{end}}
 )
 
 type {{.logic}} struct {
@@ -50,7 +50,8 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
     if err != nil {
         return err
     }
-    {{ else if eq .handlerType "get" }}err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
+    {{ else if eq .handlerType "get" }}resp = &types.{{.respType}}{}
+    err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
     if err != nil {
         return nil, err
     }

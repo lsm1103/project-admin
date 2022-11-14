@@ -6,8 +6,8 @@ import (
 	{{if eq .handlerType "create"}}"{{.rootPkgName}}/common/uniqueid"{{end}}
 	{{if eq .handlerType "create"}}"github.com/jinzhu/copier"{{end}}
 	{{if eq .handlerType "update"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "create"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}Model"{{end}}
-	{{if eq .handlerType "update"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}Model"{{end}}
+	{{if eq .handlerType "create"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}"{{end}}
+	{{if eq .handlerType "update"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}"{{end}}
 	{{if eq .handlerType "gets"}}"{{.rootPkgName}}/common/sqlUtils"{{end}}
 )
 

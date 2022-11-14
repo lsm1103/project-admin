@@ -102,7 +102,7 @@ func (m *defaultApplicationModel) FindOne(ctx context.Context, session sqlx.Sess
 	case nil:
 		return nil
 	case sqlc.ErrNotFound:
-		return ErrNotFound
+		return sqlUtils.ErrNotFound
 	default:
 		return err
 	}

@@ -106,7 +106,7 @@ CREATE TABLE `application`
     `zn_name`        char(20) NOT NULL COMMENT '中文名称',
     `en_name`        char(20) NOT NULL COMMENT '英文名称，相当于程序名称',
     `ico`            char(20) NOT NULL DEFAULT '' COMMENT '图标',
-    `info`           char(20) NOT NULL COMMENT '简介',
+    `info`           char(200) NOT NULL COMMENT '简介',
     `create_user`    bigint NOT NULL COMMENT '创建者id',
     `demand_ids`     bigint NOT NULL COMMENT '需求组ids',
     `doc_ids`        char(200) NOT NULL COMMENT '文档组ids',

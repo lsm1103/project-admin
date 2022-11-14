@@ -100,3 +100,72 @@ go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/
 
 - 打包成linux
   CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o three-tuoming three-tuoming.go
+
+## 生成项目
+- 新建app, 创建app文件夹 projectBuilds/项目名
+### 生成项目mock服务完整流程
+- 设计接口，编写 .api文件
+- 生成mock服务，生成代码命令：
+  go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/项目名 -api ../../projectBuilds/项目名/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/项目名 -api ../../projectBuilds/项目名/service.api
+- 更新到数据库
+- 打包&运行
+
+### 生成项目后台服务完整流程
+- 设计数据库表，编写 .sql文件
+- 生成数据库操作模块，生成代码命令：
+  go run goctl.go model mysql ddl -src=../../deploy/init.sql  -dir="../../dataModel/项目名Model/." -c --home ../template
+- 由 .sql文件生成 .api文件，生成代码：调用adminManage.StartBuild()方法
+- 由 .api文件生成后台管理服务代码，生成代码命令：
+  go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/项目名 -api ../../projectBuilds/项目名/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/项目名 -api ../../projectBuilds/项目名/service.api
+- 更新到数据库
+- 打包&运行
+
+#### 测试
+- go run goctl.go model mysql ddl -src=../../deploy/init.sql  -dir="../../dataModel/project2/." -c --home ../template
+- 调用 adminManage.StartBuild(ServiceInfo{
+      Title:   "项目2",
+      Desc:    "测试项目2；通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+      Author:  "lsm",
+      Email:   "18370872400@163.com",
+      Version: "v0.1.1",
+      ProjectName: "project2",
+      Host:        "0.0.0.0",
+      Port:        "804",
+      DataSource: "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
+      CacheHost: "172.16.10.183:6379",
+      //DataSource: "root:lsm.1018@tcp(127.0.0.1:3306)/project-admin",
+      //CacheHost:  "127.0.0.1:6379",
+  }, SqlParseCfg{
+      filename: "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+      database: "",
+      strict:   false,
+  })
+- go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/project2 -api ../../projectBuilds/project2/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/project2 -api ../../projectBuilds/project2/service.api
+
+[comment]: <> ({)
+
+[comment]: <> ("create_user": 111212,)
+
+[comment]: <> ("demand_ids": 234444,)
+
+[comment]: <> ("doc_ids": "111，",)
+
+[comment]: <> ("en_name": "project1",)
+
+[comment]: <> ("ico": "ssfwfwf",)
+
+[comment]: <> ("info": "但是更多的废话",)
+
+[comment]: <> ("join_groups": "134214,",)
+
+[comment]: <> ("join_users": "134124,",)
+
+[comment]: <> ("project_id": "34534523",)
+
+[comment]: <> ("rank": 1,)
+
+[comment]: <> ("remark": "gsdgds",)
+
+[comment]: <> ("zn_name": "5675756")
+
+[comment]: <> (})
