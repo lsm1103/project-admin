@@ -8,9 +8,10 @@ import (
 
 	"github.com/zeromicro/go-zero/core/logx"
 
-	"github.com/jinzhu/copier"
 	"project-admin/common/uniqueid"
 	dataModel "project-admin/dataModel/t3Model"
+
+	"github.com/jinzhu/copier"
 )
 
 type CreateLogic struct {
@@ -27,9 +28,8 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-// false request:req *types.CreateConfigReq
 func (l *CreateLogic) Create(req *types.CreateConfigReq) error {
-	// 自动生成的后台管理接口  req *types.CreateConfigReq
+	// 自动生成的后台管理接口
 	sqlReq := &dataModel.Config{}
 	err := copier.Copy(sqlReq, req)
 	if err != nil {

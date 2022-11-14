@@ -28,7 +28,7 @@ func (l *GetsSingleMsgLogic) GetsSingleMsg(req *sqlUtils.GetsReq) (resp *types.S
 	resp = &types.SingleMsgList{}
 	//mocks.RespMock(resp)
 
-	resp = &types.SingleMsgList{ Current: req.Current, PageSize: req.PageSize}
+	resp = &types.SingleMsgList{Current: req.Current, PageSize: req.PageSize}
 	err = l.svcCtx.SingleMsgModel.FindAll(req, &resp.List)
 	if err != nil {
 		return nil, err

@@ -3,7 +3,14 @@
   "info": {
     "title": "项目1",
     "description": "通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
-    "version": "v0.1.1"
+    "version": "v0.1.1",
+    "contact": {
+      "email": "18370872400@163.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
   },
   "schemes": [
     "http",
@@ -15,6 +22,7 @@
   "produces": [
     "application/json"
   ],
+  "host": "127.0.0.1:802",
   "paths": {
     "/admin/Application/v1/create": {
       "post": {
@@ -36,6 +44,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Application"
         ]
@@ -61,6 +70,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Application"
         ]
@@ -88,6 +98,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "Application"
         ]
@@ -115,6 +126,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Application"
         ]
@@ -140,6 +152,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Application"
         ]
@@ -165,6 +178,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "ApplicationConfig"
         ]
@@ -190,6 +204,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "ApplicationConfig"
         ]
@@ -217,6 +232,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "ApplicationConfig"
         ]
@@ -244,6 +260,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "ApplicationConfig"
         ]
@@ -269,6 +286,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "ApplicationConfig"
         ]
@@ -294,6 +312,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Config"
         ]
@@ -319,6 +338,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Config"
         ]
@@ -346,6 +366,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "Config"
         ]
@@ -373,6 +394,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Config"
         ]
@@ -398,6 +420,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Config"
         ]
@@ -423,6 +446,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Doc"
         ]
@@ -448,6 +472,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Doc"
         ]
@@ -475,6 +500,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "Doc"
         ]
@@ -502,6 +528,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Doc"
         ]
@@ -527,6 +554,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Doc"
         ]
@@ -552,6 +580,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "DocHistory"
         ]
@@ -577,6 +606,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "DocHistory"
         ]
@@ -604,6 +634,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "DocHistory"
         ]
@@ -631,6 +662,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "DocHistory"
         ]
@@ -656,6 +688,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "DocHistory"
         ]
@@ -681,6 +714,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Group"
         ]
@@ -706,6 +740,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Group"
         ]
@@ -733,6 +768,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "Group"
         ]
@@ -760,6 +796,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Group"
         ]
@@ -785,6 +822,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Group"
         ]
@@ -810,6 +848,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "GroupGroupRelation"
         ]
@@ -835,6 +874,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "GroupGroupRelation"
         ]
@@ -862,6 +902,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "GroupGroupRelation"
         ]
@@ -889,6 +930,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "GroupGroupRelation"
         ]
@@ -914,6 +956,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "GroupGroupRelation"
         ]
@@ -939,6 +982,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Project"
         ]
@@ -964,6 +1008,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Project"
         ]
@@ -991,6 +1036,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "Project"
         ]
@@ -1018,6 +1064,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Project"
         ]
@@ -1043,6 +1090,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "Project"
         ]
@@ -1068,6 +1116,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "UserGroup"
         ]
@@ -1093,6 +1142,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "UserGroup"
         ]
@@ -1120,6 +1170,7 @@
             "format": "int64"
           }
         ],
+        "requestBody": {},
         "tags": [
           "UserGroup"
         ]
@@ -1147,6 +1198,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "UserGroup"
         ]
@@ -1172,6 +1224,7 @@
             }
           }
         ],
+        "requestBody": {},
         "tags": [
           "UserGroup"
         ]
@@ -1736,10 +1789,6 @@
         },
         "nextHandle": {
           "type": "string",
-          "enum": [
-            "or",
-            "and"
-          ],
           "default": "and",
           "description": " 与下一个条件的操作方法 or/and"
         }
@@ -1769,10 +1818,6 @@
         },
         "sort": {
           "type": "string",
-          "enum": [
-            "desc",
-            "asc"
-          ],
           "default": "desc",
           "description": "排序 desc/asc"
         },
@@ -2986,5 +3031,10 @@
       "name": "Authorization",
       "in": "header"
     }
-  }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
 }

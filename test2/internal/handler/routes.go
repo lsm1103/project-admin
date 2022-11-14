@@ -2,11 +2,11 @@
 package handler
 
 import (
-	"net/http"
 	"github.com/zeromicro/go-zero/rest"
+	"net/http"
 
-	"project-admin/test2/internal/svc"
 	"project-admin/test2/internal/handler/swaggerDoc"
+	"project-admin/test2/internal/svc"
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {

@@ -34,15 +34,15 @@ func HttpResult(r *http.Request, w http.ResponseWriter, err error, resp interfac
 				}
 			}
 		}
-		logx.WithContext(r.Context()).Errorf("【%s-API-ERR】】:%s, resp:%+v", r.RequestURI, err.Error(), resp )
-		if errcode == xerr.OK{
+		logx.WithContext(r.Context()).Errorf("【%s-API-ERR】】:%s, resp:%+v", r.RequestURI, err.Error(), resp)
+		if errcode == xerr.OK {
 			httpx.OkJson(w, &ResponseSuccessBean{
 				Code: errcode,
 				Msg:  errmsg,
 				Data: resp,
 			})
 			return
-		} else if errcode == xerr.ALREADY_EXISTS{
+		} else if errcode == xerr.ALREADY_EXISTS {
 			httpx.OkJson(w, &ResponseSuccessBean{
 				Code: errcode,
 				Msg:  errmsg,
@@ -86,15 +86,15 @@ func AuthHttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, er
 //http 参数错误返回
 func ParamErrorResult(r *http.Request, w http.ResponseWriter, err error) {
 	code := xerr.REUQES_PARAM_ERROR
-	logx.WithContext(r.Context()).Errorf("【%s-GATEWAY-ParamErrorResult-ERR】:%s, ERR:%+v", r.RequestURI, xerr.MapErrMsg(code), err.Error() )
-	httpx.WriteJson(w, http.StatusCreated, Error(code, xerr.MapErrMsg(code) ) )
+	logx.WithContext(r.Context()).Errorf("【%s-GATEWAY-ParamErrorResult-ERR】:%s, ERR:%+v", r.RequestURI, xerr.MapErrMsg(code), err.Error())
+	httpx.WriteJson(w, http.StatusCreated, Error(code, xerr.MapErrMsg(code)))
 }
 
 //http 请求验证错误返回
 func RequestVerifyErrorResult(r *http.Request, w http.ResponseWriter, err error) {
 	if err != nil {
 		code := xerr.REQUEST_VERIFY_ERROR
-		logx.WithContext(r.Context()).Errorf("【%s-GATEWAY-RequestVerify-ERR】:%s, ERR:%+v", r.RequestURI, xerr.MapErrMsg(code), err.Error() )
-		httpx.WriteJson(w, http.StatusBadRequest, Error(code, xerr.MapErrMsg(code) ) )
+		logx.WithContext(r.Context()).Errorf("【%s-GATEWAY-RequestVerify-ERR】:%s, ERR:%+v", r.RequestURI, xerr.MapErrMsg(code), err.Error())
+		httpx.WriteJson(w, http.StatusBadRequest, Error(code, xerr.MapErrMsg(code)))
 	}
 }

@@ -23,9 +23,9 @@ func NewGetLogic(ctx context.Context, svcCtx *svc.ServiceContext) GetLogic {
 	}
 }
 
-// false request:req *types.GetReq
 func (l *GetLogic) Get(req *types.GetReq) (resp *types.Config, err error) {
-	// 自动生成的后台管理接口  req *types.GetReq
+	// 自动生成的后台管理接口
+	resp = &types.Config{}
 	err = l.svcCtx.ConfigModel.FindOne(l.ctx, nil, req.Id, resp)
 	if err != nil {
 		return nil, err

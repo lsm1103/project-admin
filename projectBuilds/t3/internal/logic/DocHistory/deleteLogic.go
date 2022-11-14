@@ -23,9 +23,8 @@ func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) DeleteLogic
 	}
 }
 
-// false request:req *types.DeleteReq
 func (l *DeleteLogic) Delete(req *types.DeleteReq) error {
-	// 自动生成的后台管理接口  req *types.DeleteReq
+	// 自动生成的后台管理接口
 	err := l.svcCtx.DocHistoryModel.Delete(l.ctx, nil, req.Id)
 	if err != nil {
 		return err

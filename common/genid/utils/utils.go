@@ -12,7 +12,7 @@ func GenFixedLengthChineseChars(length int) string {
 	var buf bytes.Buffer
 
 	RandIntHandler(40869-19968, length, func(num, i int) {
-		buf.WriteRune(rune(num+19968))
+		buf.WriteRune(rune(num + 19968))
 	})
 	return buf.String()
 }
@@ -26,7 +26,7 @@ func GenRandomLengthChineseChars(start, end int) string {
 // 随机英文小写字母
 func RandStr(len int) string {
 	data := make([]byte, len)
-	RandIntHandler(25, len, func(num,i int) {
+	RandIntHandler(25, len, func(num, i int) {
 		data[i] = byte(num + 97)
 	})
 	return string(data)
@@ -34,6 +34,7 @@ func RandStr(len int) string {
 
 // 指定范围随机 int
 var rng RNG
+
 func RandInt(min, max int) int {
 	return min + RUint(max-min)
 }
@@ -42,16 +43,16 @@ func RUint(n int) int {
 	return int(rng.Uint32n(uint32(n)))
 }
 
-func RandIntHandler(maxN, i int, hander func(num, i int))  {
+func RandIntHandler(maxN, i int, hander func(num, i int)) {
 	var y uint32 = rng.Uint32()
-	
-	for  {
-		if i == 0{
+
+	for {
+		if i == 0 {
 			return
 		}
 		i--
 		// 运算方法
-		hander(int((uint64(y) * uint64(maxN)) >> 32), i)
+		hander(int((uint64(y)*uint64(maxN))>>32), i)
 
 		y ^= y << 13
 		y ^= y >> 17
@@ -61,9 +62,8 @@ func RandIntHandler(maxN, i int, hander func(num, i int))  {
 
 // 指定范围随机 int64
 func RandInt64(min, max int64) int64 {
-	return int64(rng.Uint64n(uint64(max-min)))
+	return int64(rng.Uint64n(uint64(max - min)))
 }
-
 
 // 反转字符串
 func ReverseString(s string) string {
@@ -113,7 +113,7 @@ func (r *RNG) Uint32n(maxN uint32) uint32 {
 }
 
 func (r *RNG) Uint64() uint64 {
-	for r.y == 0{
+	for r.y == 0 {
 		r.y = getRandomUint64()
 	}
 

@@ -1,9 +1,9 @@
 package main
 
 import (
-"fmt"
-"net"
-"net/http"
+	"fmt"
+	"net"
+	"net/http"
 )
 
 type helloHandler struct{}

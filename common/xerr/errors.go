@@ -12,8 +12,8 @@ import (
 */
 
 type CodeError struct {
-	Code codes.Code    `json:"code"`
-	Msg  string    `json:"msg"`
+	Code codes.Code `json:"code"`
+	Msg  string     `json:"msg"`
 }
 
 //返回给前端的错误码
@@ -50,35 +50,35 @@ type RpcCodeError struct {
 }
 
 func NewRpcCodeError(log logx.Logger) *RpcCodeError {
-	return &RpcCodeError{log }
+	return &RpcCodeError{log}
 }
 
-func (r RpcCodeError)NewRpcErrCode(Code codes.Code, RealMsg string) error {
-	r.Logger.Errorf("【RPC-ERR】】:%s", RealMsg )
-	return status.Error(Code, MapErrMsg(Code) )
+func (r RpcCodeError) NewRpcErrCode(Code codes.Code, RealMsg string) error {
+	r.Logger.Errorf("【RPC-ERR】】:%s", RealMsg)
+	return status.Error(Code, MapErrMsg(Code))
 }
 
-func (r RpcCodeError)NewRpcErrCodef(Code codes.Code, RealMsgf string, rArg ...interface{}) error {
-	r.Logger.Errorf("【RPC-ERR】】:%s", fmt.Sprintf(RealMsgf, rArg...) )
-	return status.Error(Code, MapErrMsg(Code) )
+func (r RpcCodeError) NewRpcErrCodef(Code codes.Code, RealMsgf string, rArg ...interface{}) error {
+	r.Logger.Errorf("【RPC-ERR】】:%s", fmt.Sprintf(RealMsgf, rArg...))
+	return status.Error(Code, MapErrMsg(Code))
 }
 
-func (r RpcCodeError)NewRpcErrMsg(Msg string, RealMsg string) error {
-	r.Logger.Errorf("【RPC-ERR】】:%s", RealMsg )
+func (r RpcCodeError) NewRpcErrMsg(Msg string, RealMsg string) error {
+	r.Logger.Errorf("【RPC-ERR】】:%s", RealMsg)
 	return status.Error(SERVER_COMMON_ERROR, Msg)
 }
 
-func (r RpcCodeError)NewRpcErrMsgf(Msg string, RealMsgf string, rArg ...interface{}) error {
-	r.Logger.Errorf("【RPC-ERR】】:%s", fmt.Sprintf(RealMsgf, rArg...) )
+func (r RpcCodeError) NewRpcErrMsgf(Msg string, RealMsgf string, rArg ...interface{}) error {
+	r.Logger.Errorf("【RPC-ERR】】:%s", fmt.Sprintf(RealMsgf, rArg...))
 	return status.Error(SERVER_COMMON_ERROR, Msg)
 }
 
-func (r RpcCodeError)NewRpcErrCodeMsg(Code codes.Code, Msg string, RealMsg string) error {
-	r.Logger.Errorf("【RPC-ERR】】:%s", RealMsg )
+func (r RpcCodeError) NewRpcErrCodeMsg(Code codes.Code, Msg string, RealMsg string) error {
+	r.Logger.Errorf("【RPC-ERR】】:%s", RealMsg)
 	return status.Error(Code, Msg)
 }
 
-func (r RpcCodeError)NewRpcErrCodeMsgf(Code codes.Code, Msg string, RealMsgf string, rArg ...interface{}) error {
-	r.Logger.Errorf("【RPC-ERR】】:%s", fmt.Sprintf(RealMsgf, rArg...) )
+func (r RpcCodeError) NewRpcErrCodeMsgf(Code codes.Code, Msg string, RealMsgf string, rArg ...interface{}) error {
+	r.Logger.Errorf("【RPC-ERR】】:%s", fmt.Sprintf(RealMsgf, rArg...))
 	return status.Error(Code, Msg)
 }

@@ -27,7 +27,7 @@ func NewGetsLogic(ctx context.Context, svcCtx *svc.ServiceContext) GetsLogic {
 
 // true request:req *types.GetsReq
 func (l *GetsLogic) Gets(req *sqlUtils.GetsReq) (resp *types.ApplicationConfigList, err error) {
-	// 自动生成的后台管理接口  req *types.GetsReq
+	// 自动生成的后台管理接口
 	resp = &types.ApplicationConfigList{Current: req.Current, PageSize: req.PageSize}
 	err = l.svcCtx.ApplicationConfigModel.FindAll(req, &resp.List)
 	if err != nil {

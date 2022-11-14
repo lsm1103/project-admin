@@ -4,7 +4,7 @@ import (
     "github.com/zeromicro/go-zero/core/stores/sqlx"
 
 	{{.configImport}}
-	dataModel "{{.commonPkgPath}}/dataModel/{{.projectName}}Model"
+	dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}Model"
 )
 
 type ServiceContext struct {

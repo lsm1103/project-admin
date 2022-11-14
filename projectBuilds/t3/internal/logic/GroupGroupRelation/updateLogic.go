@@ -9,6 +9,7 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/jinzhu/copier"
+
 	dataModel "project-admin/dataModel/t3Model"
 )
 
@@ -26,9 +27,8 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 	}
 }
 
-// false request:req *types.UpdateGroupGroupRelationReq
 func (l *UpdateLogic) Update(req *types.UpdateGroupGroupRelationReq) error {
-	// 自动生成的后台管理接口  req *types.UpdateGroupGroupRelationReq
+	// 自动生成的后台管理接口
 	sqlReq := &dataModel.GroupGroupRelation{}
 	err := copier.Copy(sqlReq, req)
 	if err != nil {

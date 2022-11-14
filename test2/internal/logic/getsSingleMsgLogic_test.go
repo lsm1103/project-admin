@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func Test_GetsSingleMsg_RespMock(t *testing.T)  {
+func Test_GetsSingleMsg_RespMock(t *testing.T) {
 	logic := NewGetsSingleMsgLogic(context.Background(), nil)
-	resp,err := logic.GetsSingleMsg(nil)
+	resp, err := logic.GetsSingleMsg(nil)
 	marshal, err := json.Marshal(resp)
 	if err != nil {
 		t.Logf("err:%s", err.Error())

@@ -4,11 +4,11 @@ import (
 	{{.imports}}
 
 	{{if eq .handlerType "create"}}"project-admin/common/uniqueid"{{end}}
-	{{if eq .handlerType "create"}}dataModel "project-admin/dataModel/{{projectName}}Model"{{end}}
 	{{if eq .handlerType "create"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "update"}}dataModel "project-admin/dataModel/{{projectName}}Model"{{end}}
 	{{if eq .handlerType "update"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "gets"}}"project-admin/common/sqlUtils"{{end}}
+	{{if eq .handlerType "create"}}dataModel "project-admin/dataModel/{{.projectName}}Model"{{end}}
+	{{if eq .handlerType "update"}}dataModel "project-admin/dataModel/{{.projectName}}Model"{{end}}
+	{{if eq .handlerType "gets"}}dataModel "project-admin/dataModel/{{.projectName}}Model"{{end}}
 )
 
 type {{.logic}} struct {
@@ -24,9 +24,9 @@ func New{{.logic}}(ctx context.Context, svcCtx *svc.ServiceContext) {{.logic}} {
 		svcCtx: svcCtx,
 	}
 }
-// {{eq .handlerType "gets"}} request:{{.request}}
+
 func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.GetsReq{{else}}{{.request}}{{end}}) {{.responseType}} {
-    // 自动生成的后台管理接口  {{.request}}
+    // 自动生成的后台管理接口
     {{ if eq .handlerType "create" }}sqlReq := &dataModel.{{.moduleName}}{}
     err := copier.Copy(sqlReq, req)
     if err != nil {

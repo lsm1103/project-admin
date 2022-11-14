@@ -89,7 +89,7 @@ func BuildFields(obj interface{}, fun func(...interface{}) bool) []string {
 			break
 		}
 		//判断是否可以拼接sql
-		if ! fun(v.Field(i), field) {
+		if !fun(v.Field(i), field) {
 			sqls = append(sqls, fmt.Sprintf("`%s`=%#v", field.Tag.Get("db"), v.Field(i).Interface()))
 		}
 	}
@@ -97,9 +97,9 @@ func BuildFields(obj interface{}, fun func(...interface{}) bool) []string {
 }
 
 func Map2Struct(map_ map[string]interface{}, stu interface{}) error {
-	pd_tmp,err := json.Marshal(map_)
+	pd_tmp, err := json.Marshal(map_)
 	if err == nil {
-		err = json.Unmarshal(pd_tmp,&stu)
+		err = json.Unmarshal(pd_tmp, &stu)
 	}
 	return err
 }

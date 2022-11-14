@@ -5,9 +5,10 @@ import (
 	"io/ioutil"
 	"os"
 
+	"project-admin/test2/internal/svc"
+
 	"github.com/bitly/go-simplejson"
 	"github.com/zeromicro/go-zero/core/logx"
-	"project-admin/test2/internal/svc"
 )
 
 type DocDataLogic struct {
@@ -39,9 +40,9 @@ func Read2Byte(path string) ([]byte, error) {
 
 func (l *DocDataLogic) DocData() (interface{}, error) {
 	//path, _ := os.Getwd()
-	buf, err := Read2Byte("/Users/xm/Desktop/go_package/project-admin/adminManage/swagger.json")
-	if err != nil{
-		return "获取数据失败",err
+	buf, err := Read2Byte("/Users/xm/Desktop/go_project/project-admin/projectBuilds/t3/swagger.json")
+	if err != nil {
+		return "获取数据失败", err
 	}
 	return simplejson.NewJson(buf)
 }

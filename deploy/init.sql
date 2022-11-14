@@ -126,7 +126,7 @@ CREATE TABLE `application`
   COLLATE = utf8mb4_bin COMMENT ='应用表';
 
 -- ------------application-config 表----------------
-# 配置github/gitlab代码仓库；配置webhook
+# 配置github/gitlab代码仓库, 配置webhook
 DROP TABLE IF EXISTS `application_config`;
 CREATE TABLE `application_config`
 (

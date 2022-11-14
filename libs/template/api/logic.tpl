@@ -4,10 +4,10 @@ import (
 	{{.imports}}
 
 	{{if eq .handlerType "create"}}"{{.rootPkgName}}/common/uniqueid"{{end}}
-	{{if eq .handlerType "create"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}Model"{{end}}
 	{{if eq .handlerType "create"}}"github.com/jinzhu/copier"{{end}}
-	{{if eq .handlerType "update"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}Model"{{end}}
 	{{if eq .handlerType "update"}}"github.com/jinzhu/copier"{{end}}
+	{{if eq .handlerType "create"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}Model"{{end}}
+	{{if eq .handlerType "update"}}dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}Model"{{end}}
 	{{if eq .handlerType "gets"}}"{{.rootPkgName}}/common/sqlUtils"{{end}}
 )
 
@@ -24,9 +24,9 @@ func New{{.logic}}(ctx context.Context, svcCtx *svc.ServiceContext) {{.logic}} {
 		svcCtx: svcCtx,
 	}
 }
-// {{eq .handlerType "gets"}} request:{{.request}}
+
 func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.GetsReq{{else}}{{.request}}{{end}}) {{.responseType}} {
-    // 自动生成的后台管理接口  {{.request}}
+    // 自动生成的后台管理接口
     {{ if eq .handlerType "create" }}sqlReq := &dataModel.{{.moduleName}}{}
     err := copier.Copy(sqlReq, req)
     if err != nil {
@@ -50,7 +50,8 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
     if err != nil {
         return err
     }
-    {{ else if eq .handlerType "get" }}err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
+    {{ else if eq .handlerType "get" }}resp = &types.{{.respType}}{}
+    err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)
     if err != nil {
         return nil, err
     }

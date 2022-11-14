@@ -2,9 +2,9 @@ package generator
 
 import (
 	"fmt"
+	"math"
 	"project-admin/common/genid/metadata"
 	"project-admin/common/genid/utils"
-	"math"
 	"strconv"
 	"time"
 )
@@ -121,8 +121,8 @@ func (g *GeneratorData) randDate() time.Time {
 	//end, _ := time.Parse("2006-01-02 15:04:05", "2022-01-01 00:00:00")
 
 	var (
-		begin int64 = 0		   // 1970
-		end int64 = 1640995200 // 2022
+		begin int64 = 0          // 1970
+		end   int64 = 1640995200 // 2022
 	)
 
 	return time.Unix(utils.RandInt64(begin, end), 0)

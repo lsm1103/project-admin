@@ -18,9 +18,9 @@ const ALREADY_EXISTS codes.Code = 100401
 const DATA_NOT_FIND codes.Code = 100404
 
 //用户模块
-const USER_EXIST codes.Code = 200001	// 用户已存在
-const USER_REGISTRT_FAIL codes.Code = 200002	// 用户注册失败
-const USER_LOGIN_ERR codes.Code = 200003	// 用户登入失败
-const USER_UPDATE_PWD_ERR codes.Code = 200004	// 用户更新密码失败
-const USER_UPDATE_STATUS_ERR codes.Code = 200004	// 用户更新状态失败
-const USER_OPERATION_ERR codes.Code = 200004	// 用户操作失败
+const USER_EXIST codes.Code = 200001             // 用户已存在
+const USER_REGISTRT_FAIL codes.Code = 200002     // 用户注册失败
+const USER_LOGIN_ERR codes.Code = 200003         // 用户登入失败
+const USER_UPDATE_PWD_ERR codes.Code = 200004    // 用户更新密码失败
+const USER_UPDATE_STATUS_ERR codes.Code = 200004 // 用户更新状态失败
+const USER_OPERATION_ERR codes.Code = 200004     // 用户操作失败

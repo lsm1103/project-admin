@@ -5,7 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"strings"
-	"text/template"		//add
+	"text/template" //add
 
 	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
 	"github.com/zeromicro/go-zero/tools/goctl/config"
@@ -44,12 +44,12 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 	// ==========add==========
 	var typeFieldList []string
 	var valueFieldList []string
-	for _,item := range api.Service.Groups{
+	for _, item := range api.Service.Groups {
 		moduleName := item.Annotation.Properties["module"]
 		typeFieldTpl := "{{.moduleName}}Model dataModel.{{.moduleName}}Model"
 		t := template.Must(template.New("typeFieldTpl").Parse(typeFieldTpl))
 		buffer := new(bytes.Buffer)
-		err = t.Execute(buffer, map[string]string{"moduleName":moduleName })
+		err = t.Execute(buffer, map[string]string{"moduleName": moduleName})
 		if err != nil {
 			return err
 		}
@@ -58,7 +58,7 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 		valueFieldTpl := "{{.moduleName}}Model: dataModel.New{{.moduleName}}Model(sqlx.NewMysql(c.DB.DataSource ), c.Cache),"
 		t_ := template.Must(template.New("valueFieldTpl").Parse(valueFieldTpl))
 		buffer_ := new(bytes.Buffer)
-		err = t_.Execute(buffer_, map[string]string{"moduleName":moduleName })
+		err = t_.Execute(buffer_, map[string]string{"moduleName": moduleName})
 		if err != nil {
 			return err
 		}
@@ -66,9 +66,15 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 	}
 	typeFields := strings.Join(typeFieldList, "\n")
 	valueFields := strings.Join(valueFieldList, "\n")
-	dirList := strings.Split(dir,"/")
+
+	rootPkgName := rootPkg
+	if strings.Contains(rootPkg, "/") {
+		rootPkgName = strings.Split(rootPkg, "/")[0]
+	}
+
+	dirList := strings.Split(dir, "/")
 	projectName := dirList[len(dirList)-1]
-	// ==========end==========
+	// ==========add==========
 	return genFile(fileGenConfig{
 		dir:             dir,
 		subdir:          contextDir,
@@ -79,13 +85,13 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 		builtinTemplate: contextTemplate,
 		data: map[string]string{
 			"configImport":         configImport,
-			"commonPkgPath":     	api.Info.Properties["commonPkgPath"],
-			"projectName":     		projectName,
+			"rootPkgName":          rootPkgName,
+			"projectName":          projectName,
 			"config":               "config.Config",
 			"middleware":           middlewareStr,
 			"middlewareAssignment": middlewareAssignment,
-			"typeFields": typeFields,
-			"valueFields": valueFields,
+			"typeFields":           typeFields,
+			"valueFields":          valueFields,
 		},
 	})
 }
