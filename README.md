@@ -95,3 +95,6 @@ go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds
 go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/deploy/init.sql  -dir="../../dataModel_/." -c --home libs/template
 
 [comment]: <> (go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/t3 -api ../../adminManage/service3.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/t3 -api ../../adminManage/service3.api)
+
+- 打包成linux
+  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o three-tuoming three-tuoming.go

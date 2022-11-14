@@ -2,7 +2,6 @@ package Application
 
 import (
 	"context"
-	"project-admin/common/sqlUtils"
 
 	"project-admin/projectBuilds/t3/internal/svc"
 	"project-admin/projectBuilds/t3/internal/types"
@@ -11,7 +10,7 @@ import (
 
 	"github.com/jinzhu/copier"
 	"project-admin/common/uniqueid"
-	dataModel "project-admin/dataModel/test3Model"
+	dataModel "project-admin/dataModel/t3Model"
 )
 
 type CreateLogic struct {
@@ -28,7 +27,8 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-func (l *CreateLogic) Create(req *sqlUtils.GetsReq) error {
+// false request:req *types.CreateApplicationReq
+func (l *CreateLogic) Create(req *types.CreateApplicationReq) error {
 	// 自动生成的后台管理接口  req *types.CreateApplicationReq
 	sqlReq := &dataModel.Application{}
 	err := copier.Copy(sqlReq, req)

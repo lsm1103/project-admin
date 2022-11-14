@@ -23,7 +23,8 @@ func NewGetLogic(ctx context.Context, svcCtx *svc.ServiceContext) GetLogic {
 	}
 }
 
-func (l *GetLogic) Get(req *sqlUtils.GetsReq) (resp *types.Group, err error) {
+// false request:req *types.GetReq
+func (l *GetLogic) Get(req *types.GetReq) (resp *types.Group, err error) {
 	// 自动生成的后台管理接口  req *types.GetReq
 	err = l.svcCtx.GroupModel.FindOne(l.ctx, nil, req.Id, resp)
 	if err != nil {

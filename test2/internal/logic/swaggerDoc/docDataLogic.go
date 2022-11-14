@@ -39,7 +39,7 @@ func Read2Byte(path string) ([]byte, error) {
 
 func (l *DocDataLogic) DocData() (interface{}, error) {
 	//path, _ := os.Getwd()
-	buf, err := Read2Byte("/Users/xm/Desktop/go_package/project-admin/projectBuilds/t2/swagger.json")
+	buf, err := Read2Byte("/Users/xm/Desktop/go_package/project-admin/adminManage/swagger.json")
 	if err != nil{
 		return "获取数据失败",err
 	}

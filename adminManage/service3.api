@@ -8,7 +8,7 @@ info(
 	email: "18370872400@163.com"
 	commonPkgPath: project-admin
 	
-	projectName: project
+	// projectName: project
 	host: 0.0.0.0
 	port: 801
 	dataSource: root:pujian123@tcp(172.16.10.183:4306)/im-center

@@ -26,7 +26,8 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 	}
 }
 
-func (l *UpdateLogic) Update(req *sqlUtils.GetsReq) error {
+// false request:req *types.UpdateDocHistoryReq
+func (l *UpdateLogic) Update(req *types.UpdateDocHistoryReq) error {
 	// 自动生成的后台管理接口  req *types.UpdateDocHistoryReq
 	sqlReq := &dataModel.DocHistory{}
 	err := copier.Copy(sqlReq, req)

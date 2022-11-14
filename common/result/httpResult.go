@@ -50,7 +50,7 @@ func HttpResult(r *http.Request, w http.ResponseWriter, err error, resp interfac
 			})
 			return
 		}
-		httpx.WriteJson(w, http.StatusBadRequest, Error(errcode, errmsg))
+		httpx.WriteJson(w, http.StatusCreated, Error(errcode, errmsg))
 	}
 }
 
@@ -87,7 +87,7 @@ func AuthHttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, er
 func ParamErrorResult(r *http.Request, w http.ResponseWriter, err error) {
 	code := xerr.REUQES_PARAM_ERROR
 	logx.WithContext(r.Context()).Errorf("【%s-GATEWAY-ParamErrorResult-ERR】:%s, ERR:%+v", r.RequestURI, xerr.MapErrMsg(code), err.Error() )
-	httpx.WriteJson(w, http.StatusBadRequest, Error(code, xerr.MapErrMsg(code) ) )
+	httpx.WriteJson(w, http.StatusCreated, Error(code, xerr.MapErrMsg(code) ) )
 }
 
 //http 请求验证错误返回

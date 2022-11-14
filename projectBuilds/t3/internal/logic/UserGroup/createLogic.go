@@ -10,7 +10,7 @@ import (
 
 	"github.com/jinzhu/copier"
 	"project-admin/common/uniqueid"
-	"project-admin/dataModel"
+	dataModel "project-admin/dataModel/t3Model"
 )
 
 type CreateLogic struct {
@@ -27,7 +27,8 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-func (l *CreateLogic) Create(req *sqlUtils.GetsReq) error {
+// false request:req *types.CreateUserGroupReq
+func (l *CreateLogic) Create(req *types.CreateUserGroupReq) error {
 	// 自动生成的后台管理接口  req *types.CreateUserGroupReq
 	sqlReq := &dataModel.UserGroup{}
 	err := copier.Copy(sqlReq, req)

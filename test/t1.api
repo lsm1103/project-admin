@@ -1,0 +1,76 @@
+syntax = "v1"
+
+info(
+	title: "项目1"
+	desc: "通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果"
+	version: "v0.1.1"
+	author: "lsm"
+	email: "18370872400@163.com"
+	commonPkgPath: project-admin
+	
+	projectName: project
+	host: 0.0.0.0
+	port: 801
+	dataSource: root:pujian123@tcp(172.16.10.183:4306)/im-center
+	cacheHost: 172.16.10.183:6379
+)
+
+type (
+	Req {
+		Id int64 `json:"id"` // 主键
+	}
+
+	GetReq {
+		Id int64 `form:"id"` // 主键
+	}
+
+	// 查询列表；
+	GetsQueryItem {
+		Key        string `json:"key"`                                   // key
+		Val        string `json:"val"`                                   // val int/str('xxx')/list('xx,xx,xx')
+		Handle     string `json:"handle"`                                // 操作方法 =/>/</like
+		NextHandle string `json:"nextHandle,options=or|and,default=and"` // 与下一个条件的操作方法 or/and
+	}
+	GetsReq {
+		Query    []*GetsQueryItem `json:"query"`                              //查询
+		OrderBy  string           `json:"orderBy,default=id"`                 //分组
+		Sort     string           `json:"sort,options=desc|asc,default=desc"` //排序 desc/asc
+		Current  int64            `json:"current,default=1"`                  //当前页
+		PageSize int64            `json:"pageSize,default=10"`                //页面大小
+	}
+)
+
+@server(
+	prefix: 3dModel/v1
+	group: 3dModel
+	module: 3dModel
+)
+service project {
+	@doc (
+		summary:转化为三维模型
+		handlerType:transformTo3d
+	)
+	@handler TransformTo3d
+	post /transformTo3d(Req)
+
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete /delete(Req)
+
+	@doc (
+		summary:查询一个三维模型
+		handlerType:get
+	)
+	@handler Get
+	get /get(GetReq)
+
+	@doc (
+		summary:查询三维模型列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets(GetsReq)
+}

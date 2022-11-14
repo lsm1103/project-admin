@@ -1,0 +1,237 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "项目1",
+    "description": "通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+    "version": "v0.1.1"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/3dModel/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Req"
+            }
+          }
+        ],
+        "tags": [
+          "3dModel"
+        ]
+      }
+    },
+    "/3dModel/v1/get": {
+      "get": {
+        "summary": "查询一个三维模型",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "3dModel"
+        ]
+      }
+    },
+    "/3dModel/v1/gets": {
+      "post": {
+        "summary": "查询三维模型列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "3dModel"
+        ]
+      }
+    },
+    "/3dModel/v1/transformTo3d": {
+      "post": {
+        "summary": "转化为三维模型",
+        "operationId": "TransformTo3d",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Req"
+            }
+          }
+        ],
+        "tags": [
+          "3dModel"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "GetReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        }
+      },
+      "title": "GetReq",
+      "required": [
+        "id"
+      ]
+    },
+    "GetsQueryItem": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": " key"
+        },
+        "val": {
+          "type": "string",
+          "description": " val int/str('xxx')/list('xx,xx,xx')"
+        },
+        "handle": {
+          "type": "string",
+          "description": " 操作方法 =/\u003e/\u003c/like"
+        },
+        "nextHandle": {
+          "type": "string",
+          "enum": [
+            "or",
+            "and"
+          ],
+          "default": "and",
+          "description": " 与下一个条件的操作方法 or/and"
+        }
+      },
+      "title": "GetsQueryItem",
+      "required": [
+        "key",
+        "val",
+        "handle",
+        "nextHandle"
+      ]
+    },
+    "GetsReq": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetsQueryItem"
+          },
+          "description": "查询"
+        },
+        "orderBy": {
+          "type": "string",
+          "default": "id",
+          "description": "分组"
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "default": "desc",
+          "description": "排序 desc/asc"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "default": "1",
+          "description": "当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "default": "10",
+          "description": "页面大小"
+        }
+      },
+      "title": "GetsReq",
+      "required": [
+        "query",
+        "orderBy",
+        "sort",
+        "current",
+        "pageSize"
+      ]
+    },
+    "Req": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        }
+      },
+      "title": "Req",
+      "required": [
+        "id"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
