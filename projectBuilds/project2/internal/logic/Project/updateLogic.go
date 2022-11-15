@@ -7,10 +7,6 @@ import (
 	"project-admin/projectBuilds/project2/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/jinzhu/copier"
-
-	dataModel "project-admin/dataModel/project2"
 )
 
 type UpdateLogic struct {
@@ -28,16 +24,7 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 }
 
 func (l *UpdateLogic) Update(req *types.UpdateProjectReq) error {
-	// 自动生成的后台管理接口
-	sqlReq := &dataModel.Project{}
-	err := copier.Copy(sqlReq, req)
-	if err != nil {
-		return err
-	}
-	err = l.svcCtx.ProjectModel.Update(l.ctx, nil, sqlReq)
-	if err != nil {
-		return err
-	}
+	// 方便前端调试的接口mock
 
 	return nil
 }

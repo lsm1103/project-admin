@@ -24,11 +24,7 @@ func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) DeleteLogic
 }
 
 func (l *DeleteLogic) Delete(req *types.DeleteReq) error {
-	// 自动生成的后台管理接口
-	err := l.svcCtx.ConfigModel.Delete(l.ctx, nil, req.Id)
-	if err != nil {
-		return err
-	}
+	// 方便前端调试的接口mock
 
 	return nil
 }

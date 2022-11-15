@@ -77,6 +77,20 @@ var TagMap = map[string]Tag{
 	"timeStamp":   new(TimeStamp),
 	"date":        new(Date),
 	"dateTime":    new(DateTime),
+	"bool":    new(Bool),
+}
+
+type Bool struct{}
+
+func (*Bool) Name() string {
+	return "bool"
+}
+func (*Bool) Handler(column *Column) string {
+	list_ := []string{"true","false"}
+	return list_[rand.Intn(len(list_))]
+}
+func (*Bool) Desc() string {
+	return "唯一id(雪花)"
 }
 
 type Uuid struct{}

@@ -44,25 +44,32 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 	// ==========add==========
 	var typeFieldList []string
 	var valueFieldList []string
+	var serviceType string
 	for _, item := range api.Service.Groups {
-		moduleName := item.Annotation.Properties["module"]
-		typeFieldTpl := "{{.moduleName}}Model dataModel.{{.moduleName}}Model"
-		t := template.Must(template.New("typeFieldTpl").Parse(typeFieldTpl))
-		buffer := new(bytes.Buffer)
-		err = t.Execute(buffer, map[string]string{"moduleName": moduleName})
-		if err != nil {
-			return err
-		}
-		typeFieldList = append(typeFieldList, buffer.String())
+		//服务类型 add
+		serviceType = item.Annotation.Properties["serviceType"]
+		if serviceType == "admin" {
 
-		valueFieldTpl := "{{.moduleName}}Model: dataModel.New{{.moduleName}}Model(sqlx.NewMysql(c.DB.DataSource ), c.Cache),"
-		t_ := template.Must(template.New("valueFieldTpl").Parse(valueFieldTpl))
-		buffer_ := new(bytes.Buffer)
-		err = t_.Execute(buffer_, map[string]string{"moduleName": moduleName})
-		if err != nil {
-			return err
+			moduleName := item.Annotation.Properties["module"]
+			typeFieldTpl := "{{.moduleName}}Model dataModel.{{.moduleName}}Model"
+			t := template.Must(template.New("typeFieldTpl").Parse(typeFieldTpl))
+			buffer := new(bytes.Buffer)
+			err = t.Execute(buffer, map[string]string{"moduleName": moduleName})
+			if err != nil {
+				return err
+			}
+			typeFieldList = append(typeFieldList, buffer.String())
+
+			valueFieldTpl := "{{.moduleName}}Model: dataModel.New{{.moduleName}}Model(sqlx.NewMysql(c.DB.DataSource ), c.Cache),"
+			t_ := template.Must(template.New("valueFieldTpl").Parse(valueFieldTpl))
+			buffer_ := new(bytes.Buffer)
+			err = t_.Execute(buffer_, map[string]string{"moduleName": moduleName})
+			if err != nil {
+				return err
+			}
+			valueFieldList = append(valueFieldList, buffer_.String())
+
 		}
-		valueFieldList = append(valueFieldList, buffer_.String())
 	}
 	typeFields := strings.Join(typeFieldList, "\n")
 	valueFields := strings.Join(valueFieldList, "\n")
@@ -92,6 +99,7 @@ func genServiceContext(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpe
 			"middlewareAssignment": middlewareAssignment,
 			"typeFields":           typeFields,
 			"valueFields":          valueFields,
+			"serviceType":			serviceType,
 		},
 	})
 }

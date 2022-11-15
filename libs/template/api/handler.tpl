@@ -6,14 +6,17 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 	{{.ImportPackages}}
 	"{{.RootPkgName}}/common/result"
-	{{if eq .HandlerType "gets"}}"{{.RootPkgName}}/common/sqlUtils"{{end}}
+	{{if eq .ServiceType "admin"}}{{if eq .HandlerType "gets"}}"{{.RootPkgName}}/common/sqlUtils"{{end}}{{end}}
 )
 
 func {{.HandlerName}}(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		{{if .HasRequest}}{{if eq .HandlerType "gets"}}var req sqlUtils.GetsReq
+		{{if .HasRequest}}{{if eq .ServiceType "admin"}}{{if eq .HandlerType "gets"}}
+		var req sqlUtils.GetsReq
 		var _ types.GetsReq
 		{{else}}var req types.{{.RequestType}}{{end}}
+		{{else}}var req types.{{.RequestType}}
+		{{end}}
 		if err := httpx.Parse(r, &req); err != nil {
 			// httpx.Error(w, err)
 			result.ParamErrorResult(r,w,err)

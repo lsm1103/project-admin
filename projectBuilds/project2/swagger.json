@@ -15,6 +15,7 @@
   "produces": [
     "application/json"
   ],
+  "host": "127.0.0.1:812",
   "paths": {
     "/admin/Application/v1/create": {
       "post": {

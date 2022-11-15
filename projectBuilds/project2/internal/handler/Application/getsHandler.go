@@ -9,13 +9,11 @@ import (
 	"project-admin/projectBuilds/project2/internal/types"
 
 	"project-admin/common/result"
-	"project-admin/common/sqlUtils"
 )
 
 func GetsHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req sqlUtils.GetsReq
-		var _ types.GetsReq
+		var req types.GetsReq
 
 		if err := httpx.Parse(r, &req); err != nil {
 			// httpx.Error(w, err)

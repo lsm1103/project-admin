@@ -32,6 +32,7 @@ type handlerInfo struct {
 	HasRequest         bool
 	RootPkgName        string
 	HandlerType        string	//add
+	ServiceType        string	//add
 }
 
 func genHandler(dir, rootPkg string, cfg *config.Config, group spec.Group, route spec.Route) error {
@@ -53,6 +54,9 @@ func genHandler(dir, rootPkg string, cfg *config.Config, group spec.Group, route
 		rootPkgName = strings.Split(rootPkg, "/")[0]
 	}
 
+	//服务类型 add
+	serviceType := group.Annotation.Properties["serviceType"]
+
 	return doGenToFile(dir, handler, cfg, group, route, handlerInfo{
 		PkgName:        pkgName,
 		ImportPackages: genHandlerImports(group, route, parentPkg),
@@ -65,6 +69,7 @@ func genHandler(dir, rootPkg string, cfg *config.Config, group spec.Group, route
 		HasRequest:     len(route.RequestTypeName()) > 0,
 		RootPkgName: 	rootPkgName,
 		HandlerType:	route.AtDoc.Properties["handlerType"],
+		ServiceType: 	serviceType,
 	})
 }
 

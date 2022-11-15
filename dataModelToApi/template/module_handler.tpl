@@ -1,7 +1,8 @@
 @server(
 	prefix: admin/{{.tableName}}/v1
 	group: {{.tableName}}
-	module: {{.tableName}}  //SingleMsg
+	module: {{.tableName}}
+	serviceType: {{.serviceType}}
 )
 service project {
 	@doc (

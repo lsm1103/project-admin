@@ -14,7 +14,7 @@ func RespMock(resp interface{}) {
 	dt := reflect.TypeOf(resp).Elem()
 	dv := reflect.ValueOf(resp).Elem()
 	mockCore(dt, dv)
-	fmt.Printf("*【resp: %+v】\n", resp)
+	//fmt.Printf("*【resp: %+v】\n", resp)
 }
 
 func mockCore(dt reflect.Type, dv reflect.Value) {
@@ -70,7 +70,7 @@ func mockCore(dt reflect.Type, dv reflect.Value) {
 			}
 
 			fieldValue.Set(val_)
-			fmt.Printf("*【list: %+v】\n", fieldValue)
+			//fmt.Printf("*【list: %+v】\n", fieldValue)
 		case "map":
 			//字典类型处理
 		default:
@@ -149,7 +149,7 @@ func mockCore(dt reflect.Type, dv reflect.Value) {
 			}
 			//赋值
 			fieldValue.Set(valueRF)
-			fmt.Printf("【%s: %+v】\n", name, valueRF.Interface())
+			//fmt.Printf("【%s: %+v】\n", name, valueRF.Interface())
 		}
 
 	}

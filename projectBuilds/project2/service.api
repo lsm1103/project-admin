@@ -9,7 +9,7 @@ info(
 	
 	projectName: project2
 	host: 0.0.0.0
-	port: 804
+	port: 812
 	dataSource: root:pujian123@tcp(172.16.10.183:4306)/project-admin
 	cacheHost: 172.16.10.183:6379
 )
@@ -423,7 +423,8 @@ type (
 @server(
 	prefix: admin/Group/v1
 	group: Group
-	module: Group  //SingleMsg
+	module: Group
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -465,7 +466,8 @@ service project {
 @server(
 	prefix: admin/UserGroup/v1
 	group: UserGroup
-	module: UserGroup  //SingleMsg
+	module: UserGroup
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -507,7 +509,8 @@ service project {
 @server(
 	prefix: admin/GroupGroupRelation/v1
 	group: GroupGroupRelation
-	module: GroupGroupRelation  //SingleMsg
+	module: GroupGroupRelation
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -549,7 +552,8 @@ service project {
 @server(
 	prefix: admin/Config/v1
 	group: Config
-	module: Config  //SingleMsg
+	module: Config
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -591,7 +595,8 @@ service project {
 @server(
 	prefix: admin/Project/v1
 	group: Project
-	module: Project  //SingleMsg
+	module: Project
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -633,7 +638,8 @@ service project {
 @server(
 	prefix: admin/Application/v1
 	group: Application
-	module: Application  //SingleMsg
+	module: Application
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -675,7 +681,8 @@ service project {
 @server(
 	prefix: admin/ApplicationConfig/v1
 	group: ApplicationConfig
-	module: ApplicationConfig  //SingleMsg
+	module: ApplicationConfig
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -717,7 +724,8 @@ service project {
 @server(
 	prefix: admin/Doc/v1
 	group: Doc
-	module: Doc  //SingleMsg
+	module: Doc
+	serviceType: mock
 )
 service project {
 	@doc (
@@ -759,7 +767,8 @@ service project {
 @server(
 	prefix: admin/DocHistory/v1
 	group: DocHistory
-	module: DocHistory  //SingleMsg
+	module: DocHistory
+	serviceType: mock
 )
 service project {
 	@doc (

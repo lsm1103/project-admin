@@ -1,10 +1,10 @@
 package svc
 
 import (
-    "github.com/zeromicro/go-zero/core/stores/sqlx"
-
 	{{.configImport}}
-	dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}"
+    {{if eq .serviceType "admin"}}
+    "github.com/zeromicro/go-zero/core/stores/sqlx"
+	dataModel "{{.rootPkgName}}/dataModel/{{.projectName}}"{{end}}
 )
 
 type ServiceContext struct {

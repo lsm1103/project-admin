@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
-
 	"project-admin/projectBuilds/project2/internal/config"
 	"project-admin/projectBuilds/project2/internal/handler"
 	"project-admin/projectBuilds/project2/internal/svc"
@@ -32,6 +32,24 @@ func main() {
 		header.Add("Access-Control-Allow-Headers", "DNT,X-CustomHeader,Cookies,Keep-Alive,Range,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Access-Control-Allow,Token,Accept,Authorization,x-auth-token")
 	}, nil))
 	defer server.Stop()
+
+	server.Use(func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			logx.Info("global middleware")
+			next(w, r)
+			header := w.Header()
+			logx.Infof("header:%+v\n", header)
+		}
+	})
+	//// 自定义错误
+	//httpx.SetErrorHandler(func(err error) (int, interface{}) {
+	//	switch e := err.(type) {
+	//	case *xerr.CodeError:
+	//		return http.StatusOK, e.Msg
+	//	default:
+	//		return http.StatusInternalServerError, nil
+	//	}
+	//})
 
 	handler.RegisterHandlers(server, ctx)
 

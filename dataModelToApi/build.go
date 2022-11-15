@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"project-admin/common/listUtils"
 	"strings"
 	"text/template"
 
@@ -32,6 +33,7 @@ type (
 		Version string
 
 		ProjectName string
+		ServiceType string	`json:"service_type,options=admin|mock"`
 		Host        string
 		Port        string
 		DataSource  string
@@ -73,7 +75,7 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 		if err != nil {
 			panic(err)
 		}
-		allFields, err := genFields(fieldText, item.Fields, "")
+		allFields, err := genFields(fieldText, item.Fields, "", "all")
 		if err != nil {
 			panic(err)
 		}
@@ -89,12 +91,12 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 			}
 		}
 		//createFields
-		createFields, err := genFields(fieldText, createList, "")
+		createFields, err := genFields(fieldText, createList, "", "create")
 		if err != nil {
 			panic(err)
 		}
 		//updateFields
-		updateFields, err := genFields(fieldText, updateList, ",optional")
+		updateFields, err := genFields(fieldText, updateList, ",optional", "update")
 		if err != nil {
 			panic(err)
 		}
@@ -122,6 +124,7 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 		}
 		moduleHandlerOutput, err := buildCode(moduleHandlerText, map[string]string{
 			"tableName": item.Name.ToCamel(),
+			"serviceType": serviceInfo.ServiceType,
 		})
 		if err != nil {
 			panic(err)
@@ -158,7 +161,8 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 	fmt.Printf("sqlFile:%s is build done\n", sqlCfg.filename)
 }
 
-func genFields(fieldTemplate string, fields []*parser.Field, tag string) (string, error) {
+//生成字段列表
+func genFields(fieldTemplate string, fields []*parser.Field, tag, type_ string) (string, error) {
 	var list []string
 
 	for _, field := range fields {
@@ -168,10 +172,51 @@ func genFields(fieldTemplate string, fields []*parser.Field, tag string) (string
 			"hasComment": field.Comment != "",
 			"comment":    field.Comment,
 		}
-		if field.Name.Source() != "id" {
-			fieldData["tag"] = fmt.Sprintf("`json:\"%s%s\"`", field.Name.Source(), tag)
+		fieldName := field.Name.Source()
+		if fieldName == "id" {
+			if type_ != "all" {
+				fieldData["tag"] = fmt.Sprintf("`json:\"%s\"`", fieldName)
+			} else {
+				fieldData["tag"] = fmt.Sprintf("`json:\"%s\"tag:\"uuid\"`", fieldName)
+			}
 		} else {
-			fieldData["tag"] = fmt.Sprintf("`json:\"%s\"`", field.Name.Source())
+			if type_ != "all"{
+				fieldData["tag"] = fmt.Sprintf("`json:\"%s%s\"`", fieldName, tag)
+			} else {
+				MockTagMap := map[string]string{
+					"int64": "tag:\"uint\"min:\"1\"max:\"20\"",
+					"string": "tag:\"chineseChar\"fixed_len:\"18|150\"",
+					"bool":"tag:\"bool\"",
+				}
+				MockTagList := []string{
+					"phone",
+					"email",
+					"name",
+					"address",
+					"bankID",
+					"city",
+					"idCart",
+					"english",
+					"orderNo",
+					"password",
+					"time",
+					"timeStamp",
+					"date",
+					"dateTime",
+				}
+				TimeMockTag := map[string]string{
+					"create_time":"timeStamp",
+					"update_time":"timeStamp",
+				}
+				tag_ := MockTagMap[field.DataType]
+				if listUtils.In(fieldName, MockTagList){
+					tag_ = fmt.Sprintf("tag:\"%s\"",fieldName)
+				}
+				if t_,ok := TimeMockTag[fieldName]; ok{
+					tag_ = fmt.Sprintf("tag:\"%s\"", t_)
+				}
+				fieldData["tag"] = fmt.Sprintf("`json:\"%s%s\"%s`", fieldName, tag, tag_)
+			}
 		}
 		if field.DataType == "time.Time" {
 			fieldData["type"] = "string"

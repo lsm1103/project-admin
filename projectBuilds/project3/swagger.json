@@ -1,0 +1,3045 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "项目3",
+    "description": "测试项目3；通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+    "version": "v0.1.1"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/Application/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createApplicationReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/admin/Application/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/admin/Application/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Application"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/admin/Application/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ApplicationList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/admin/Application/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateApplicationReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/admin/ApplicationConfig/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createApplicationConfigReq"
+            }
+          }
+        ],
+        "tags": [
+          "ApplicationConfig"
+        ]
+      }
+    },
+    "/admin/ApplicationConfig/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "ApplicationConfig"
+        ]
+      }
+    },
+    "/admin/ApplicationConfig/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ApplicationConfig"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ApplicationConfig"
+        ]
+      }
+    },
+    "/admin/ApplicationConfig/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ApplicationConfigList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "ApplicationConfig"
+        ]
+      }
+    },
+    "/admin/ApplicationConfig/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateApplicationConfigReq"
+            }
+          }
+        ],
+        "tags": [
+          "ApplicationConfig"
+        ]
+      }
+    },
+    "/admin/Config/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createConfigReq"
+            }
+          }
+        ],
+        "tags": [
+          "Config"
+        ]
+      }
+    },
+    "/admin/Config/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "Config"
+        ]
+      }
+    },
+    "/admin/Config/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Config"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Config"
+        ]
+      }
+    },
+    "/admin/Config/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ConfigList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "Config"
+        ]
+      }
+    },
+    "/admin/Config/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateConfigReq"
+            }
+          }
+        ],
+        "tags": [
+          "Config"
+        ]
+      }
+    },
+    "/admin/Doc/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createDocReq"
+            }
+          }
+        ],
+        "tags": [
+          "Doc"
+        ]
+      }
+    },
+    "/admin/Doc/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "Doc"
+        ]
+      }
+    },
+    "/admin/Doc/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Doc"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Doc"
+        ]
+      }
+    },
+    "/admin/Doc/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DocList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "Doc"
+        ]
+      }
+    },
+    "/admin/Doc/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateDocReq"
+            }
+          }
+        ],
+        "tags": [
+          "Doc"
+        ]
+      }
+    },
+    "/admin/DocHistory/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createDocHistoryReq"
+            }
+          }
+        ],
+        "tags": [
+          "DocHistory"
+        ]
+      }
+    },
+    "/admin/DocHistory/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "DocHistory"
+        ]
+      }
+    },
+    "/admin/DocHistory/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DocHistory"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "DocHistory"
+        ]
+      }
+    },
+    "/admin/DocHistory/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DocHistoryList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "DocHistory"
+        ]
+      }
+    },
+    "/admin/DocHistory/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateDocHistoryReq"
+            }
+          }
+        ],
+        "tags": [
+          "DocHistory"
+        ]
+      }
+    },
+    "/admin/Group/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createGroupReq"
+            }
+          }
+        ],
+        "tags": [
+          "Group"
+        ]
+      }
+    },
+    "/admin/Group/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "Group"
+        ]
+      }
+    },
+    "/admin/Group/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Group"
+        ]
+      }
+    },
+    "/admin/Group/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GroupList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "Group"
+        ]
+      }
+    },
+    "/admin/Group/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateGroupReq"
+            }
+          }
+        ],
+        "tags": [
+          "Group"
+        ]
+      }
+    },
+    "/admin/GroupGroupRelation/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createGroupGroupRelationReq"
+            }
+          }
+        ],
+        "tags": [
+          "GroupGroupRelation"
+        ]
+      }
+    },
+    "/admin/GroupGroupRelation/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "GroupGroupRelation"
+        ]
+      }
+    },
+    "/admin/GroupGroupRelation/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GroupGroupRelation"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "GroupGroupRelation"
+        ]
+      }
+    },
+    "/admin/GroupGroupRelation/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GroupGroupRelationList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "GroupGroupRelation"
+        ]
+      }
+    },
+    "/admin/GroupGroupRelation/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateGroupGroupRelationReq"
+            }
+          }
+        ],
+        "tags": [
+          "GroupGroupRelation"
+        ]
+      }
+    },
+    "/admin/Project/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createProjectReq"
+            }
+          }
+        ],
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/admin/Project/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/admin/Project/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/admin/Project/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ProjectList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/admin/Project/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateProjectReq"
+            }
+          }
+        ],
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/admin/UserGroup/v1/create": {
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createUserGroupReq"
+            }
+          }
+        ],
+        "tags": [
+          "UserGroup"
+        ]
+      }
+    },
+    "/admin/UserGroup/v1/delete": {
+      "delete": {
+        "summary": "删除",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "UserGroup"
+        ]
+      }
+    },
+    "/admin/UserGroup/v1/get": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserGroup"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 主键",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "UserGroup"
+        ]
+      }
+    },
+    "/admin/UserGroup/v1/gets": {
+      "post": {
+        "summary": "查询列表",
+        "operationId": "Gets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserGroupList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "UserGroup"
+        ]
+      }
+    },
+    "/admin/UserGroup/v1/update": {
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateUserGroupReq"
+            }
+          }
+        ],
+        "tags": [
+          "UserGroup"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Application": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "zn_name": {
+          "type": "string",
+          "description": " 中文名称"
+        },
+        "en_name": {
+          "type": "string",
+          "description": " 英文名称，相当于程序名称"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 图标"
+        },
+        "info": {
+          "type": "string",
+          "description": " 简介"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "demand_ids": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 需求组ids"
+        },
+        "doc_ids": {
+          "type": "string",
+          "description": " 文档组ids"
+        },
+        "join_users": {
+          "type": "string",
+          "description": " 参与者ids"
+        },
+        "join_groups": {
+          "type": "string",
+          "description": " 参与组ids"
+        },
+        "project_id": {
+          "type": "string",
+          "description": " 所属项目id"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "Application",
+      "required": [
+        "id",
+        "uuid",
+        "zn_name",
+        "chineseChar",
+        "18|150",
+        "en_name",
+        "ico",
+        "info",
+        "create_user",
+        "uint",
+        "1",
+        "20",
+        "demand_ids",
+        "doc_ids",
+        "join_users",
+        "join_groups",
+        "project_id",
+        "remark",
+        "rank",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "ApplicationConfig": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "application_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 应用id"
+        },
+        "config_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 配置id"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "ApplicationConfig",
+      "required": [
+        "id",
+        "uuid",
+        "create_user",
+        "uint",
+        "1",
+        "20",
+        "application_id",
+        "config_id",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "ApplicationConfigList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApplicationConfig"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "ApplicationConfigList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "ApplicationList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Application"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "ApplicationList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "Config": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "key": {
+          "type": "integer",
+          "format": "int64",
+          "description": " key"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int64",
+          "description": " value"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "Config",
+      "required": [
+        "id",
+        "uuid",
+        "user_id",
+        "uint",
+        "1",
+        "20",
+        "key",
+        "value",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "ConfigList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Config"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "ConfigList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "DeleteReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        }
+      },
+      "title": "DeleteReq",
+      "required": [
+        "id"
+      ]
+    },
+    "Doc": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "name": {
+          "type": "string",
+          "description": " 文档标题"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "pre_content": {
+          "type": "string",
+          "description": " 编辑内容"
+        },
+        "content": {
+          "type": "string",
+          "description": " 文档内容"
+        },
+        "parent_doc": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 上级文档"
+        },
+        "group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属文档组"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "editor_mode": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器"
+        },
+        "open_children": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 展开下级目录"
+        },
+        "show_children": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 显示下级文档"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 文档状态，-2删除，-1禁用，待审核-草稿0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "Doc",
+      "required": [
+        "id",
+        "uuid",
+        "name",
+        "create_user",
+        "uint",
+        "1",
+        "20",
+        "pre_content",
+        "chineseChar",
+        "18|150",
+        "content",
+        "parent_doc",
+        "group_id",
+        "sort",
+        "editor_mode",
+        "open_children",
+        "show_children",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "DocHistory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "pre_content": {
+          "type": "string",
+          "description": " 编辑内容"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "doc_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 文档id"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        }
+      },
+      "title": "DocHistory",
+      "required": [
+        "id",
+        "uuid",
+        "pre_content",
+        "chineseChar",
+        "18|150",
+        "create_user",
+        "uint",
+        "1",
+        "20",
+        "doc_id",
+        "create_time",
+        "timeStamp"
+      ]
+    },
+    "DocHistoryList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DocHistory"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "DocHistoryList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "DocList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Doc"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "DocList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "GetReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        }
+      },
+      "title": "GetReq",
+      "required": [
+        "id"
+      ]
+    },
+    "GetsQueryItem": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": " key"
+        },
+        "val": {
+          "type": "string",
+          "description": " val int/str('xxx')/list('xx,xx,xx')"
+        },
+        "handle": {
+          "type": "string",
+          "description": " 操作方法 =/\u003e/\u003c/like"
+        },
+        "nextHandle": {
+          "type": "string",
+          "enum": [
+            "or",
+            "and"
+          ],
+          "default": "and",
+          "description": " 与下一个条件的操作方法 or/and"
+        }
+      },
+      "title": "GetsQueryItem",
+      "required": [
+        "key",
+        "val",
+        "handle",
+        "nextHandle"
+      ]
+    },
+    "GetsReq": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetsQueryItem"
+          },
+          "description": "查询"
+        },
+        "orderBy": {
+          "type": "string",
+          "default": "id",
+          "description": "分组"
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "default": "desc",
+          "description": "排序 desc/asc"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "default": "1",
+          "description": "当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "default": "10",
+          "description": "页面大小"
+        }
+      },
+      "title": "GetsReq",
+      "required": [
+        "query",
+        "orderBy",
+        "sort",
+        "current",
+        "pageSize"
+      ]
+    },
+    "Group": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 自增主键"
+        },
+        "name": {
+          "type": "string",
+          "description": " 组名称"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 组图标"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 父级id"
+        },
+        "group_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 类型: 1部门、2用户组、3群组、4圈子、5话题"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "Group",
+      "required": [
+        "id",
+        "uuid",
+        "name",
+        "create_user",
+        "uint",
+        "1",
+        "20",
+        "ico",
+        "chineseChar",
+        "18|150",
+        "remark",
+        "parent_id",
+        "group_type",
+        "rank",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "GroupGroupRelation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 自增主键"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "master_group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主组id"
+        },
+        "from_group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 从组id"
+        },
+        "relation": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 关系，-1不允许，1允许读写(非自己)，2只允许读(非自己)"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "GroupGroupRelation",
+      "required": [
+        "id",
+        "uuid",
+        "create_user",
+        "uint",
+        "1",
+        "20",
+        "master_group_id",
+        "from_group_id",
+        "relation",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "GroupGroupRelationList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GroupGroupRelation"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "GroupGroupRelationList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "GroupList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Group"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "GroupList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "Project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "name": {
+          "type": "string",
+          "description": " 名称"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 图标"
+        },
+        "info": {
+          "type": "string",
+          "description": " 简介"
+        },
+        "project_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 类型: 1编程、2其他"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "join_users": {
+          "type": "string",
+          "description": " 参与者ids"
+        },
+        "join_groups": {
+          "type": "string",
+          "description": " 参与组ids"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "Project",
+      "required": [
+        "id",
+        "uuid",
+        "name",
+        "ico",
+        "chineseChar",
+        "18|150",
+        "info",
+        "project_type",
+        "uint",
+        "1",
+        "20",
+        "create_user",
+        "join_users",
+        "join_groups",
+        "remark",
+        "rank",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "ProjectList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Project"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "ProjectList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "UserGroup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 自增主键"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 组id"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        },
+        "create_time": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "UserGroup",
+      "required": [
+        "id",
+        "uuid",
+        "user_id",
+        "uint",
+        "1",
+        "20",
+        "group_id",
+        "state",
+        "create_time",
+        "timeStamp",
+        "update_time"
+      ]
+    },
+    "UserGroupList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserGroup"
+          },
+          "description": " 数据列表"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页面大小"
+        },
+        "isNext": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否有下一页"
+        }
+      },
+      "title": "UserGroupList",
+      "required": [
+        "list",
+        "current",
+        "uint",
+        "1",
+        "1000",
+        "pageSize",
+        "10",
+        "20",
+        "isNext",
+        "bool"
+      ]
+    },
+    "createApplicationConfigReq": {
+      "type": "object",
+      "properties": {
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "application_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 应用id"
+        },
+        "config_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 配置id"
+        }
+      },
+      "title": "createApplicationConfigReq",
+      "required": [
+        "create_user",
+        "application_id",
+        "config_id"
+      ]
+    },
+    "createApplicationReq": {
+      "type": "object",
+      "properties": {
+        "zn_name": {
+          "type": "string",
+          "description": " 中文名称"
+        },
+        "en_name": {
+          "type": "string",
+          "description": " 英文名称，相当于程序名称"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 图标"
+        },
+        "info": {
+          "type": "string",
+          "description": " 简介"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "demand_ids": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 需求组ids"
+        },
+        "doc_ids": {
+          "type": "string",
+          "description": " 文档组ids"
+        },
+        "join_users": {
+          "type": "string",
+          "description": " 参与者ids"
+        },
+        "join_groups": {
+          "type": "string",
+          "description": " 参与组ids"
+        },
+        "project_id": {
+          "type": "string",
+          "description": " 所属项目id"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        }
+      },
+      "title": "createApplicationReq",
+      "required": [
+        "zn_name",
+        "en_name",
+        "ico",
+        "info",
+        "create_user",
+        "demand_ids",
+        "doc_ids",
+        "join_users",
+        "join_groups",
+        "project_id",
+        "remark",
+        "rank"
+      ]
+    },
+    "createConfigReq": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "key": {
+          "type": "integer",
+          "format": "int64",
+          "description": " key"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int64",
+          "description": " value"
+        }
+      },
+      "title": "createConfigReq",
+      "required": [
+        "user_id",
+        "key",
+        "value"
+      ]
+    },
+    "createDocHistoryReq": {
+      "type": "object",
+      "properties": {
+        "pre_content": {
+          "type": "string",
+          "description": " 编辑内容"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "doc_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 文档id"
+        }
+      },
+      "title": "createDocHistoryReq",
+      "required": [
+        "pre_content",
+        "create_user",
+        "doc_id"
+      ]
+    },
+    "createDocReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 文档标题"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "pre_content": {
+          "type": "string",
+          "description": " 编辑内容"
+        },
+        "content": {
+          "type": "string",
+          "description": " 文档内容"
+        },
+        "parent_doc": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 上级文档"
+        },
+        "group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属文档组"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "editor_mode": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器"
+        },
+        "open_children": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 展开下级目录"
+        },
+        "show_children": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 显示下级文档"
+        }
+      },
+      "title": "createDocReq",
+      "required": [
+        "name",
+        "create_user",
+        "pre_content",
+        "content",
+        "parent_doc",
+        "group_id",
+        "sort",
+        "editor_mode",
+        "open_children",
+        "show_children"
+      ]
+    },
+    "createGroupGroupRelationReq": {
+      "type": "object",
+      "properties": {
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "master_group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主组id"
+        },
+        "from_group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 从组id"
+        },
+        "relation": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 关系，-1不允许，1允许读写(非自己)，2只允许读(非自己)"
+        }
+      },
+      "title": "createGroupGroupRelationReq",
+      "required": [
+        "create_user",
+        "master_group_id",
+        "from_group_id",
+        "relation"
+      ]
+    },
+    "createGroupReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 组名称"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 组图标"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 父级id"
+        },
+        "group_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 类型: 1部门、2用户组、3群组、4圈子、5话题"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        }
+      },
+      "title": "createGroupReq",
+      "required": [
+        "name",
+        "create_user",
+        "ico",
+        "remark",
+        "parent_id",
+        "group_type",
+        "rank"
+      ]
+    },
+    "createProjectReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 名称"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 图标"
+        },
+        "info": {
+          "type": "string",
+          "description": " 简介"
+        },
+        "project_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 类型: 1编程、2其他"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "join_users": {
+          "type": "string",
+          "description": " 参与者ids"
+        },
+        "join_groups": {
+          "type": "string",
+          "description": " 参与组ids"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        }
+      },
+      "title": "createProjectReq",
+      "required": [
+        "name",
+        "ico",
+        "info",
+        "project_type",
+        "create_user",
+        "join_users",
+        "join_groups",
+        "remark",
+        "rank"
+      ]
+    },
+    "createUserGroupReq": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 组id"
+        }
+      },
+      "title": "createUserGroupReq",
+      "required": [
+        "user_id",
+        "group_id"
+      ]
+    },
+    "updateApplicationConfigReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "application_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 应用id"
+        },
+        "config_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 配置id"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        }
+      },
+      "title": "updateApplicationConfigReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateApplicationReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "zn_name": {
+          "type": "string",
+          "description": " 中文名称"
+        },
+        "en_name": {
+          "type": "string",
+          "description": " 英文名称，相当于程序名称"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 图标"
+        },
+        "info": {
+          "type": "string",
+          "description": " 简介"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "demand_ids": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 需求组ids"
+        },
+        "doc_ids": {
+          "type": "string",
+          "description": " 文档组ids"
+        },
+        "join_users": {
+          "type": "string",
+          "description": " 参与者ids"
+        },
+        "join_groups": {
+          "type": "string",
+          "description": " 参与组ids"
+        },
+        "project_id": {
+          "type": "string",
+          "description": " 所属项目id"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        }
+      },
+      "title": "updateApplicationReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateConfigReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "key": {
+          "type": "integer",
+          "format": "int64",
+          "description": " key"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int64",
+          "description": " value"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        }
+      },
+      "title": "updateConfigReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateDocHistoryReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "pre_content": {
+          "type": "string",
+          "description": " 编辑内容"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "doc_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 文档id"
+        }
+      },
+      "title": "updateDocHistoryReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateDocReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "name": {
+          "type": "string",
+          "description": " 文档标题"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属用户"
+        },
+        "pre_content": {
+          "type": "string",
+          "description": " 编辑内容"
+        },
+        "content": {
+          "type": "string",
+          "description": " 文档内容"
+        },
+        "parent_doc": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 上级文档"
+        },
+        "group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 所属文档组"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "editor_mode": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器"
+        },
+        "open_children": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 展开下级目录"
+        },
+        "show_children": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 显示下级文档"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 文档状态，-2删除，-1禁用，待审核-草稿0，启用1"
+        }
+      },
+      "title": "updateDocReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateGroupGroupRelationReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 自增主键"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "master_group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主组id"
+        },
+        "from_group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 从组id"
+        },
+        "relation": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 关系，-1不允许，1允许读写(非自己)，2只允许读(非自己)"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        }
+      },
+      "title": "updateGroupGroupRelationReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateGroupReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 自增主键"
+        },
+        "name": {
+          "type": "string",
+          "description": " 组名称"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 组图标"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 父级id"
+        },
+        "group_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 类型: 1部门、2用户组、3群组、4圈子、5话题"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        }
+      },
+      "title": "updateGroupReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateProjectReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "name": {
+          "type": "string",
+          "description": " 名称"
+        },
+        "ico": {
+          "type": "string",
+          "description": " 图标"
+        },
+        "info": {
+          "type": "string",
+          "description": " 简介"
+        },
+        "project_type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 类型: 1编程、2其他"
+        },
+        "create_user": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建者id"
+        },
+        "join_users": {
+          "type": "string",
+          "description": " 参与者ids"
+        },
+        "join_groups": {
+          "type": "string",
+          "description": " 参与组ids"
+        },
+        "remark": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        }
+      },
+      "title": "updateProjectReq",
+      "required": [
+        "id"
+      ]
+    },
+    "updateUserGroupReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 自增主键"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户id"
+        },
+        "group_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 组id"
+        },
+        "state": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态，-2删除，-1禁用，待审核0，启用1"
+        }
+      },
+      "title": "updateUserGroupReq",
+      "required": [
+        "id"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

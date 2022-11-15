@@ -58,6 +58,16 @@ func genLogicByRoute(dir, rootPkg string, cfg *config.Config, group spec.Group, 
 	handlerType := route.AtDoc.Properties["handlerType"]
 	respType := route.ResponseTypeName()
 
+	//服务类型
+	serviceType := group.Annotation.Properties["serviceType"]
+	logicTemplateFile_ := logicTemplateFile
+	switch serviceType{
+	case "admin":
+		logicTemplateFile_ = "logic-admin.tpl"
+	case "mock":
+		logicTemplateFile_ = "logic-mock.tpl"
+	}
+
 	rootPkgName := rootPkg
 	if strings.Contains(rootPkg, "/") {
 		rootPkgName = strings.Split(rootPkg, "/")[0]
@@ -72,7 +82,7 @@ func genLogicByRoute(dir, rootPkg string, cfg *config.Config, group spec.Group, 
 		filename:        goFile + ".go",
 		templateName:    "logicTemplate",
 		category:        category,
-		templateFile:    logicTemplateFile,
+		templateFile:    logicTemplateFile_,
 		builtinTemplate: logicTemplate,
 		data: map[string]string{
 			"pkgName":      subDir[strings.LastIndex(subDir, "/")+1:],

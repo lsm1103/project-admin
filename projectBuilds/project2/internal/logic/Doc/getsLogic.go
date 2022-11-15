@@ -7,8 +7,7 @@ import (
 	"project-admin/projectBuilds/project2/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
-
-	"project-admin/common/sqlUtils"
+	"project-admin/common/mocks"
 )
 
 type GetsLogic struct {
@@ -25,16 +24,9 @@ func NewGetsLogic(ctx context.Context, svcCtx *svc.ServiceContext) GetsLogic {
 	}
 }
 
-func (l *GetsLogic) Gets(req *sqlUtils.GetsReq) (resp *types.DocList, err error) {
-	// 自动生成的后台管理接口
-	resp = &types.DocList{Current: req.Current, PageSize: req.PageSize}
-	err = l.svcCtx.DocModel.FindAll(req, &resp.List)
-	if err != nil {
-		return nil, err
-	}
-	if int64(len(resp.List)) > req.PageSize {
-		resp.IsNext = true
-		resp.List = resp.List[:req.PageSize]
-	}
+func (l *GetsLogic) Gets(req *types.GetsReq) (resp *types.DocList, err error) {
+	// 方便前端调试的接口mock
+	resp = &types.DocList{}
+	mocks.RespMock(resp)
 	return
 }

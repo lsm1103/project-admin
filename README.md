@@ -120,17 +120,19 @@ go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/
 - 更新到数据库
 - 打包&运行
 
-#### 测试
-- go run goctl.go model mysql ddl -src=../../deploy/init.sql  -dir="../../dataModel/project2/." -c --home ../template
+
+#### 测试 project1
+- go run goctl.go model mysql ddl -src=../../deploy/init.sql  -dir="../../dataModel/project1/." -c --home ../template
 - 调用 adminManage.StartBuild(ServiceInfo{
-      Title:   "项目2",
-      Desc:    "测试项目2；通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+      Title:   "项目1",
+      Desc:    "测试项目1；通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
       Author:  "lsm",
       Email:   "18370872400@163.com",
       Version: "v0.1.1",
-      ProjectName: "project2",
+      ProjectName: "project1",
+  	  ServiceType: "admin",
       Host:        "0.0.0.0",
-      Port:        "804",
+      Port:        "811",
       DataSource: "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
       CacheHost: "172.16.10.183:6379",
       //DataSource: "root:lsm.1018@tcp(127.0.0.1:3306)/project-admin",
@@ -140,32 +142,88 @@ go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/
       database: "",
       strict:   false,
   })
+- go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/project1 -api ../../projectBuilds/project1/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/project1 -api ../../projectBuilds/project1/service.api
+
+#### 测试 project2
+- go run goctl.go model mysql ddl -src=../../deploy/init.sql  -dir="../../dataModel/project2/." -c --home ../template
+- 调用 adminManage.StartBuild(ServiceInfo{
+  Title:   "项目2",
+  Desc:    "测试项目2；通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+  Author:  "lsm",
+  Email:   "18370872400@163.com",
+  Version: "v0.1.1",
+  ProjectName: "project2",
+  ServiceType: "mock",
+  Host:        "0.0.0.0",
+  Port:        "812",
+  DataSource: "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
+  CacheHost: "172.16.10.183:6379",
+  //DataSource: "root:lsm.1018@tcp(127.0.0.1:3306)/project-admin",
+  //CacheHost:  "127.0.0.1:6379",
+  }, SqlParseCfg{
+  filename: "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+  database: "",
+  strict:   false,
+})
 - go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/project2 -api ../../projectBuilds/project2/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/project2 -api ../../projectBuilds/project2/service.api
 
-[comment]: <> ({)
+#### 3
+- go run goctl.go model mysql ddl -src=../../deploy/init.sql  -dir="../../dataModel/project3/." -c --home ../template
+- go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/project3 -api ../../projectBuilds/project3/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/project3 -api ../../projectBuilds/project3/service.api
 
-[comment]: <> ("create_user": 111212,)
 
-[comment]: <> ("demand_ids": 234444,)
+- 新增样例
+```json
+{
+  "create_user": 111212,
+  "demand_ids": 234444,
+  "doc_ids": "111，",
+  "en_name": "project1",
+  "ico": "ssfwfwf",
+  "info": "但是更多的废话",
+  "join_groups": "134214,",
+  "join_users": "134124,",
+  "project_id": "34534523",
+  "rank": 1,
+  "remark": "gsdgds",
+  "zn_name": "5675756"
+}
+```
 
-[comment]: <> ("doc_ids": "111，",)
+- TODO swagger.json处理
+```json
+{
+  "info": {
+    "contact": {
+      "email": "18370872400@163.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "127.0.0.1:813"
+}
+```
 
-[comment]: <> ("en_name": "project1",)
-
-[comment]: <> ("ico": "ssfwfwf",)
-
-[comment]: <> ("info": "但是更多的废话",)
-
-[comment]: <> ("join_groups": "134214,",)
-
-[comment]: <> ("join_users": "134124,",)
-
-[comment]: <> ("project_id": "34534523",)
-
-[comment]: <> ("rank": 1,)
-
-[comment]: <> ("remark": "gsdgds",)
-
-[comment]: <> ("zn_name": "5675756")
-
-[comment]: <> (})
+```go
+ServiceInfo{
+    Title:   "项目3",
+    Desc:    "测试项目3；通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+    Author:  "lsm",
+    Email:   "18370872400@163.com",
+    Version: "v0.1.1",
+    ProjectName: "project3",
+    ServiceType: "mock",
+    Host:        "0.0.0.0",
+    Port:        "813",
+    DataSource: "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
+    CacheHost: "172.16.10.183:6379",
+    //DataSource: "root:lsm.1018@tcp(127.0.0.1:3306)/project-admin",
+    //CacheHost:  "127.0.0.1:6379",
+}, SqlParseCfg{
+    filename: "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+    database: "",
+    strict:   false,
+}
+```
