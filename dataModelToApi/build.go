@@ -18,13 +18,6 @@ import (
 )
 
 type (
-	adminManage struct {
-		Syntax        string
-		Info          string
-		Types         string
-		ModuleHandler string
-	}
-
 	ServiceInfo struct {
 		Title   string
 		Desc    string
@@ -39,30 +32,40 @@ type (
 		DataSource  string
 		CacheHost   string
 	}
-
 	SqlParseCfg struct {
 		filename string
 		database string
 		strict   bool
+	}
+	DataModelToApi struct {
+		ServiceCfg ServiceInfo
+		SqlCfg SqlParseCfg
+	}
+
+	adminManage struct {
+		Syntax        string
+		Info          string
+		Types         string
+		ModuleHandler string
 	}
 )
 
 var ignoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
 var updateColumns = []string{"id", "state"}
 
-func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
+func (m DataModelToApi)StartBuild() {
 	//info模版
 	infoText, err := LoadTemplate("template/info.tpl")
 	if err != nil {
 		panic(err)
 	}
-	infoOutput, err := buildCode(infoText, serviceInfo)
+	infoOutput, err := m.buildCode(infoText, m.ServiceCfg)
 	if err != nil {
 		panic(err)
 	}
 
 	//解析数据库sql文件
-	tables, err := parser.Parse(sqlCfg.filename, sqlCfg.database, sqlCfg.strict)
+	tables, err := parser.Parse(m.SqlCfg.filename, m.SqlCfg.database, m.SqlCfg.strict)
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +78,7 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 		if err != nil {
 			panic(err)
 		}
-		allFields, err := genFields(fieldText, item.Fields, "", "all")
+		allFields, err := m.genFields(fieldText, item.Fields, "", "all")
 		if err != nil {
 			panic(err)
 		}
@@ -91,12 +94,12 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 			}
 		}
 		//createFields
-		createFields, err := genFields(fieldText, createList, "", "create")
+		createFields, err := m.genFields(fieldText, createList, "", "create")
 		if err != nil {
 			panic(err)
 		}
 		//updateFields
-		updateFields, err := genFields(fieldText, updateList, ",optional", "update")
+		updateFields, err := m.genFields(fieldText, updateList, ",optional", "update")
 		if err != nil {
 			panic(err)
 		}
@@ -111,7 +114,7 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 		if err != nil {
 			panic(err)
 		}
-		typesOutput, err := buildCode(typesText, typesData)
+		typesOutput, err := m.buildCode(typesText, typesData)
 		if err != nil {
 			panic(err)
 		}
@@ -122,9 +125,9 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 		if err != nil {
 			panic(err)
 		}
-		moduleHandlerOutput, err := buildCode(moduleHandlerText, map[string]string{
+		moduleHandlerOutput, err := m.buildCode(moduleHandlerText, map[string]string{
 			"tableName": item.Name.ToCamel(),
-			"serviceType": serviceInfo.ServiceType,
+			"serviceType": m.ServiceCfg.ServiceType,
 		})
 		if err != nil {
 			panic(err)
@@ -142,12 +145,12 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 	if err != nil {
 		panic(err)
 	}
-	output, err := buildCode(text, data)
+	output, err := m.buildCode(text, data)
 	if err != nil {
 		panic(err)
 	}
 
-	outDir := path.Join("../projectBuilds", serviceInfo.ProjectName)
+	outDir := path.Join("../projectBuilds", m.ServiceCfg.ProjectName)
 	if err = os.MkdirAll(outDir, os.ModePerm); err != nil {
 		fmt.Printf("MkdirAll outDir: %s", err.Error())
 	}
@@ -158,11 +161,11 @@ func StartBuild(serviceInfo ServiceInfo, sqlCfg SqlParseCfg) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("sqlFile:%s is build done\n", sqlCfg.filename)
+	fmt.Printf("sqlFile:%s is build done\n", m.SqlCfg.filename)
 }
 
 //生成字段列表
-func genFields(fieldTemplate string, fields []*parser.Field, tag, type_ string) (string, error) {
+func (m DataModelToApi)genFields(fieldTemplate string, fields []*parser.Field, tag, type_ string) (string, error) {
 	var list []string
 
 	for _, field := range fields {
@@ -174,13 +177,13 @@ func genFields(fieldTemplate string, fields []*parser.Field, tag, type_ string) 
 		}
 		fieldName := field.Name.Source()
 		if fieldName == "id" {
-			if type_ != "all" {
+			if type_ != "all" || m.ServiceCfg.ServiceType != "mock"{
 				fieldData["tag"] = fmt.Sprintf("`json:\"%s\"`", fieldName)
 			} else {
 				fieldData["tag"] = fmt.Sprintf("`json:\"%s\"tag:\"uuid\"`", fieldName)
 			}
 		} else {
-			if type_ != "all"{
+			if type_ != "all" || m.ServiceCfg.ServiceType != "mock"{
 				fieldData["tag"] = fmt.Sprintf("`json:\"%s%s\"`", fieldName, tag)
 			} else {
 				MockTagMap := map[string]string{
@@ -223,7 +226,7 @@ func genFields(fieldTemplate string, fields []*parser.Field, tag, type_ string) 
 		} else {
 			fieldData["type"] = field.DataType
 		}
-		result, err := buildCode(fieldTemplate, fieldData)
+		result, err := m.buildCode(fieldTemplate, fieldData)
 		if err != nil {
 			return "", err
 		}
@@ -233,16 +236,7 @@ func genFields(fieldTemplate string, fields []*parser.Field, tag, type_ string) 
 	return strings.Join(list, "\n"), nil
 }
 
-// LoadTemplate get template content by the filePath.
-func LoadTemplate(filePath string) (string, error) {
-	content, err := os.ReadFile(filePath)
-	if err != nil {
-		return "", err
-	}
-	return string(content), nil
-}
-
-func buildCode(strTemplate string, data interface{}) (*bytes.Buffer, error) {
+func (m DataModelToApi)buildCode(strTemplate string, data interface{}) (*bytes.Buffer, error) {
 	tpl, err := template.New("templateOne").Parse(strTemplate) // （2）解析模板
 	if err != nil {
 		panic(err)
@@ -253,4 +247,14 @@ func buildCode(strTemplate string, data interface{}) (*bytes.Buffer, error) {
 		return nil, errorx.Wrapf(err, "template execute error:%+v", tpl)
 	}
 	return buf, nil
+}
+
+
+// LoadTemplate get template content by the filePath.
+func LoadTemplate(filePath string) (string, error) {
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return "", err
+	}
+	return string(content), nil
 }

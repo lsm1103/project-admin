@@ -26,7 +26,12 @@ func genMain(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpec) error {
 	if strings.HasSuffix(filename, "-api") {
 		filename = strings.ReplaceAll(filename, "-api", "")
 	}
-
+	//==============add===================
+	rootPkgName := rootPkg
+	if strings.Contains(rootPkg, "/") {
+		rootPkgName = strings.Split(rootPkg, "/")[0]
+	}
+	//==============end==============
 	return genFile(fileGenConfig{
 		dir:             dir,
 		subdir:          "",
@@ -38,6 +43,7 @@ func genMain(dir, rootPkg string, cfg *config.Config, api *spec.ApiSpec) error {
 		data: map[string]string{
 			"importPackages": genMainImports(rootPkg),
 			"serviceName":    configName,
+			"rootPkgName":    rootPkgName,
 		},
 	})
 }

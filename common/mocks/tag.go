@@ -81,7 +81,6 @@ var TagMap = map[string]Tag{
 }
 
 type Bool struct{}
-
 func (*Bool) Name() string {
 	return "bool"
 }
@@ -94,7 +93,6 @@ func (*Bool) Desc() string {
 }
 
 type Uuid struct{}
-
 func (*Uuid) Name() string {
 	return "uuid"
 }
@@ -106,7 +104,6 @@ func (*Uuid) Desc() string {
 }
 
 type Uint struct{}
-
 func (*Uint) Name() string {
 	return "uint"
 }
@@ -115,11 +112,9 @@ func (*Uint) Handler(column *Column) string {
 	if column.Max == 0 && column.Len == 0 || column.Len > 9 {
 		return "0"
 	}
-
 	if len(column.Content) > 0 {
 		return column.Content[rand.Intn(len(column.Content))].(string)
 	}
-
 	var (
 		max = column.Max
 		min = column.Min
@@ -153,27 +148,20 @@ func (*Uint) Desc() string {
 }
 
 type Char struct{}
-
 func (*Char) Name() string {
 	return "char"
 }
 func (*Char) Handler(column *Column) string {
 	var ret strings.Builder
-
 	chLen := column.Len
-
 	// 固定长度, 固定长度优先级大于可变长度
-
 	if column.FixedLen != nil {
 		chLen = column.PrepareFixedLen()
 	}
-
 	ret.Grow(chLen)
-
 	utils.RandIntHandler(62, chLen, func(num, i int) {
 		ret.WriteByte(chars[num])
 	})
-
 	return ret.String()
 }
 func (*Char) Desc() string {
@@ -181,7 +169,6 @@ func (*Char) Desc() string {
 }
 
 type Phone struct{}
-
 func (*Phone) Name() string {
 	return "phone"
 }
@@ -193,7 +180,6 @@ func (*Phone) Desc() string {
 }
 
 type Email struct{}
-
 func (*Email) Name() string {
 	return "email"
 }
@@ -205,7 +191,6 @@ func (*Email) Desc() string {
 }
 
 type Name struct{}
-
 func (*Name) Name() string {
 	return "name"
 }
@@ -217,7 +202,6 @@ func (*Name) Desc() string {
 }
 
 type Address struct{}
-
 func (*Address) Name() string {
 	return "address"
 }
@@ -229,7 +213,6 @@ func (*Address) Desc() string {
 }
 
 type BankID struct{}
-
 func (*BankID) Name() string {
 	return "bankid"
 }
@@ -241,7 +224,6 @@ func (*BankID) Desc() string {
 }
 
 type City struct{}
-
 func (*City) Name() string {
 	return "city"
 }
@@ -253,7 +235,6 @@ func (*City) Desc() string {
 }
 
 type IdCart struct{}
-
 func (*IdCart) Name() string {
 	return "idcart"
 }
@@ -266,7 +247,6 @@ func (*IdCart) Desc() string {
 }
 
 type ChineseChar struct{}
-
 func (*ChineseChar) Name() string {
 	return "chinese_char"
 }

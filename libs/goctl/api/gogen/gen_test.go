@@ -297,3 +297,14 @@ func validateCode(code string) error {
 	_, err := goformat.Source([]byte(code))
 	return err
 }
+
+
+func TestDoGenProject(t *testing.T) {
+	apiFile := "/Users/xm/Desktop/go_package/project-admin/projectBuilds/project4/service.api"
+	dir := "/Users/xm/Desktop/go_package/project-admin/projectBuilds/project5"
+	style := "goZero"
+	pathx.RegisterGoctlHome("/Users/xm/Desktop/go_package/project-admin/libs/template")
+
+	err := DoGenProject(apiFile, dir, style)
+	t.Logf("err:%s", err.Error())
+}

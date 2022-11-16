@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"net/http"
 
 	{{.importPackages}}
+	"{{.rootPkgName}}/common/middleware"
 )
 
 var configFile = flag.String("f", "etc/{{.serviceName}}.yaml", "the config file")
@@ -17,15 +17,8 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	ctx := svc.NewServiceContext(c)
-	// server := rest.MustNewServer(c.RestConf)
-	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(func(header http.Header) {
-        //"*"表示接受任意域名的请求，这个值也可以根据自己需要，设置成不同域名
-        header.Set("Access-Control-Allow-Origin", "*")
-        //header.Set("Access-Control-Allow-Origin", "*.pj-ai.com")
-        //w.Header().Add("Access-Control-Allow-Credentials", "true")
-        //w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-        header.Add("Access-Control-Allow-Headers", "DNT,X-CustomHeader,Cookies,Keep-Alive,Range,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Access-Control-Allow,Token,Accept,Authorization,x-auth-token")
-    }, nil) )
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(middleware.AllowedFn, nil))
+
 	defer server.Stop()
 
 	handler.RegisterHandlers(server, ctx)

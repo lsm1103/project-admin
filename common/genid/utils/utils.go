@@ -11,7 +11,8 @@ func GenFixedLengthChineseChars(length int) string {
 
 	var buf bytes.Buffer
 
-	RandIntHandler(40869-19968, length, func(num, i int) {
+	//RandIntHandler(40869-19968, length, func(num, i int) {
+	RandIntHandler(24869-19968, length, func(num, i int) {
 		buf.WriteRune(rune(num + 19968))
 	})
 	return buf.String()
@@ -19,6 +20,9 @@ func GenFixedLengthChineseChars(length int) string {
 
 // 指定范围随机中文字符
 func GenRandomLengthChineseChars(start, end int) string {
+	if end > 2000 {
+		end = 2000
+	}
 	length := RandInt(start, end)
 	return GenFixedLengthChineseChars(length)
 }
