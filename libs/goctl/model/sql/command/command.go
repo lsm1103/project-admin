@@ -229,6 +229,27 @@ type ddlArg struct {
 	ignoreColumns []string
 }
 
+
+type DdlArg struct{
+	Src, Dir      string
+	Cache   	  bool
+	Strict        bool
+	IgnoreColumns []string
+}
+func FromDDL(arg DdlArg) error {
+	return fromDDL(ddlArg{
+		src:      arg.Src,
+		dir:      arg.Dir,
+		cfg:      &config.Config{
+			NamingFormat: "gozero",
+		},
+		cache:    arg.Cache,
+		database: "go-zero",
+		strict:   arg.Strict,
+		ignoreColumns: mergeColumns(arg.IgnoreColumns),
+	})
+}
+
 func fromDDL(arg ddlArg) error {
 	log := console.NewConsole(arg.idea)
 	src := strings.TrimSpace(arg.src)

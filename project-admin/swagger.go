@@ -6,6 +6,16 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"github.com/bitly/go-simplejson"
+	"github.com/zeromicro/go-zero/rest/httpx"
+	"github.com/zeromicro/go-zero/tools/goctl/plugin"
+
+	"project-admin/common/dataModelToApi"
+	"project-admin/libs/goctl/model/sql/command"
+	"project-admin/libs/goctl-swagger/generate"
+	"project-admin/libs/goctl/api/gogen"
+	"project-admin/libs/goctl/api/parser"
+	"project-admin/libs/goctl/util/pathx"
 )
 
 func Read2Byte(path string) ([]byte, error) {
@@ -140,5 +150,93 @@ func Doc(swaggerDocUrl, env string) http.HandlerFunc {
 			return
 		}
 		fmt.Fprintf(w, html_)
+	}
+}
+
+func DocData() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		projectName := r.Form.Get("name")
+		path := "/Users/xm/Desktop/go_package/project-admin/project-admin/swagger.json"
+		if projectName != ""{
+			path = fmt.Sprintf("../projectBuilds/%s/swagger.json", projectName)
+		}
+		buf, err := Read2Byte(path)
+		if err != nil {
+			httpx.Error(w, err)
+			return
+		}
+		json, err := simplejson.NewJson(buf)
+		if err != nil {
+			httpx.Error(w, err)
+			return
+		}
+		httpx.OkJson(w, json)
+	}
+}
+
+func BuildAPP()  {
+	//生成数据库curl代码
+	pathx.RegisterGoctlHome("/Users/xm/Desktop/go_package/project-admin/libs/template")
+	err := command.FromDDL(command.DdlArg{
+		Src:           "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+		Dir:           "/Users/xm/Desktop/go_package/project-admin/dataModel/project4",
+		Cache:         true,
+		Strict:        false,
+		IgnoreColumns: []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"},
+	})
+	if err != nil {
+		return
+	}
+
+	//生成api文件
+	dataModelToApi.DataModelToApi{
+		dataModelToApi.ServiceInfo{
+			Title:   "项目管理服务",
+			Desc:    "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；如通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+			Author:  "lsm",
+			Email:   "18370872400@163.com",
+			Version: "v0.1.1",
+
+			ProjectName: "project-admin",
+			ServiceType: "admin",
+			Host:        "0.0.0.0",
+			Port:        "814",
+			DataSource: "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
+			CacheHost: "172.16.10.183:6379",
+			//DataSource: "root:lsm.1018@tcp(127.0.0.1:3306)/project-admin",
+			//CacheHost:  "127.0.0.1:6379",
+		}, dataModelToApi.SqlParseCfg{
+			Filename: "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+			Database: "",
+			Strict: false,
+		},
+	}.StartBuild()
+
+	//生成api服务代码
+	apiFile := "/Users/xm/Desktop/go_package/project-admin/projectBuilds/project5/service.api"
+	dir := "/Users/xm/Desktop/go_package/project-admin/projectBuilds/project5"
+	style := "goZero"
+	pathx.RegisterGoctlHome("/Users/xm/Desktop/go_package/project-admin/libs/template")
+	err = gogen.DoGenProject(apiFile, dir, style)
+
+	//生成swagger doc文件
+	fileName := "swagger.json"
+	apiFilePath := "/Users/xm/Desktop/go_package/project-admin/projectBuilds/project10/service.api"
+	sp, err := parser.Parse(apiFilePath)
+	if err != nil {
+		return
+	}
+	host := sp.Info.Properties["host"]
+	port := sp.Info.Properties["port"]
+	url := fmt.Sprintf("%s:%s", host, port)
+	err = generate.Do(fileName, url, "", &plugin.Plugin{
+		Api:         sp,
+		ApiFilePath: apiFilePath,
+		Style:       "goZero",
+		Dir:         "/Users/xm/Desktop/go_package/project-admin/projectBuilds/project10",
+	})
+	if err != nil {
+		return
 	}
 }

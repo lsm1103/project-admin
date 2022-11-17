@@ -33,9 +33,9 @@ type (
 		CacheHost   string
 	}
 	SqlParseCfg struct {
-		filename string
-		database string
-		strict   bool
+		Filename string
+		Database string
+		Strict   bool
 	}
 	DataModelToApi struct {
 		ServiceCfg ServiceInfo
@@ -65,7 +65,7 @@ func (m DataModelToApi)StartBuild() {
 	}
 
 	//解析数据库sql文件
-	tables, err := parser.Parse(m.SqlCfg.filename, m.SqlCfg.database, m.SqlCfg.strict)
+	tables, err := parser.Parse(m.SqlCfg.Filename, m.SqlCfg.Database, m.SqlCfg.Strict)
 	if err != nil {
 		panic(err)
 	}

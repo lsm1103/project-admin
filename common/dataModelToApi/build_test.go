@@ -49,9 +49,9 @@ func TestStartBuild(t *testing.T) {
 			//DataSource: "root:lsm.1018@tcp(127.0.0.1:3306)/project-admin",
 			//CacheHost:  "127.0.0.1:6379",
 		}, SqlParseCfg{
-			filename: "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
-			database: "",
-			strict:   false,
+			Filename: "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+			Database: "",
+			Strict: false,
 		},
 	}.StartBuild()
 
