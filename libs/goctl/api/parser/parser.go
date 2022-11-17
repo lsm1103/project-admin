@@ -60,7 +60,7 @@ func ParseContent(content string, filename ...string) (*spec.ApiSpec, error) {
 	return parseContent(content, false, filename...)
 }
 
-// ParseContentWithParserSkipCheckTypeDeclaration parses the api content with skip check type declaration
+// ParseContentWithParserSkipCheckTypeDeclaration parses the api content with skip check type declarationParseContentWithParserSkipCheckTypeDeclaration parses the api content with skip check type declaration
 func ParseContentWithParserSkipCheckTypeDeclaration(content string, filename ...string) (*spec.ApiSpec, error) {
 	return parseContent(content, true, filename...)
 }

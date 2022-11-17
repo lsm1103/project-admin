@@ -24,6 +24,24 @@ var (
 	}
 )
 
+func TestFromDDl1(t *testing.T) {
+	//err := gen.Clean()
+	//assert.Nil(t, err)
+
+	t.Logf("mergeColumns(): %s", mergeColumns(VarStringSliceIgnoreColumns))
+	pathx.RegisterGoctlHome("/Users/xm/Desktop/go_package/project-admin/libs/template")
+	err := fromDDL(ddlArg{
+		src:      "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+		dir:      "/Users/xm/Desktop/go_package/project-admin/dataModel/project4",
+		cfg:      cfg,
+		cache:    true,
+		database: "go-zero",
+		strict:   false,
+		ignoreColumns: mergeColumns([]string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}),
+	})
+	t.Logf("err:%+v", err)
+}
+
 func TestFromDDl(t *testing.T) {
 	err := gen.Clean()
 	assert.Nil(t, err)

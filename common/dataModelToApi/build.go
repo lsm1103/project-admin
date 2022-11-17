@@ -14,7 +14,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stringx"
 	"github.com/zeromicro/go-zero/tools/goctl/util"
 	//"github.com/zeromicro/go-zero/tools/goctl/model/sql/parser"
-	"project-admin/dataModelToApi/parser"
+	"project-admin/common/dataModelToApi/parser"
 )
 
 type (
@@ -150,7 +150,7 @@ func (m DataModelToApi)StartBuild() {
 		panic(err)
 	}
 
-	outDir := path.Join("../projectBuilds", m.ServiceCfg.ProjectName)
+	outDir := path.Join("../../projectBuilds", m.ServiceCfg.ProjectName)
 	if err = os.MkdirAll(outDir, os.ModePerm); err != nil {
 		fmt.Printf("MkdirAll outDir: %s", err.Error())
 	}
@@ -161,7 +161,7 @@ func (m DataModelToApi)StartBuild() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("sqlFile:%s is build done\n", m.SqlCfg.filename)
+	fmt.Printf("project dir:%s is build done\n", outFile)
 }
 
 //生成字段列表

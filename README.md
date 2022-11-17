@@ -200,9 +200,14 @@ go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    }
+    },
+    "termsOfService": "http://swagger.io/terms/"
   },
-  "host": "127.0.0.1:813"
+  "host": "127.0.0.1:813",
+  "externalDocs": {
+    "description": "文档",
+    "url": "http://doc.pj-ai.com/share_doc/?token=ce67940ae226fe53a640b7750e0bdf73"
+  }
 }
 ```
 

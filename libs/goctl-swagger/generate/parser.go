@@ -56,6 +56,15 @@ func applyGenerate(p *plugin.Plugin, host string, basePath string) (*swaggerObje
 	version, _ := strconv.Unquote(p.Api.Info.Properties["version"])
 	desc, _ := strconv.Unquote(p.Api.Info.Properties["desc"])
 
+	author, _ := strconv.Unquote(p.Api.Info.Properties["author"])
+	websiteUrl, _ := strconv.Unquote(p.Api.Info.Properties["websiteUrl"])
+	email, _ := strconv.Unquote(p.Api.Info.Properties["email"])
+	licenseName, _ := strconv.Unquote(p.Api.Info.Properties["licenseName"])
+	licenseUrl, _ := strconv.Unquote(p.Api.Info.Properties["licenseUrl"])
+	termsOfService, _ := strconv.Unquote(p.Api.Info.Properties["termsOfService"])
+	docDescription, _ := strconv.Unquote(p.Api.Info.Properties["docDescription"])
+	docUrl, _ := strconv.Unquote(p.Api.Info.Properties["docUrl"])
+
 	s := swaggerObject{
 		Swagger:           "2.0",
 		Schemes:           []string{"http", "https"},
@@ -68,6 +77,20 @@ func applyGenerate(p *plugin.Plugin, host string, basePath string) (*swaggerObje
 			Title:       title,
 			Version:     version,
 			Description: desc,
+			Contact: &swaggerContactObject{
+				Name:  author,
+				URL:   websiteUrl,
+				Email: email,
+			},
+			License: &swaggerLicenseObject{
+				Name: licenseName,
+				URL:  licenseUrl,
+			},
+			TermsOfService: termsOfService,
+		},
+		ExternalDocs: &swaggerExternalDocumentationObject{
+			Description: docDescription,
+			URL:         docUrl,
 		},
 	}
 	if len(host) > 0 {
