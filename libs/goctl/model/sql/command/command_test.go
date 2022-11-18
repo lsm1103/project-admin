@@ -2,6 +2,8 @@ package command
 
 import (
 	_ "embed"
+	"github.com/zeromicro/go-zero/tools/goctl/model/sql/util"
+	"github.com/zeromicro/go-zero/tools/goctl/util/console"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -41,6 +43,45 @@ func TestFromDDl1(t *testing.T) {
 	})
 	t.Logf("err:%+v", err)
 }
+
+func TestFromDDL2(t *testing.T) {
+	pathx.RegisterGoctlHome("/Users/xm/Desktop/go_package/project-admin/libs/template")
+	arg := ddlArg{
+		src:      "/Users/xm/Desktop/go_package/project-admin/deploy/init.sql",
+		dir:      "/Users/xm/Desktop/go_package/project-admin/dataModel/project11",
+		cfg:      cfg,
+		cache:    true,
+		database: "go-zero",
+		strict:   false,
+		ignoreColumns: mergeColumns([]string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}),
+	}
+	log := console.NewConsole(arg.idea)
+	src := strings.TrimSpace(arg.src)
+	if len(src) == 0 {
+		t.Log("expected path or path globbing patterns, but nothing found")
+	}
+	files, err := util.MatchFiles(src)
+	if err != nil {
+		t.Log(err)
+	}
+	if len(files) == 0 {
+		t.Log(errNotMatched)
+	}
+
+	generator, err := gen.NewDefaultGenerator(arg.dir, arg.cfg,
+		gen.WithConsoleOption(log), gen.WithIgnoreColumns(arg.ignoreColumns))
+	if err != nil {
+		t.Log(err)
+	}
+
+	for _, file := range files {
+		err = generator.StartFromDDL(file, arg.cache, arg.strict, arg.database)
+		if err != nil {
+			t.Log(err)
+		}
+	}
+}
+
 
 func TestFromDDl(t *testing.T) {
 	err := gen.Clean()

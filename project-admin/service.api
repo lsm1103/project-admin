@@ -676,6 +676,20 @@ service project {
 	)
 	@handler Gets
 	post /gets(GetsReq) returns(ApplicationList)
+
+	@doc (
+		summary:构建（自动生成代码）
+		handlerType:build
+	)
+	@handler Build
+	post /build(BuildReq)
+
+	@doc (
+		summary:获取构建情况（进度、log）
+		handlerType:build
+	)
+	@handler GetBuild
+	post /getBuild(GetBuildReq)
 }
 
 @server(

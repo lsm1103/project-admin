@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "项目4",
-    "description": "测试项目4；通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+    "title": "项目管理服务",
+    "description": "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；如通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
     "version": "v0.1.1",
     "contact": {
       "name": "lsm",
@@ -10,7 +10,7 @@
     },
     "license": {}
   },
-  "host": "0.0.0.0:813",
+  "host": "0.0.0.0:820",
   "schemes": [
     "http",
     "https"
@@ -1261,17 +1261,11 @@
       "title": "Application",
       "required": [
         "id",
-        "uuid",
         "zn_name",
-        "chineseChar",
-        "18|150",
         "en_name",
         "ico",
         "info",
         "create_user",
-        "uint",
-        "1",
-        "20",
         "demand_ids",
         "doc_ids",
         "join_users",
@@ -1281,7 +1275,6 @@
         "rank",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },
@@ -1325,16 +1318,11 @@
       "title": "ApplicationConfig",
       "required": [
         "id",
-        "uuid",
         "create_user",
-        "uint",
-        "1",
-        "20",
         "application_id",
         "config_id",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },
@@ -1458,16 +1446,11 @@
       "title": "Config",
       "required": [
         "id",
-        "uuid",
         "user_id",
-        "uint",
-        "1",
-        "20",
         "key",
         "value",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },
@@ -1597,15 +1580,9 @@
       "title": "Doc",
       "required": [
         "id",
-        "uuid",
         "name",
         "create_user",
-        "uint",
-        "1",
-        "20",
         "pre_content",
-        "chineseChar",
-        "18|150",
         "content",
         "parent_doc",
         "group_id",
@@ -1615,7 +1592,6 @@
         "show_children",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },
@@ -1649,17 +1625,10 @@
       "title": "DocHistory",
       "required": [
         "id",
-        "uuid",
         "pre_content",
-        "chineseChar",
-        "18|150",
         "create_user",
-        "uint",
-        "1",
-        "20",
         "doc_id",
-        "create_time",
-        "timeStamp"
+        "create_time"
       ]
     },
     "DocHistoryList": {
@@ -1892,22 +1861,15 @@
       "title": "Group",
       "required": [
         "id",
-        "uuid",
         "name",
         "create_user",
-        "uint",
-        "1",
-        "20",
         "ico",
-        "chineseChar",
-        "18|150",
         "remark",
         "parent_id",
         "group_type",
         "rank",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },
@@ -1956,17 +1918,12 @@
       "title": "GroupGroupRelation",
       "required": [
         "id",
-        "uuid",
         "create_user",
-        "uint",
-        "1",
-        "20",
         "master_group_id",
         "from_group_id",
         "relation",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },
@@ -2114,16 +2071,10 @@
       "title": "Project",
       "required": [
         "id",
-        "uuid",
         "name",
         "ico",
-        "chineseChar",
-        "18|150",
         "info",
         "project_type",
-        "uint",
-        "1",
-        "20",
         "create_user",
         "join_users",
         "join_groups",
@@ -2131,7 +2082,6 @@
         "rank",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },
@@ -2210,15 +2160,10 @@
       "title": "UserGroup",
       "required": [
         "id",
-        "uuid",
         "user_id",
-        "uint",
-        "1",
-        "20",
         "group_id",
         "state",
         "create_time",
-        "timeStamp",
         "update_time"
       ]
     },

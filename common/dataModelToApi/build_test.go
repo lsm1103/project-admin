@@ -33,6 +33,7 @@ func TestStartBuild(t *testing.T) {
 	//}.StartBuild()
 
 	DataModelToApi{
+		"/Users/xm/Desktop/go_package/project-admin",
 		ServiceInfo{
 			Title:   "项目管理服务",
 			Desc:    "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；如通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",

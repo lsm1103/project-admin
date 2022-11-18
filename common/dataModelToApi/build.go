@@ -38,6 +38,7 @@ type (
 		Strict   bool
 	}
 	DataModelToApi struct {
+		RootPkgPath string
 		ServiceCfg ServiceInfo
 		SqlCfg SqlParseCfg
 	}
@@ -55,7 +56,7 @@ var updateColumns = []string{"id", "state"}
 
 func (m DataModelToApi)StartBuild() {
 	//info模版
-	infoText, err := LoadTemplate("template/info.tpl")
+	infoText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/info.tpl", m.RootPkgPath))
 	if err != nil {
 		panic(err)
 	}
@@ -74,7 +75,7 @@ func (m DataModelToApi)StartBuild() {
 	//循环表的列表
 	for _, item := range tables {
 		//types模版
-		fieldText, err := LoadTemplate("template/field.tpl")
+		fieldText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/field.tpl", m.RootPkgPath))
 		if err != nil {
 			panic(err)
 		}
@@ -110,7 +111,7 @@ func (m DataModelToApi)StartBuild() {
 			"updateFields": updateFields,
 			"allFields":    allFields,
 		}
-		typesText, err := LoadTemplate("template/types.tpl")
+		typesText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/types.tpl", m.RootPkgPath))
 		if err != nil {
 			panic(err)
 		}
@@ -121,7 +122,7 @@ func (m DataModelToApi)StartBuild() {
 		typesOutputs = append(typesOutputs, typesOutput.String())
 
 		//module_handler 模版
-		moduleHandlerText, err := LoadTemplate("template/module_handler.tpl")
+		moduleHandlerText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/module_handler.tpl", m.RootPkgPath))
 		if err != nil {
 			panic(err)
 		}
@@ -141,7 +142,7 @@ func (m DataModelToApi)StartBuild() {
 		Types:         strings.Join(typesOutputs, "\n"),
 		ModuleHandler: strings.Join(moduleHandlerOutputs, "\n"),
 	}
-	text, err := LoadTemplate("template/adminManage.tpl")
+	text, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/adminManage.tpl", m.RootPkgPath))
 	if err != nil {
 		panic(err)
 	}
@@ -150,7 +151,7 @@ func (m DataModelToApi)StartBuild() {
 		panic(err)
 	}
 
-	outDir := path.Join("../../projectBuilds", m.ServiceCfg.ProjectName)
+	outDir := path.Join(fmt.Sprintf("%s/projectBuilds", m.RootPkgPath), m.ServiceCfg.ProjectName)
 	if err = os.MkdirAll(outDir, os.ModePerm); err != nil {
 		fmt.Printf("MkdirAll outDir: %s", err.Error())
 	}
