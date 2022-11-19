@@ -201,6 +201,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/gets",
 				Handler: Application.GetsHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/build",
+				Handler: Application.BuildHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/admin/Application/v1"),
 	)

@@ -26,6 +26,7 @@ func New{{.logic}}(ctx context.Context, svcCtx *svc.ServiceContext) {{.logic}} {
 }
 
 func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.GetsReq{{else}}{{.request}}{{end}}) {{.responseType}} {
+    {{if ne .routeServiceType "business"}}
     // 自动生成的后台管理接口
     {{ if eq .handlerType "create" }}sqlReq := &dataModel.{{.moduleName}}{}
     err := copier.Copy(sqlReq, req)
@@ -63,6 +64,6 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
     if int64(len(resp.List)) > req.PageSize {
         resp.IsNext = true
         resp.List = resp.List[:req.PageSize]
-    }{{ end }}
+    }{{ end }}{{ end }}
 	{{.returnString}}
 }

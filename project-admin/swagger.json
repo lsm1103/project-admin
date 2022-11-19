@@ -3,14 +3,8 @@
   "info": {
     "title": "项目管理服务",
     "description": "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；如通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
-    "version": "v0.1.1",
-    "contact": {
-      "name": "lsm",
-      "email": "18370872400@163.com"
-    },
-    "license": {}
+    "version": "v0.1.1"
   },
-  "host": "0.0.0.0:810",
   "schemes": [
     "http",
     "https"
@@ -22,6 +16,31 @@
     "application/json"
   ],
   "paths": {
+    "/admin/Application/v1/build": {
+      "post": {
+        "summary": "构建（自动生成代码）",
+        "operationId": "Build",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BuildReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
     "/admin/Application/v1/create": {
       "post": {
         "summary": "创建",
@@ -1406,6 +1425,78 @@
         "bool"
       ]
     },
+    "BuildReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "projectName": {
+          "type": "string"
+        },
+        "service_type": {
+          "type": "string",
+          "enum": [
+            "admin",
+            "mock"
+          ]
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "dataSource": {
+          "type": "string"
+        },
+        "cacheHost": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string",
+          "default": "goZero"
+        },
+        "templatePath": {
+          "type": "string"
+        },
+        "database": {
+          "type": "string"
+        },
+        "ddlArg": {
+          "$ref": "#/definitions/DdlArg"
+        }
+      },
+      "title": "BuildReq",
+      "required": [
+        "title",
+        "desc",
+        "author",
+        "email",
+        "version",
+        "projectName",
+        "service_type",
+        "host",
+        "port",
+        "dataSource",
+        "cacheHost",
+        "style",
+        "templatePath",
+        "ddlArg"
+      ]
+    },
     "Config": {
       "type": "object",
       "properties": {
@@ -1492,6 +1583,37 @@
         "20",
         "isNext",
         "bool"
+      ]
+    },
+    "DdlArg": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "type": "string"
+        },
+        "cache": {
+          "type": "boolean",
+          "format": "boolean",
+          "default": "true"
+        },
+        "strict": {
+          "type": "boolean",
+          "format": "boolean",
+          "default": "false"
+        },
+        "ignoreColumns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DdlArg",
+      "required": [
+        "src",
+        "cache",
+        "strict",
+        "ignoreColumns"
       ]
     },
     "DeleteReq": {
@@ -2992,6 +3114,5 @@
       "name": "Authorization",
       "in": "header"
     }
-  },
-  "externalDocs": {}
+  }
 }

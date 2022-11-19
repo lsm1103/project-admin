@@ -1,7 +1,9 @@
 package svc
 
 import (
+	"os"
 	"project-admin/project-admin/internal/config"
+	"strings"
 
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	dataModel "project-admin/project-admin/model"
@@ -9,6 +11,7 @@ import (
 
 type ServiceContext struct {
 	Config config.Config
+	RootPkgPath string
 
 	GroupModel              dataModel.GroupModel
 	UserGroupModel          dataModel.UserGroupModel
@@ -22,8 +25,13 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	pwd, err := os.Getwd()
+	if err != nil {
+		return nil
+	}
 	return &ServiceContext{
 		Config: c,
+		RootPkgPath: strings.Replace(pwd, "/project-admin", "",1),
 
 		GroupModel:              dataModel.NewGroupModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		UserGroupModel:          dataModel.NewUserGroupModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),

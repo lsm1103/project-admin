@@ -172,6 +172,8 @@ go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/
 - go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/project3 -api ../../projectBuilds/project3/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/project3 -api ../../projectBuilds/project3/service.api
 
 
+go run goctl.go api go -style goZero --home ../template -dir ../../project-admin -api ../../project-admin/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../project-admin -api ../../project-admin/service.api
+
 - 新增样例
 ```json
 {
@@ -231,4 +233,51 @@ ServiceInfo{
     database: "",
     strict:   false,
 }
+
+{
+    "title": "项目22",
+    "author": "lsm",
+    "desc": "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；",
+    "email": "18370872400@163.com",
+    "host": "0.0.0.0",
+    "port": "822",
+    "version": "v0.1.1"
+	
+	"projectName": "project22",
+    "service_type": "admin",
+    "style": "goZero",
+    "templatePath": "",
+	"cacheHost": "172.16.10.183:6379",
+	"dataSource": "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
+    "database": "",
+    "ddlArg": {
+        "cache": true,
+        "src": "",
+        "strict": false
+    },
+}
+
+
+@doc (
+summary:获取构建情况（进度、log）
+handlerType:getBuild
+serviceType:business
+)
+@handler GetBuild
+post /getBuild(GetBuildReq) returns(Build)
+```
+
+
+```text
+goctl error: 4:75: expected operand, found ',' (and 1 more errors)\ngoTL_OS=darwin\nGOCTL_ARCH=amd64\nGOCTL_HOME=/Users/xm/.goctl\nGOCTL_DEBUG=False\nGOCTL_CACHE=/Users/xm/.goctl/cache\nGOCTL_VERSION=1.4.2\nPROTOC_VERSION=3.17.3\nPROTOC_GEN_GO_VERSION=\nPROTO_GEN_GO_GRPC_VERSION=\nmessage: go format error:\n
+
+var (
+    tgroupFieldNames          = builder.RawFieldNames(\u0026Group{})
+    tgroupRows                = strings.Join(groupFieldNames, \",\")
+    groupRowsExpectAutoSet   = strings.Join(stringx.Remove(groupFieldNames,  , \"`state`\"), \",\")
+    tgroupRowsWithPlaceHolder = strings.Join(stringx.Remove(groupFieldNames, \"`id`\", ), \"=?,\") + \"=?\"
+    groupListRows   =  strings.Join( builder.RawFieldNames( \u0026Group{} ), \",\")
+    cacheGroupIdPrefix = \"cache:group:id:\"
+    cacheGroupCreateUserNamePrefix = \"cache:group:createUser:name:\"
+)
 ```
