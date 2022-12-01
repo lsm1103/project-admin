@@ -7,7 +7,7 @@ type (
 	}
 
 	GetReq {
-		Id int64 `form:"id"` // 主键
+		Id int64 `path:"id"` // 主键
 	}
 
     // 查询列表；

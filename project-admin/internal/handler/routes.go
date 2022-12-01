@@ -23,22 +23,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: Group.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: Group.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: Group.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: Group.GetHandler(serverCtx),
 			},
 			{
@@ -54,22 +54,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: UserGroup.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: UserGroup.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: UserGroup.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: UserGroup.GetHandler(serverCtx),
 			},
 			{
@@ -85,22 +85,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: GroupGroupRelation.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: GroupGroupRelation.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: GroupGroupRelation.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: GroupGroupRelation.GetHandler(serverCtx),
 			},
 			{
@@ -116,22 +116,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: Config.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: Config.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: Config.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: Config.GetHandler(serverCtx),
 			},
 			{
@@ -147,22 +147,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: Project.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: Project.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: Project.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: Project.GetHandler(serverCtx),
 			},
 			{
@@ -178,22 +178,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: Application.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: Application.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: Application.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: Application.GetHandler(serverCtx),
 			},
 			{
@@ -214,22 +214,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: ApplicationConfig.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: ApplicationConfig.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: ApplicationConfig.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: ApplicationConfig.GetHandler(serverCtx),
 			},
 			{
@@ -245,22 +245,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: Doc.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: Doc.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: Doc.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: Doc.GetHandler(serverCtx),
 			},
 			{
@@ -276,22 +276,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
+				Path:    "/",
 				Handler: DocHistory.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/update",
+				Path:    "/",
 				Handler: DocHistory.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/delete",
+				Path:    "/",
 				Handler: DocHistory.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/get",
+				Path:    "/:id",
 				Handler: DocHistory.GetHandler(serverCtx),
 			},
 			{

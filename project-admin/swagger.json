@@ -16,57 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/admin/Application/v1/build": {
-      "post": {
-        "summary": "构建（自动生成代码）",
-        "operationId": "Build",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/BuildReq"
-            }
-          }
-        ],
-        "tags": [
-          "Application"
-        ]
-      }
-    },
-    "/admin/Application/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createApplicationReq"
-            }
-          }
-        ],
-        "tags": [
-          "Application"
-        ]
-      }
-    },
-    "/admin/Application/v1/delete": {
+    "/admin/Application/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -89,28 +39,72 @@
         "tags": [
           "Application"
         ]
-      }
-    },
-    "/admin/Application/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Application"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createApplicationReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateApplicationReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/admin/Application/v1/build": {
+      "post": {
+        "summary": "构建（自动生成代码）",
+        "operationId": "Build",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BuildReq"
+            }
           }
         ],
         "tags": [
@@ -145,24 +139,24 @@
         ]
       }
     },
-    "/admin/Application/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/Application/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Application"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateApplicationReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -170,32 +164,7 @@
         ]
       }
     },
-    "/admin/ApplicationConfig/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createApplicationConfigReq"
-            }
-          }
-        ],
-        "tags": [
-          "ApplicationConfig"
-        ]
-      }
-    },
-    "/admin/ApplicationConfig/v1/delete": {
+    "/admin/ApplicationConfig/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -218,28 +187,47 @@
         "tags": [
           "ApplicationConfig"
         ]
-      }
-    },
-    "/admin/ApplicationConfig/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ApplicationConfig"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createApplicationConfigReq"
+            }
+          }
+        ],
+        "tags": [
+          "ApplicationConfig"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateApplicationConfigReq"
+            }
           }
         ],
         "tags": [
@@ -274,24 +262,24 @@
         ]
       }
     },
-    "/admin/ApplicationConfig/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/ApplicationConfig/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/ApplicationConfig"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateApplicationConfigReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -299,32 +287,7 @@
         ]
       }
     },
-    "/admin/Config/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createConfigReq"
-            }
-          }
-        ],
-        "tags": [
-          "Config"
-        ]
-      }
-    },
-    "/admin/Config/v1/delete": {
+    "/admin/Config/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -347,28 +310,47 @@
         "tags": [
           "Config"
         ]
-      }
-    },
-    "/admin/Config/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Config"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createConfigReq"
+            }
+          }
+        ],
+        "tags": [
+          "Config"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateConfigReq"
+            }
           }
         ],
         "tags": [
@@ -403,24 +385,24 @@
         ]
       }
     },
-    "/admin/Config/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/Config/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Config"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateConfigReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -428,32 +410,7 @@
         ]
       }
     },
-    "/admin/Doc/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createDocReq"
-            }
-          }
-        ],
-        "tags": [
-          "Doc"
-        ]
-      }
-    },
-    "/admin/Doc/v1/delete": {
+    "/admin/Doc/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -476,28 +433,47 @@
         "tags": [
           "Doc"
         ]
-      }
-    },
-    "/admin/Doc/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Doc"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createDocReq"
+            }
+          }
+        ],
+        "tags": [
+          "Doc"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateDocReq"
+            }
           }
         ],
         "tags": [
@@ -532,24 +508,24 @@
         ]
       }
     },
-    "/admin/Doc/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/Doc/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Doc"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateDocReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -557,32 +533,7 @@
         ]
       }
     },
-    "/admin/DocHistory/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createDocHistoryReq"
-            }
-          }
-        ],
-        "tags": [
-          "DocHistory"
-        ]
-      }
-    },
-    "/admin/DocHistory/v1/delete": {
+    "/admin/DocHistory/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -605,28 +556,47 @@
         "tags": [
           "DocHistory"
         ]
-      }
-    },
-    "/admin/DocHistory/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DocHistory"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createDocHistoryReq"
+            }
+          }
+        ],
+        "tags": [
+          "DocHistory"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateDocHistoryReq"
+            }
           }
         ],
         "tags": [
@@ -661,24 +631,24 @@
         ]
       }
     },
-    "/admin/DocHistory/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/DocHistory/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/DocHistory"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateDocHistoryReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -686,32 +656,7 @@
         ]
       }
     },
-    "/admin/Group/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createGroupReq"
-            }
-          }
-        ],
-        "tags": [
-          "Group"
-        ]
-      }
-    },
-    "/admin/Group/v1/delete": {
+    "/admin/Group/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -734,28 +679,47 @@
         "tags": [
           "Group"
         ]
-      }
-    },
-    "/admin/Group/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Group"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createGroupReq"
+            }
+          }
+        ],
+        "tags": [
+          "Group"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateGroupReq"
+            }
           }
         ],
         "tags": [
@@ -790,24 +754,24 @@
         ]
       }
     },
-    "/admin/Group/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/Group/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateGroupReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -815,32 +779,7 @@
         ]
       }
     },
-    "/admin/GroupGroupRelation/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createGroupGroupRelationReq"
-            }
-          }
-        ],
-        "tags": [
-          "GroupGroupRelation"
-        ]
-      }
-    },
-    "/admin/GroupGroupRelation/v1/delete": {
+    "/admin/GroupGroupRelation/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -863,28 +802,47 @@
         "tags": [
           "GroupGroupRelation"
         ]
-      }
-    },
-    "/admin/GroupGroupRelation/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/GroupGroupRelation"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createGroupGroupRelationReq"
+            }
+          }
+        ],
+        "tags": [
+          "GroupGroupRelation"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateGroupGroupRelationReq"
+            }
           }
         ],
         "tags": [
@@ -919,24 +877,24 @@
         ]
       }
     },
-    "/admin/GroupGroupRelation/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/GroupGroupRelation/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/GroupGroupRelation"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateGroupGroupRelationReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -944,32 +902,7 @@
         ]
       }
     },
-    "/admin/Project/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createProjectReq"
-            }
-          }
-        ],
-        "tags": [
-          "Project"
-        ]
-      }
-    },
-    "/admin/Project/v1/delete": {
+    "/admin/Project/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -992,28 +925,47 @@
         "tags": [
           "Project"
         ]
-      }
-    },
-    "/admin/Project/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Project"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createProjectReq"
+            }
+          }
+        ],
+        "tags": [
+          "Project"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateProjectReq"
+            }
           }
         ],
         "tags": [
@@ -1048,24 +1000,24 @@
         ]
       }
     },
-    "/admin/Project/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/Project/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateProjectReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -1073,32 +1025,7 @@
         ]
       }
     },
-    "/admin/UserGroup/v1/create": {
-      "post": {
-        "summary": "创建",
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createUserGroupReq"
-            }
-          }
-        ],
-        "tags": [
-          "UserGroup"
-        ]
-      }
-    },
-    "/admin/UserGroup/v1/delete": {
+    "/admin/UserGroup/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -1121,28 +1048,47 @@
         "tags": [
           "UserGroup"
         ]
-      }
-    },
-    "/admin/UserGroup/v1/get": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
+      },
+      "post": {
+        "summary": "创建",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/UserGroup"
-            }
+            "schema": {}
           }
         },
         "parameters": [
           {
-            "name": "id",
-            "description": " 主键",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "$ref": "#/definitions/createUserGroupReq"
+            }
+          }
+        ],
+        "tags": [
+          "UserGroup"
+        ]
+      },
+      "put": {
+        "summary": "更新",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateUserGroupReq"
+            }
           }
         ],
         "tags": [
@@ -1177,24 +1123,24 @@
         ]
       }
     },
-    "/admin/UserGroup/v1/update": {
-      "put": {
-        "summary": "更新",
-        "operationId": "Update",
+    "/admin/UserGroup/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/UserGroup"
+            }
           }
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/updateUserGroupReq"
-            }
+            "type": "string"
           }
         ],
         "tags": [
@@ -1493,7 +1439,6 @@
         "dataSource",
         "cacheHost",
         "style",
-        "templatePath",
         "ddlArg"
       ]
     },
@@ -1610,10 +1555,7 @@
       },
       "title": "DdlArg",
       "required": [
-        "src",
-        "cache",
-        "strict",
-        "ignoreColumns"
+        "src"
       ]
     },
     "DeleteReq": {
@@ -1835,17 +1777,7 @@
     },
     "GetReq": {
       "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 主键"
-        }
-      },
-      "title": "GetReq",
-      "required": [
-        "id"
-      ]
+      "title": "GetReq"
     },
     "GetsQueryItem": {
       "type": "object",

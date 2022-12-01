@@ -73,6 +73,8 @@ mock服务的生成，在logic.tpl引入一个mock类方法，该方法可以通
 - 生成规范的 API 文档以及调用代码
 - 支持关系型、非关系型、大数据数据库
   支持 Mysql、Oracle、MariaDB、 SQL Server、PostgreSQL、MongoDB、Redis、Impala 等常见关系型、非关系型、大数据数据库中间件。对于新的的数据库类型可以动态扩充。
+- 改为 restfull
+
 
 ## 命令
 - goctl model mysql ddl -src=test1.sql  -dir="dataModel/." -c --home libs/template && cp -r common/sqlUtils/* dataModel/

@@ -20,7 +20,7 @@ type (
 	}
 
 	GetReq {
-		Id int64 `form:"id"` // 主键
+		Id int64 `path:"id"` // 主键
 	}
 
 	// 查询列表；
@@ -459,35 +459,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createGroupReq)
+	post / (createGroupReq) returns(Group)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateGroupReq)
+	put / (updateGroupReq) returns(Group)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(Group)
+	get /:id (GetReq) returns(Group)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(GroupList)
+	post /gets (GetsReq) returns(GroupList)
 }
 
 @server(
@@ -502,35 +502,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createUserGroupReq)
+	post / (createUserGroupReq) returns(UserGroup)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateUserGroupReq)
+	put / (updateUserGroupReq) returns(UserGroup)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(UserGroup)
+	get /:id (GetReq) returns(UserGroup)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(UserGroupList)
+	post /gets (GetsReq) returns(UserGroupList)
 }
 
 @server(
@@ -545,35 +545,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createGroupGroupRelationReq)
+	post / (createGroupGroupRelationReq) returns(GroupGroupRelation)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateGroupGroupRelationReq)
+	put / (updateGroupGroupRelationReq) returns(GroupGroupRelation)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(GroupGroupRelation)
+	get /:id (GetReq) returns(GroupGroupRelation)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(GroupGroupRelationList)
+	post /gets (GetsReq) returns(GroupGroupRelationList)
 }
 
 @server(
@@ -588,35 +588,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createConfigReq)
+	post / (createConfigReq) returns(Config)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateConfigReq)
+	put / (updateConfigReq) returns(Config)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(Config)
+	get /:id (GetReq) returns(Config)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(ConfigList)
+	post /gets (GetsReq) returns(ConfigList)
 }
 
 @server(
@@ -631,35 +631,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createProjectReq)
+	post / (createProjectReq) returns(Project)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateProjectReq)
+	put / (updateProjectReq) returns(Project)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(Project)
+	get /:id (GetReq) returns(Project)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(ProjectList)
+	post /gets (GetsReq) returns(ProjectList)
 }
 
 @server(
@@ -674,35 +674,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createApplicationReq)
+	post / (createApplicationReq) returns(Application)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateApplicationReq)
+	put / (updateApplicationReq) returns(Application)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(Application)
+	get /:id (GetReq) returns(Application)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(ApplicationList)
+	post /gets (GetsReq) returns(ApplicationList)
 	
 	@doc (
 		summary:构建（自动生成代码）
@@ -710,7 +710,7 @@ service project {
 		serviceType:business
 	)
 	@handler Build
-	post /build(BuildReq)
+	post /build (BuildReq)
 }
 
 @server(
@@ -725,35 +725,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createApplicationConfigReq)
+	post / (createApplicationConfigReq) returns(ApplicationConfig)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateApplicationConfigReq)
+	put / (updateApplicationConfigReq) returns(ApplicationConfig)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(ApplicationConfig)
+	get /:id (GetReq) returns(ApplicationConfig)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(ApplicationConfigList)
+	post /gets (GetsReq) returns(ApplicationConfigList)
 }
 
 @server(
@@ -768,35 +768,35 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createDocReq)
+	post / (createDocReq) returns(Doc)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateDocReq)
+	put / (updateDocReq) returns(Doc)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(Doc)
+	get /:id (GetReq) returns(Doc)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(DocList)
+	post /gets (GetsReq) returns(DocList)
 }
 
 @server(
@@ -811,33 +811,33 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post /create(createDocHistoryReq)
+	post / (createDocHistoryReq) returns(DocHistory)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put /update(updateDocHistoryReq)
+	put / (updateDocHistoryReq) returns(DocHistory)
 	
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
-	delete /delete(DeleteReq)
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get /get(GetReq) returns(DocHistory)
+	get /:id (GetReq) returns(DocHistory)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets(GetsReq) returns(DocHistoryList)
+	post /gets (GetsReq) returns(DocHistoryList)
 }

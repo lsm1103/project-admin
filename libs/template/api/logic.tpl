@@ -47,7 +47,7 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
     if err != nil {
         return err
     }
-    err = l.svcCtx.{{.moduleName}}Model.Update(l.ctx, nil, sqlReq)
+    resp, err = l.svcCtx.{{.moduleName}}Model.Update(l.ctx, nil, sqlReq)
     if err != nil {
         return err
     }
