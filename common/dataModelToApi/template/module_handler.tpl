@@ -24,7 +24,7 @@ service project {
 		handlerType:delete
 	)
 	@handler Delete
-	delete / (DeleteReq) returns({{.tableName}})
+	delete / (DeleteReq)
 	
 	@doc (
 		summary:查询一个

@@ -1,0 +1,10 @@
+Name: project
+Host: 0.0.0.0
+Port: 823
+
+DB:
+  DataSource: root:pujian123@tcp(172.16.10.183:4306)/project-admin?charset=utf8mb4&loc=Asia%2FShanghai&parseTime=true
+#redis配置
+Cache:
+  - Host: 172.16.10.183:6379
+  # Pass: xxx

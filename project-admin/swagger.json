@@ -46,7 +46,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Application"
+            }
           }
         },
         "parameters": [
@@ -69,7 +71,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Application"
+            }
           }
         },
         "parameters": [
@@ -194,7 +198,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/ApplicationConfig"
+            }
           }
         },
         "parameters": [
@@ -217,7 +223,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/ApplicationConfig"
+            }
           }
         },
         "parameters": [
@@ -317,7 +325,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Config"
+            }
           }
         },
         "parameters": [
@@ -340,7 +350,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Config"
+            }
           }
         },
         "parameters": [
@@ -440,7 +452,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Doc"
+            }
           }
         },
         "parameters": [
@@ -463,7 +477,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Doc"
+            }
           }
         },
         "parameters": [
@@ -563,7 +579,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/DocHistory"
+            }
           }
         },
         "parameters": [
@@ -586,7 +604,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/DocHistory"
+            }
           }
         },
         "parameters": [
@@ -686,7 +706,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
           }
         },
         "parameters": [
@@ -709,7 +731,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
           }
         },
         "parameters": [
@@ -809,7 +833,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/GroupGroupRelation"
+            }
           }
         },
         "parameters": [
@@ -832,7 +858,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/GroupGroupRelation"
+            }
           }
         },
         "parameters": [
@@ -932,7 +960,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
           }
         },
         "parameters": [
@@ -955,7 +985,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
           }
         },
         "parameters": [
@@ -1055,7 +1087,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/UserGroup"
+            }
           }
         },
         "parameters": [
@@ -1078,7 +1112,9 @@
         "responses": {
           "200": {
             "description": "A successful response.",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/UserGroup"
+            }
           }
         },
         "parameters": [

@@ -29,27 +29,39 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
     {{if ne .routeServiceType "business"}}
     // 自动生成的后台管理接口
     {{ if eq .handlerType "create" }}sqlReq := &dataModel.{{.moduleName}}{}
-    err := copier.Copy(sqlReq, req)
+    err = copier.Copy(sqlReq, req)
     if err != nil {
-        return err
+        return
     }
     sqlReq.Id = uniqueid.GenId()
-    _, err = l.svcCtx.{{.moduleName}}Model.Insert(l.ctx, nil, sqlReq)
+
+    resp = &types.{{.respType}}{}
+    insertR, err = l.svcCtx.{{.moduleName}}Model.Insert(l.ctx, nil, sqlReq)
     if err != nil {
-        return err
+        return
+    }
+    err := copier.Copy(InsertR, resp)
+    if err != nil {
+        return
     }
     {{ else if eq .handlerType "delete" }}err := l.svcCtx.{{.moduleName}}Model.Delete(l.ctx, nil, req.Id)
     if err != nil {
         return err
     }
     {{ else if eq .handlerType "update" }}sqlReq := &dataModel.{{.moduleName}}{}
-    err := copier.Copy(sqlReq, req)
+    err = copier.Copy(sqlReq, req)
     if err != nil {
-        return err
+        return
     }
-    resp, err = l.svcCtx.{{.moduleName}}Model.Update(l.ctx, nil, sqlReq)
+
+    resp = &types.{{.respType}}{}
+    updateR, err = l.svcCtx.{{.moduleName}}Model.Update(l.ctx, nil, sqlReq)
     if err != nil {
-        return err
+        return
+    }
+    err = copier.Copy(updateR, resp)
+    if err != nil {
+        return
     }
     {{ else if eq .handlerType "get" }}resp = &types.{{.respType}}{}
     err = l.svcCtx.{{.moduleName}}Model.FindOne(l.ctx, nil, req.Id, resp)

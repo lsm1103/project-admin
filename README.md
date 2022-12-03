@@ -75,6 +75,37 @@ mock服务的生成，在logic.tpl引入一个mock类方法，该方法可以通
   支持 Mysql、Oracle、MariaDB、 SQL Server、PostgreSQL、MongoDB、Redis、Impala 等常见关系型、非关系型、大数据数据库中间件。对于新的的数据库类型可以动态扩充。
 - 改为 restfull
 
+## restfull
+```text
+为什么会出现Restful
+在Restful之前的操作：
+    http://127.0.0.1/user/query/1 GET 根据用户id查询用户数据
+    http://127.0.0.1/user/save POST 新增用户
+    http://127.0.0.1/user/update POST 修改用户信息
+    http://127.0.0.1/user/delete/1 GET/POST 删除用户信息
+
+RESTful用法：
+    http://127.0.0.1/user/1 GET 根据用户id查询用户数据
+    http://127.0.0.1/user POST 新增用户
+    http://127.0.0.1/user PUT 修改用户信息
+    http://127.0.0.1/user DELETE 删除用户信息
+
+响应时设置状态码
+　　1**   信息，服务器收到请求，需要请求者继续执行操作
+　　2**  成功，操作被成功接收并处理
+　　3**  重定向，需要进一步的操作以完成请求
+　　4**  客户端错误，请求包含语法错误或无法完成请求
+　　5**  服务器错误，服务器在处理请求的过程中发生了错误
+
+返回值
+　　GET请求 返回查到所有或单条数据
+　　POST请求  返回新增的数据
+　　PUT请求  返回更新数据
+　　PATCH请求  局部更新  返回更新整条数据
+　　DELETE请求  返回值为空
+
+
+```
 
 ## 命令
 - goctl model mysql ddl -src=test1.sql  -dir="dataModel/." -c --home libs/template && cp -r common/sqlUtils/* dataModel/
@@ -237,26 +268,26 @@ ServiceInfo{
 }
 
 {
-    "title": "项目22",
+    "title": "项目23",
     "author": "lsm",
     "desc": "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；",
     "email": "18370872400@163.com",
     "host": "0.0.0.0",
-    "port": "822",
-    "version": "v0.1.1"
-	
-	"projectName": "project22",
+    "port": "823",
+    "version": "v0.1.1",
+    
+    "projectName": "project23",
     "service_type": "admin",
     "style": "goZero",
     "templatePath": "",
-	"cacheHost": "172.16.10.183:6379",
-	"dataSource": "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
+    "cacheHost": "172.16.10.183:6379",
+    "dataSource": "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
     "database": "",
     "ddlArg": {
         "cache": true,
         "src": "",
         "strict": false
-    },
+    }
 }
 
 
