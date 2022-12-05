@@ -21,8 +21,8 @@ import (
 var (
 	docHistoryFieldNames          = builder.RawFieldNames(&DocHistory{})
 	docHistoryRows                = strings.Join(docHistoryFieldNames, ",")
-	docHistoryRowsExpectAutoSet   = strings.Join(stringx.Remove(docHistoryFieldNames, "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`state`"), ",")
-	docHistoryRowsWithPlaceHolder = strings.Join(stringx.Remove(docHistoryFieldNames, "`id`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`"), "=?,") + "=?"
+	docHistoryRowsExpectAutoSet   = strings.Join(stringx.Remove(docHistoryFieldNames, "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`state`"), ",")
+	docHistoryRowsWithPlaceHolder = strings.Join(stringx.Remove(docHistoryFieldNames, "`id`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`"), "=?,") + "=?"
 	docHistoryListRows            = strings.Join(builder.RawFieldNames(&DocHistory{}), ",")
 
 	cacheDocHistoryIdPrefix = "cache:docHistory:id:"
@@ -32,7 +32,7 @@ type (
 	docHistoryModel interface {
 		Insert(ctx context.Context, session sqlx.Session, data *DocHistory) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
-		Update(ctx context.Context, session sqlx.Session, data *DocHistory) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *DocHistory) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -101,17 +101,16 @@ func (m *defaultDocHistoryModel) Insert(ctx context.Context, session sqlx.Sessio
 	return ret, err
 }
 
-func (m *defaultDocHistoryModel) Update(ctx context.Context, session sqlx.Session, data *DocHistory) (sql.Result, error) {
+func (m *defaultDocHistoryModel) Update(ctx context.Context, session sqlx.Session, data *DocHistory) error {
 	docHistoryIdKey := fmt.Sprintf("%s%v", cacheDocHistoryIdPrefix, data.Id)
-	//ret, err :
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, docHistoryIdKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultDocHistoryModel) formatPrimary(primary interface{}) string {

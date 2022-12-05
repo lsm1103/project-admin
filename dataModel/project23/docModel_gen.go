@@ -21,8 +21,8 @@ import (
 var (
 	docFieldNames          = builder.RawFieldNames(&Doc{})
 	docRows                = strings.Join(docFieldNames, ",")
-	docRowsExpectAutoSet   = strings.Join(stringx.Remove(docFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
-	docRowsWithPlaceHolder = strings.Join(stringx.Remove(docFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
+	docRowsExpectAutoSet   = strings.Join(stringx.Remove(docFieldNames, "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`state`"), ",")
+	docRowsWithPlaceHolder = strings.Join(stringx.Remove(docFieldNames, "`id`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`"), "=?,") + "=?"
 	docListRows            = strings.Join(builder.RawFieldNames(&Doc{}), ",")
 
 	cacheDocIdPrefix             = "cache:doc:id:"
@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *Doc) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByNameCreateUser(ctx context.Context, name string, createUser int64) (*Doc, error)
-		Update(ctx context.Context, session sqlx.Session, data *Doc) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *Doc) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -139,22 +139,21 @@ func (m *defaultDocModel) Insert(ctx context.Context, session sqlx.Session, data
 	return ret, err
 }
 
-func (m *defaultDocModel) Update(ctx context.Context, session sqlx.Session, data *Doc) (sql.Result, error) {
+func (m *defaultDocModel) Update(ctx context.Context, session sqlx.Session, data *Doc) error {
 	err := m.FindOne(ctx, session, data.Id, &Doc{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	docIdKey := fmt.Sprintf("%s%v", cacheDocIdPrefix, data.Id)
 	docNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheDocNameCreateUserPrefix, data.Name, data.CreateUser)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, docIdKey, docNameCreateUserKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultDocModel) formatPrimary(primary interface{}) string {

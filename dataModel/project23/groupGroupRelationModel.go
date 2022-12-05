@@ -40,6 +40,6 @@ func (m *customGroupGroupRelationModel) FindAll(in *sqlUtils.GetsReq, resp inter
 
 func (m *customGroupGroupRelationModel) SoftDelete(ctx context.Context, session sqlx.Session, data *GroupGroupRelation) error {
 	data.State = sqlUtils.Del
-	_, err := m.Update(ctx, session, data)
+	err := m.Update(ctx, session, data)
 	return err
 }

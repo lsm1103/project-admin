@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *Config) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByUserIdKey(ctx context.Context, userId int64, key int64) (*Config, error)
-		Update(ctx context.Context, session sqlx.Session, data *Config) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *Config) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -132,22 +132,21 @@ func (m *defaultConfigModel) Insert(ctx context.Context, session sqlx.Session, d
 	return ret, err
 }
 
-func (m *defaultConfigModel) Update(ctx context.Context, session sqlx.Session, data *Config) (sql.Result, error) {
+func (m *defaultConfigModel) Update(ctx context.Context, session sqlx.Session, data *Config) error {
 	err := m.FindOne(ctx, session, data.Id, &Config{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	configIdKey := fmt.Sprintf("%s%v", cacheConfigIdPrefix, data.Id)
 	configUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheConfigUserIdKeyPrefix, data.UserId, data.Key)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, configIdKey, configUserIdKeyKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultConfigModel) formatPrimary(primary interface{}) string {

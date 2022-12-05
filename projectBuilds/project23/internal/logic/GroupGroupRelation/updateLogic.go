@@ -28,15 +28,21 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 }
 
 func (l *UpdateLogic) Update(req *types.UpdateGroupGroupRelationReq) (resp *types.GroupGroupRelation, err error) {
-	// 自动生成的后台管理接口
+	// 自动生成的后台管理接口v1
 	sqlReq := &dataModel.GroupGroupRelation{}
-	err := copier.Copy(sqlReq, req)
+	err = copier.Copy(sqlReq, req)
 	if err != nil {
-		return err
+		return
 	}
+
 	err = l.svcCtx.GroupGroupRelationModel.Update(l.ctx, nil, sqlReq)
 	if err != nil {
-		return err
+		return
+	}
+	resp = &types.GroupGroupRelation{}
+	err = copier.Copy(resp, sqlReq)
+	if err != nil {
+		return
 	}
 
 	return

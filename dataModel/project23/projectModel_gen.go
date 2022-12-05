@@ -21,8 +21,8 @@ import (
 var (
 	projectFieldNames          = builder.RawFieldNames(&Project{})
 	projectRows                = strings.Join(projectFieldNames, ",")
-	projectRowsExpectAutoSet   = strings.Join(stringx.Remove(projectFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
-	projectRowsWithPlaceHolder = strings.Join(stringx.Remove(projectFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	projectRowsExpectAutoSet   = strings.Join(stringx.Remove(projectFieldNames, "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`state`"), ",")
+	projectRowsWithPlaceHolder = strings.Join(stringx.Remove(projectFieldNames, "`id`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), "=?,") + "=?"
 	projectListRows            = strings.Join(builder.RawFieldNames(&Project{}), ",")
 
 	cacheProjectIdPrefix                        = "cache:project:id:"
@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *Project) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByCreateUserNameProjectType(ctx context.Context, createUser int64, name string, projectType int64) (*Project, error)
-		Update(ctx context.Context, session sqlx.Session, data *Project) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *Project) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -138,22 +138,21 @@ func (m *defaultProjectModel) Insert(ctx context.Context, session sqlx.Session, 
 	return ret, err
 }
 
-func (m *defaultProjectModel) Update(ctx context.Context, session sqlx.Session, data *Project) (sql.Result, error) {
+func (m *defaultProjectModel) Update(ctx context.Context, session sqlx.Session, data *Project) error {
 	err := m.FindOne(ctx, session, data.Id, &Project{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	projectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheProjectCreateUserNameProjectTypePrefix, data.CreateUser, data.Name, data.ProjectType)
 	projectIdKey := fmt.Sprintf("%s%v", cacheProjectIdPrefix, data.Id)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, projectCreateUserNameProjectTypeKey, projectIdKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultProjectModel) formatPrimary(primary interface{}) string {

@@ -23,21 +23,6 @@
   ],
   "paths": {
     "/admin/Application/v1/": {
-      "get": {
-        "summary": "查询一个",
-        "operationId": "Get",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Application"
-            }
-          }
-        },
-        "tags": [
-          "Application"
-        ]
-      },
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -139,7 +124,7 @@
         ]
       }
     },
-    "/admin/ApplicationConfig/v1/": {
+    "/admin/Application/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -147,14 +132,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ApplicationConfig"
+              "$ref": "#/definitions/Application"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "ApplicationConfig"
+          "Application"
         ]
-      },
+      }
+    },
+    "/admin/ApplicationConfig/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -256,7 +251,7 @@
         ]
       }
     },
-    "/admin/Config/v1/": {
+    "/admin/ApplicationConfig/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -264,14 +259,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/Config"
+              "$ref": "#/definitions/ApplicationConfig"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "Config"
+          "ApplicationConfig"
         ]
-      },
+      }
+    },
+    "/admin/Config/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -373,7 +378,7 @@
         ]
       }
     },
-    "/admin/Doc/v1/": {
+    "/admin/Config/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -381,14 +386,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/Doc"
+              "$ref": "#/definitions/Config"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "Doc"
+          "Config"
         ]
-      },
+      }
+    },
+    "/admin/Doc/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -490,7 +505,7 @@
         ]
       }
     },
-    "/admin/DocHistory/v1/": {
+    "/admin/Doc/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -498,14 +513,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/DocHistory"
+              "$ref": "#/definitions/Doc"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "DocHistory"
+          "Doc"
         ]
-      },
+      }
+    },
+    "/admin/DocHistory/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -607,7 +632,7 @@
         ]
       }
     },
-    "/admin/Group/v1/": {
+    "/admin/DocHistory/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -615,14 +640,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/DocHistory"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "Group"
+          "DocHistory"
         ]
-      },
+      }
+    },
+    "/admin/Group/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -724,7 +759,7 @@
         ]
       }
     },
-    "/admin/GroupGroupRelation/v1/": {
+    "/admin/Group/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -732,14 +767,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/GroupGroupRelation"
+              "$ref": "#/definitions/Group"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "GroupGroupRelation"
+          "Group"
         ]
-      },
+      }
+    },
+    "/admin/GroupGroupRelation/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -841,7 +886,7 @@
         ]
       }
     },
-    "/admin/Project/v1/": {
+    "/admin/GroupGroupRelation/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -849,14 +894,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/Project"
+              "$ref": "#/definitions/GroupGroupRelation"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "Project"
+          "GroupGroupRelation"
         ]
-      },
+      }
+    },
+    "/admin/Project/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -958,7 +1013,7 @@
         ]
       }
     },
-    "/admin/UserGroup/v1/": {
+    "/admin/Project/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -966,14 +1021,24 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/UserGroup"
+              "$ref": "#/definitions/Project"
             }
           }
         },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
-          "UserGroup"
+          "Project"
         ]
-      },
+      }
+    },
+    "/admin/UserGroup/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -1068,6 +1133,31 @@
             "schema": {
               "$ref": "#/definitions/GetsReq"
             }
+          }
+        ],
+        "tags": [
+          "UserGroup"
+        ]
+      }
+    },
+    "/admin/UserGroup/v1/{id}": {
+      "get": {
+        "summary": "查询一个",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserGroup"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [

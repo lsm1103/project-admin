@@ -29,16 +29,26 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 }
 
 func (l *CreateLogic) Create(req *types.CreateDocHistoryReq) (resp *types.DocHistory, err error) {
-	// 自动生成的后台管理接口
+	// 自动生成的后台管理接口v1
 	sqlReq := &dataModel.DocHistory{}
-	err := copier.Copy(sqlReq, req)
+	err = copier.Copy(sqlReq, req)
 	if err != nil {
-		return err
+		return
 	}
 	sqlReq.Id = uniqueid.GenId()
-	_, err = l.svcCtx.DocHistoryModel.Insert(l.ctx, nil, sqlReq)
+
+	insertR, err := l.svcCtx.DocHistoryModel.Insert(l.ctx, nil, sqlReq)
 	if err != nil {
-		return err
+		return
+	}
+	sqlReq.Id, err = insertR.LastInsertId()
+	if err != nil {
+		return
+	}
+	resp = &types.DocHistory{}
+	err = copier.Copy(resp, sqlReq)
+	if err != nil {
+		return
 	}
 
 	return

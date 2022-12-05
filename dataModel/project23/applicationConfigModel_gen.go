@@ -21,8 +21,8 @@ import (
 var (
 	applicationConfigFieldNames          = builder.RawFieldNames(&ApplicationConfig{})
 	applicationConfigRows                = strings.Join(applicationConfigFieldNames, ",")
-	applicationConfigRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationConfigFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
-	applicationConfigRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationConfigFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
+	applicationConfigRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationConfigFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
+	applicationConfigRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationConfigFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
 	applicationConfigListRows            = strings.Join(builder.RawFieldNames(&ApplicationConfig{}), ",")
 
 	cacheApplicationConfigIdPrefix                              = "cache:applicationConfig:id:"
@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *ApplicationConfig) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByCreateUserApplicationIdConfigId(ctx context.Context, createUser int64, applicationId int64, configId int64) (*ApplicationConfig, error)
-		Update(ctx context.Context, session sqlx.Session, data *ApplicationConfig) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *ApplicationConfig) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -132,22 +132,21 @@ func (m *defaultApplicationConfigModel) Insert(ctx context.Context, session sqlx
 	return ret, err
 }
 
-func (m *defaultApplicationConfigModel) Update(ctx context.Context, session sqlx.Session, data *ApplicationConfig) (sql.Result, error) {
+func (m *defaultApplicationConfigModel) Update(ctx context.Context, session sqlx.Session, data *ApplicationConfig) error {
 	err := m.FindOne(ctx, session, data.Id, &ApplicationConfig{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	applicationConfigCreateUserApplicationIdConfigIdKey := fmt.Sprintf("%s%v:%v:%v", cacheApplicationConfigCreateUserApplicationIdConfigIdPrefix, data.CreateUser, data.ApplicationId, data.ConfigId)
 	applicationConfigIdKey := fmt.Sprintf("%s%v", cacheApplicationConfigIdPrefix, data.Id)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, applicationConfigCreateUserApplicationIdConfigIdKey, applicationConfigIdKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultApplicationConfigModel) formatPrimary(primary interface{}) string {

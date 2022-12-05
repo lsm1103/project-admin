@@ -435,13 +435,6 @@ service project {
 	post / (createGroupReq) returns(Group)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateGroupReq) returns(Group)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -449,11 +442,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateGroupReq) returns(Group)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(Group)
+	
+	get /:id (GetReq) returns(Group)
 	
 	@doc (
 		summary:查询列表
@@ -478,13 +479,6 @@ service project {
 	post / (createUserGroupReq) returns(UserGroup)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateUserGroupReq) returns(UserGroup)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -492,11 +486,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateUserGroupReq) returns(UserGroup)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(UserGroup)
+	
+	get /:id (GetReq) returns(UserGroup)
 	
 	@doc (
 		summary:查询列表
@@ -521,13 +523,6 @@ service project {
 	post / (createGroupGroupRelationReq) returns(GroupGroupRelation)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateGroupGroupRelationReq) returns(GroupGroupRelation)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -535,11 +530,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateGroupGroupRelationReq) returns(GroupGroupRelation)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(GroupGroupRelation)
+	
+	get /:id (GetReq) returns(GroupGroupRelation)
 	
 	@doc (
 		summary:查询列表
@@ -564,13 +567,6 @@ service project {
 	post / (createConfigReq) returns(Config)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateConfigReq) returns(Config)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -578,11 +574,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateConfigReq) returns(Config)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(Config)
+	
+	get /:id (GetReq) returns(Config)
 	
 	@doc (
 		summary:查询列表
@@ -607,13 +611,6 @@ service project {
 	post / (createProjectReq) returns(Project)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateProjectReq) returns(Project)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -621,11 +618,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateProjectReq) returns(Project)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(Project)
+	
+	get /:id (GetReq) returns(Project)
 	
 	@doc (
 		summary:查询列表
@@ -650,13 +655,6 @@ service project {
 	post / (createApplicationReq) returns(Application)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateApplicationReq) returns(Application)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -664,11 +662,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateApplicationReq) returns(Application)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(Application)
+	
+	get /:id (GetReq) returns(Application)
 	
 	@doc (
 		summary:查询列表
@@ -693,13 +699,6 @@ service project {
 	post / (createApplicationConfigReq) returns(ApplicationConfig)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateApplicationConfigReq) returns(ApplicationConfig)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -707,11 +706,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateApplicationConfigReq) returns(ApplicationConfig)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(ApplicationConfig)
+	
+	get /:id (GetReq) returns(ApplicationConfig)
 	
 	@doc (
 		summary:查询列表
@@ -736,13 +743,6 @@ service project {
 	post / (createDocReq) returns(Doc)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateDocReq) returns(Doc)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -750,11 +750,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateDocReq) returns(Doc)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(Doc)
+	
+	get /:id (GetReq) returns(Doc)
 	
 	@doc (
 		summary:查询列表
@@ -779,13 +787,6 @@ service project {
 	post / (createDocHistoryReq) returns(DocHistory)
 	
 	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateDocHistoryReq) returns(DocHistory)
-	
-	@doc (
 		summary:删除
 		handlerType:delete
 	)
@@ -793,11 +794,19 @@ service project {
 	delete / (DeleteReq)
 	
 	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateDocHistoryReq) returns(DocHistory)
+	
+	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
-	get / (GetReq) returns(DocHistory)
+	
+	get /:id (GetReq) returns(DocHistory)
 	
 	@doc (
 		summary:查询列表

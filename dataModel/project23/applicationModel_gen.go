@@ -21,8 +21,8 @@ import (
 var (
 	applicationFieldNames          = builder.RawFieldNames(&Application{})
 	applicationRows                = strings.Join(applicationFieldNames, ",")
-	applicationRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationFieldNames, "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`state`"), ",")
-	applicationRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationFieldNames, "`id`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`"), "=?,") + "=?"
+	applicationRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
+	applicationRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
 	applicationListRows            = strings.Join(builder.RawFieldNames(&Application{}), ",")
 
 	cacheApplicationIdPrefix                        = "cache:application:id:"
@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *Application) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByCreateUserEnNameProjectId(ctx context.Context, createUser int64, enName string, projectId string) (*Application, error)
-		Update(ctx context.Context, session sqlx.Session, data *Application) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *Application) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -141,22 +141,21 @@ func (m *defaultApplicationModel) Insert(ctx context.Context, session sqlx.Sessi
 	return ret, err
 }
 
-func (m *defaultApplicationModel) Update(ctx context.Context, session sqlx.Session, data *Application) (sql.Result, error) {
+func (m *defaultApplicationModel) Update(ctx context.Context, session sqlx.Session, data *Application) error {
 	err := m.FindOne(ctx, session, data.Id, &Application{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	applicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheApplicationCreateUserEnNameProjectIdPrefix, data.CreateUser, data.EnName, data.ProjectId)
 	applicationIdKey := fmt.Sprintf("%s%v", cacheApplicationIdPrefix, data.Id)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, applicationCreateUserEnNameProjectIdKey, applicationIdKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultApplicationModel) formatPrimary(primary interface{}) string {

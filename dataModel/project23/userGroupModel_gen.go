@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *UserGroup) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByUserIdGroupId(ctx context.Context, userId int64, groupId int64) (*UserGroup, error)
-		Update(ctx context.Context, session sqlx.Session, data *UserGroup) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *UserGroup) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -131,22 +131,21 @@ func (m *defaultUserGroupModel) Insert(ctx context.Context, session sqlx.Session
 	return ret, err
 }
 
-func (m *defaultUserGroupModel) Update(ctx context.Context, session sqlx.Session, data *UserGroup) (sql.Result, error) {
+func (m *defaultUserGroupModel) Update(ctx context.Context, session sqlx.Session, data *UserGroup) error {
 	err := m.FindOne(ctx, session, data.Id, &UserGroup{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	userGroupIdKey := fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, data.Id)
 	userGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheUserGroupUserIdGroupIdPrefix, data.UserId, data.GroupId)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, userGroupIdKey, userGroupUserIdGroupIdKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultUserGroupModel) formatPrimary(primary interface{}) string {

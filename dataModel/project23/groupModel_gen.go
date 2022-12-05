@@ -21,8 +21,8 @@ import (
 var (
 	groupFieldNames          = builder.RawFieldNames(&Group{})
 	groupRows                = strings.Join(groupFieldNames, ",")
-	groupRowsExpectAutoSet   = strings.Join(stringx.Remove(groupFieldNames, "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`state`"), ",")
-	groupRowsWithPlaceHolder = strings.Join(stringx.Remove(groupFieldNames, "`id`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`"), "=?,") + "=?"
+	groupRowsExpectAutoSet   = strings.Join(stringx.Remove(groupFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
+	groupRowsWithPlaceHolder = strings.Join(stringx.Remove(groupFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
 	groupListRows            = strings.Join(builder.RawFieldNames(&Group{}), ",")
 
 	cacheGroupIdPrefix             = "cache:group:id:"
@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *Group) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByCreateUserName(ctx context.Context, createUser int64, name string) (*Group, error)
-		Update(ctx context.Context, session sqlx.Session, data *Group) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *Group) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -136,22 +136,21 @@ func (m *defaultGroupModel) Insert(ctx context.Context, session sqlx.Session, da
 	return ret, err
 }
 
-func (m *defaultGroupModel) Update(ctx context.Context, session sqlx.Session, data *Group) (sql.Result, error) {
+func (m *defaultGroupModel) Update(ctx context.Context, session sqlx.Session, data *Group) error {
 	err := m.FindOne(ctx, session, data.Id, &Group{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	groupCreateUserNameKey := fmt.Sprintf("%s%v:%v", cacheGroupCreateUserNamePrefix, data.CreateUser, data.Name)
 	groupIdKey := fmt.Sprintf("%s%v", cacheGroupIdPrefix, data.Id)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, groupCreateUserNameKey, groupIdKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultGroupModel) formatPrimary(primary interface{}) string {

@@ -42,6 +42,6 @@ func (m *custom{{.upperStartCamelObject}}Model) FindAll(in *sqlUtils.GetsReq, re
 
 func (m *custom{{.upperStartCamelObject}}Model) SoftDelete(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) error {
 	{{if .isState}}data.State = sqlUtils.Del
-	_,err := m.Update(ctx, session, data)
+	err := m.Update(ctx, session, data)
 	return err{{else}}return sqlUtils.ErrNotState{{end}}
 }

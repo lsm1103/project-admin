@@ -28,15 +28,21 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 }
 
 func (l *UpdateLogic) Update(req *types.UpdateApplicationReq) (resp *types.Application, err error) {
-	// 自动生成的后台管理接口
+	// 自动生成的后台管理接口v1
 	sqlReq := &dataModel.Application{}
-	err := copier.Copy(sqlReq, req)
+	err = copier.Copy(sqlReq, req)
 	if err != nil {
-		return err
+		return
 	}
+
 	err = l.svcCtx.ApplicationModel.Update(l.ctx, nil, sqlReq)
 	if err != nil {
-		return err
+		return
+	}
+	resp = &types.Application{}
+	err = copier.Copy(resp, sqlReq)
+	if err != nil {
+		return
 	}
 
 	return

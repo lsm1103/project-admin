@@ -34,7 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *GroupGroupRelation) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
 		FindOneByCreateUserMasterGroupIdFromGroupIdRelation(ctx context.Context, createUser int64, masterGroupId int64, fromGroupId int64, relation int64) (*GroupGroupRelation, error)
-		Update(ctx context.Context, session sqlx.Session, data *GroupGroupRelation) (sql.Result, error)
+		Update(ctx context.Context, session sqlx.Session, data *GroupGroupRelation) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
@@ -133,22 +133,21 @@ func (m *defaultGroupGroupRelationModel) Insert(ctx context.Context, session sql
 	return ret, err
 }
 
-func (m *defaultGroupGroupRelationModel) Update(ctx context.Context, session sqlx.Session, data *GroupGroupRelation) (sql.Result, error) {
+func (m *defaultGroupGroupRelationModel) Update(ctx context.Context, session sqlx.Session, data *GroupGroupRelation) error {
 	err := m.FindOne(ctx, session, data.Id, &GroupGroupRelation{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
 	groupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGroupGroupRelationIdPrefix, data.Id)
-	//ret, err
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
 	}, groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, groupGroupRelationIdKey)
-	return ret, err
+	return err
 }
 
 func (m *defaultGroupGroupRelationModel) formatPrimary(primary interface{}) string {
