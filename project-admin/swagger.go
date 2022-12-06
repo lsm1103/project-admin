@@ -149,7 +149,7 @@ func DocData() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		projectName := r.Form.Get("name")
-		path := "/Users/xm/Desktop/go_package/project-admin/project-admin/swagger.json"
+		path := "./swagger.json"
 		if projectName != ""{
 			path = fmt.Sprintf("../projectBuilds/%s/swagger.json", projectName)
 		}
