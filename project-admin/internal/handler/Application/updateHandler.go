@@ -22,14 +22,14 @@ func UpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := Application.NewUpdateLogic(r.Context(), svcCtx)
-		err := l.Update(&req)
+		resp, err := l.Update(&req)
 		/*
 			if err != nil {
 				httpx.Error(w, err)
 			} else {
-				httpx.Ok(w)
+				httpx.OkJson(w, resp)
 			}
 		*/
-		result.HttpResult(r, w, err, nil)
+		result.HttpResult(r, w, err, resp)
 	}
 }

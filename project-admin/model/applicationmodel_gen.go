@@ -21,12 +21,12 @@ import (
 var (
 	applicationFieldNames          = builder.RawFieldNames(&Application{})
 	applicationRows                = strings.Join(applicationFieldNames, ",")
-	applicationRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationFieldNames, "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`state`"), ",")
-	applicationRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationFieldNames, "`id`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), "=?,") + "=?"
+	applicationRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
+	applicationRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
 	applicationListRows            = strings.Join(builder.RawFieldNames(&Application{}), ",")
 
-	cacheGoZeroApplicationIdPrefix                        = "cache:goZero:application:id:"
-	cacheGoZeroApplicationCreateUserEnNameProjectIdPrefix = "cache:goZero:application:createUser:enName:projectId:"
+	cacheApplicationIdPrefix                        = "cache:application:id:"
+	cacheApplicationCreateUserEnNameProjectIdPrefix = "cache:application:createUser:enName:projectId:"
 )
 
 type (
@@ -76,8 +76,8 @@ func (m *defaultApplicationModel) Delete(ctx context.Context, session sqlx.Sessi
 	if err != nil {
 		return err
 	}
-	goZeroApplicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroApplicationCreateUserEnNameProjectIdPrefix, data.CreateUser, data.EnName, data.ProjectId)
-	goZeroApplicationIdKey := fmt.Sprintf("%s%v", cacheGoZeroApplicationIdPrefix, id)
+	applicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheApplicationCreateUserEnNameProjectIdPrefix, data.CreateUser, data.EnName, data.ProjectId)
+	applicationIdKey := fmt.Sprintf("%s%v", cacheApplicationIdPrefix, id)
 
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
@@ -85,13 +85,13 @@ func (m *defaultApplicationModel) Delete(ctx context.Context, session sqlx.Sessi
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, goZeroApplicationCreateUserEnNameProjectIdKey, goZeroApplicationIdKey)
+	}, applicationCreateUserEnNameProjectIdKey, applicationIdKey)
 	return err
 }
 
 func (m *defaultApplicationModel) FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error) {
-	goZeroApplicationIdKey := fmt.Sprintf("%s%v", cacheGoZeroApplicationIdPrefix, id)
-	err = m.QueryRowCtx(ctx, resp, goZeroApplicationIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	applicationIdKey := fmt.Sprintf("%s%v", cacheApplicationIdPrefix, id)
+	err = m.QueryRowCtx(ctx, resp, applicationIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", applicationRows, m.table)
 		if session != nil {
 			return session.QueryRowCtx(ctx, v, query, id)
@@ -109,9 +109,9 @@ func (m *defaultApplicationModel) FindOne(ctx context.Context, session sqlx.Sess
 }
 
 func (m *defaultApplicationModel) FindOneByCreateUserEnNameProjectId(ctx context.Context, createUser int64, enName string, projectId string) (*Application, error) {
-	goZeroApplicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroApplicationCreateUserEnNameProjectIdPrefix, createUser, enName, projectId)
+	applicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheApplicationCreateUserEnNameProjectIdPrefix, createUser, enName, projectId)
 	var resp Application
-	err := m.QueryRowIndexCtx(ctx, &resp, goZeroApplicationCreateUserEnNameProjectIdKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, applicationCreateUserEnNameProjectIdKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `create_user` = ? and `en_name` = ? and `project_id` = ? limit 1", applicationRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, createUser, enName, projectId); err != nil {
 			return nil, err
@@ -129,15 +129,15 @@ func (m *defaultApplicationModel) FindOneByCreateUserEnNameProjectId(ctx context
 }
 
 func (m *defaultApplicationModel) Insert(ctx context.Context, session sqlx.Session, data *Application) (sql.Result, error) {
-	goZeroApplicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroApplicationCreateUserEnNameProjectIdPrefix, data.CreateUser, data.EnName, data.ProjectId)
-	goZeroApplicationIdKey := fmt.Sprintf("%s%v", cacheGoZeroApplicationIdPrefix, data.Id)
+	applicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheApplicationCreateUserEnNameProjectIdPrefix, data.CreateUser, data.EnName, data.ProjectId)
+	applicationIdKey := fmt.Sprintf("%s%v", cacheApplicationIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, applicationRowsExpectAutoSet)
 		if session != nil {
 			return session.ExecCtx(ctx, query, data.Id, data.ZnName, data.EnName, data.Ico, data.Info, data.CreateUser, data.DemandIds, data.DocIds, data.JoinUsers, data.JoinGroups, data.ProjectId, data.Remark, data.Rank)
 		}
 		return conn.ExecCtx(ctx, query, data.Id, data.ZnName, data.EnName, data.Ico, data.Info, data.CreateUser, data.DemandIds, data.DocIds, data.JoinUsers, data.JoinGroups, data.ProjectId, data.Remark, data.Rank)
-	}, goZeroApplicationCreateUserEnNameProjectIdKey, goZeroApplicationIdKey)
+	}, applicationCreateUserEnNameProjectIdKey, applicationIdKey)
 	return ret, err
 }
 
@@ -146,22 +146,20 @@ func (m *defaultApplicationModel) Update(ctx context.Context, session sqlx.Sessi
 	if err != nil {
 		return err
 	}
-	goZeroApplicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroApplicationCreateUserEnNameProjectIdPrefix, data.CreateUser, data.EnName, data.ProjectId)
-	goZeroApplicationIdKey := fmt.Sprintf("%s%v", cacheGoZeroApplicationIdPrefix, data.Id)
-
+	applicationCreateUserEnNameProjectIdKey := fmt.Sprintf("%s%v:%v:%v", cacheApplicationCreateUserEnNameProjectIdPrefix, data.CreateUser, data.EnName, data.ProjectId)
+	applicationIdKey := fmt.Sprintf("%s%v", cacheApplicationIdPrefix, data.Id)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
-	}, goZeroApplicationCreateUserEnNameProjectIdKey, goZeroApplicationIdKey)
-
+	}, applicationCreateUserEnNameProjectIdKey, applicationIdKey)
 	return err
 }
 
 func (m *defaultApplicationModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheGoZeroApplicationIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheApplicationIdPrefix, primary)
 }
 
 func (m *defaultApplicationModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

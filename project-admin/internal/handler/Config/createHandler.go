@@ -22,14 +22,14 @@ func CreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := Config.NewCreateLogic(r.Context(), svcCtx)
-		err := l.Create(&req)
+		resp, err := l.Create(&req)
 		/*
 			if err != nil {
 				httpx.Error(w, err)
 			} else {
-				httpx.Ok(w)
+				httpx.OkJson(w, resp)
 			}
 		*/
-		result.HttpResult(r, w, err, nil)
+		result.HttpResult(r, w, err, resp)
 	}
 }

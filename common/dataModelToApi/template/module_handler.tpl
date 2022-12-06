@@ -31,7 +31,6 @@ service project {
 		handlerType:get
 	)
 	@handler Get
-
 	get /:id (GetReq) returns({{.tableName}})
 	
 	@doc (

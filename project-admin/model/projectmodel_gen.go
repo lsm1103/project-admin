@@ -21,12 +21,12 @@ import (
 var (
 	projectFieldNames          = builder.RawFieldNames(&Project{})
 	projectRows                = strings.Join(projectFieldNames, ",")
-	projectRowsExpectAutoSet   = strings.Join(stringx.Remove(projectFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
-	projectRowsWithPlaceHolder = strings.Join(stringx.Remove(projectFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	projectRowsExpectAutoSet   = strings.Join(stringx.Remove(projectFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
+	projectRowsWithPlaceHolder = strings.Join(stringx.Remove(projectFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
 	projectListRows            = strings.Join(builder.RawFieldNames(&Project{}), ",")
 
-	cacheGoZeroProjectIdPrefix                        = "cache:goZero:project:id:"
-	cacheGoZeroProjectCreateUserNameProjectTypePrefix = "cache:goZero:project:createUser:name:projectType:"
+	cacheProjectIdPrefix                        = "cache:project:id:"
+	cacheProjectCreateUserNameProjectTypePrefix = "cache:project:createUser:name:projectType:"
 )
 
 type (
@@ -73,8 +73,8 @@ func (m *defaultProjectModel) Delete(ctx context.Context, session sqlx.Session, 
 	if err != nil {
 		return err
 	}
-	goZeroProjectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroProjectCreateUserNameProjectTypePrefix, data.CreateUser, data.Name, data.ProjectType)
-	goZeroProjectIdKey := fmt.Sprintf("%s%v", cacheGoZeroProjectIdPrefix, id)
+	projectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheProjectCreateUserNameProjectTypePrefix, data.CreateUser, data.Name, data.ProjectType)
+	projectIdKey := fmt.Sprintf("%s%v", cacheProjectIdPrefix, id)
 
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
@@ -82,13 +82,13 @@ func (m *defaultProjectModel) Delete(ctx context.Context, session sqlx.Session, 
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, goZeroProjectCreateUserNameProjectTypeKey, goZeroProjectIdKey)
+	}, projectCreateUserNameProjectTypeKey, projectIdKey)
 	return err
 }
 
 func (m *defaultProjectModel) FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error) {
-	goZeroProjectIdKey := fmt.Sprintf("%s%v", cacheGoZeroProjectIdPrefix, id)
-	err = m.QueryRowCtx(ctx, resp, goZeroProjectIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	projectIdKey := fmt.Sprintf("%s%v", cacheProjectIdPrefix, id)
+	err = m.QueryRowCtx(ctx, resp, projectIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", projectRows, m.table)
 		if session != nil {
 			return session.QueryRowCtx(ctx, v, query, id)
@@ -106,9 +106,9 @@ func (m *defaultProjectModel) FindOne(ctx context.Context, session sqlx.Session,
 }
 
 func (m *defaultProjectModel) FindOneByCreateUserNameProjectType(ctx context.Context, createUser int64, name string, projectType int64) (*Project, error) {
-	goZeroProjectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroProjectCreateUserNameProjectTypePrefix, createUser, name, projectType)
+	projectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheProjectCreateUserNameProjectTypePrefix, createUser, name, projectType)
 	var resp Project
-	err := m.QueryRowIndexCtx(ctx, &resp, goZeroProjectCreateUserNameProjectTypeKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, projectCreateUserNameProjectTypeKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `create_user` = ? and `name` = ? and `project_type` = ? limit 1", projectRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, createUser, name, projectType); err != nil {
 			return nil, err
@@ -126,15 +126,15 @@ func (m *defaultProjectModel) FindOneByCreateUserNameProjectType(ctx context.Con
 }
 
 func (m *defaultProjectModel) Insert(ctx context.Context, session sqlx.Session, data *Project) (sql.Result, error) {
-	goZeroProjectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroProjectCreateUserNameProjectTypePrefix, data.CreateUser, data.Name, data.ProjectType)
-	goZeroProjectIdKey := fmt.Sprintf("%s%v", cacheGoZeroProjectIdPrefix, data.Id)
+	projectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheProjectCreateUserNameProjectTypePrefix, data.CreateUser, data.Name, data.ProjectType)
+	projectIdKey := fmt.Sprintf("%s%v", cacheProjectIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, projectRowsExpectAutoSet)
 		if session != nil {
 			return session.ExecCtx(ctx, query, data.Id, data.Name, data.Ico, data.Info, data.ProjectType, data.CreateUser, data.JoinUsers, data.JoinGroups, data.Remark, data.Rank)
 		}
 		return conn.ExecCtx(ctx, query, data.Id, data.Name, data.Ico, data.Info, data.ProjectType, data.CreateUser, data.JoinUsers, data.JoinGroups, data.Remark, data.Rank)
-	}, goZeroProjectCreateUserNameProjectTypeKey, goZeroProjectIdKey)
+	}, projectCreateUserNameProjectTypeKey, projectIdKey)
 	return ret, err
 }
 
@@ -143,22 +143,20 @@ func (m *defaultProjectModel) Update(ctx context.Context, session sqlx.Session, 
 	if err != nil {
 		return err
 	}
-	goZeroProjectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheGoZeroProjectCreateUserNameProjectTypePrefix, data.CreateUser, data.Name, data.ProjectType)
-	goZeroProjectIdKey := fmt.Sprintf("%s%v", cacheGoZeroProjectIdPrefix, data.Id)
-
+	projectCreateUserNameProjectTypeKey := fmt.Sprintf("%s%v:%v:%v", cacheProjectCreateUserNameProjectTypePrefix, data.CreateUser, data.Name, data.ProjectType)
+	projectIdKey := fmt.Sprintf("%s%v", cacheProjectIdPrefix, data.Id)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
-	}, goZeroProjectCreateUserNameProjectTypeKey, goZeroProjectIdKey)
-
+	}, projectCreateUserNameProjectTypeKey, projectIdKey)
 	return err
 }
 
 func (m *defaultProjectModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheGoZeroProjectIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheProjectIdPrefix, primary)
 }
 
 func (m *defaultProjectModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

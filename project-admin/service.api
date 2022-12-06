@@ -711,6 +711,38 @@ service project {
 	)
 	@handler Build
 	post /build (BuildReq)
+
+	@doc (
+		summary:构建项目api文件
+		handlerType:buildApiFile
+		serviceType:business
+	)
+	@handler BuildApiFile
+	post /buildApiFile (BuildApiFileReq)
+
+	@doc (
+		summary:构建项目api服务代码 (包含BuildDataModel代码)
+		handlerType:buildApiService
+		serviceType:business
+	)
+	@handler BuildApiService
+	post /buildApiService (BuildApiServiceReq)
+
+	@doc (
+		summary:构建Swagger文件
+		handlerType:buildSwaggerDoc
+		serviceType:business
+	)
+	@handler BuildSwaggerDoc
+	post /buildSwaggerDoc (BuildSwaggerDocReq)
+
+	@doc (
+		summary:运行服务，可选api/rpc/websocket/tcp/mqtt等服务
+		handlerType:runService
+		serviceType:business
+	)
+	@handler RunService
+	post /runService (RunServiceReq)
 }
 
 @server(

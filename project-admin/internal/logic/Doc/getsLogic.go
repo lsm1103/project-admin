@@ -26,7 +26,7 @@ func NewGetsLogic(ctx context.Context, svcCtx *svc.ServiceContext) GetsLogic {
 }
 
 func (l *GetsLogic) Gets(req *sqlUtils.GetsReq) (resp *types.DocList, err error) {
-	// 自动生成的后台管理接口
+	// 自动生成的后台管理接口v1
 	resp = &types.DocList{Current: req.Current, PageSize: req.PageSize}
 	err = l.svcCtx.DocModel.FindAll(req, &resp.List)
 	if err != nil {

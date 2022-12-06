@@ -25,8 +25,8 @@ var (
 	groupGroupRelationRowsWithPlaceHolder = strings.Join(stringx.Remove(groupGroupRelationFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
 	groupGroupRelationListRows            = strings.Join(builder.RawFieldNames(&GroupGroupRelation{}), ",")
 
-	cacheGoZeroGroupGroupRelationIdPrefix                                         = "cache:goZero:groupGroupRelation:id:"
-	cacheGoZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix = "cache:goZero:groupGroupRelation:createUser:masterGroupId:fromGroupId:relation:"
+	cacheGroupGroupRelationIdPrefix                                         = "cache:groupGroupRelation:id:"
+	cacheGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix = "cache:groupGroupRelation:createUser:masterGroupId:fromGroupId:relation:"
 )
 
 type (
@@ -68,8 +68,8 @@ func (m *defaultGroupGroupRelationModel) Delete(ctx context.Context, session sql
 	if err != nil {
 		return err
 	}
-	goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGoZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
-	goZeroGroupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGoZeroGroupGroupRelationIdPrefix, id)
+	groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
+	groupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGroupGroupRelationIdPrefix, id)
 
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
@@ -77,13 +77,13 @@ func (m *defaultGroupGroupRelationModel) Delete(ctx context.Context, session sql
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, goZeroGroupGroupRelationIdKey)
+	}, groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, groupGroupRelationIdKey)
 	return err
 }
 
 func (m *defaultGroupGroupRelationModel) FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error) {
-	goZeroGroupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGoZeroGroupGroupRelationIdPrefix, id)
-	err = m.QueryRowCtx(ctx, resp, goZeroGroupGroupRelationIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	groupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGroupGroupRelationIdPrefix, id)
+	err = m.QueryRowCtx(ctx, resp, groupGroupRelationIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", groupGroupRelationRows, m.table)
 		if session != nil {
 			return session.QueryRowCtx(ctx, v, query, id)
@@ -101,9 +101,9 @@ func (m *defaultGroupGroupRelationModel) FindOne(ctx context.Context, session sq
 }
 
 func (m *defaultGroupGroupRelationModel) FindOneByCreateUserMasterGroupIdFromGroupIdRelation(ctx context.Context, createUser int64, masterGroupId int64, fromGroupId int64, relation int64) (*GroupGroupRelation, error) {
-	goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGoZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, createUser, masterGroupId, fromGroupId, relation)
+	groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, createUser, masterGroupId, fromGroupId, relation)
 	var resp GroupGroupRelation
-	err := m.QueryRowIndexCtx(ctx, &resp, goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `create_user` = ? and `master_group_id` = ? and `from_group_id` = ? and `relation` = ? limit 1", groupGroupRelationRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, createUser, masterGroupId, fromGroupId, relation); err != nil {
 			return nil, err
@@ -121,15 +121,15 @@ func (m *defaultGroupGroupRelationModel) FindOneByCreateUserMasterGroupIdFromGro
 }
 
 func (m *defaultGroupGroupRelationModel) Insert(ctx context.Context, session sqlx.Session, data *GroupGroupRelation) (sql.Result, error) {
-	goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGoZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
-	goZeroGroupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGoZeroGroupGroupRelationIdPrefix, data.Id)
+	groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
+	groupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGroupGroupRelationIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, groupGroupRelationRowsExpectAutoSet)
 		if session != nil {
 			return session.ExecCtx(ctx, query, data.Id, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
 		}
 		return conn.ExecCtx(ctx, query, data.Id, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
-	}, goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, goZeroGroupGroupRelationIdKey)
+	}, groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, groupGroupRelationIdKey)
 	return ret, err
 }
 
@@ -138,22 +138,20 @@ func (m *defaultGroupGroupRelationModel) Update(ctx context.Context, session sql
 	if err != nil {
 		return err
 	}
-	goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGoZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
-	goZeroGroupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGoZeroGroupGroupRelationIdPrefix, data.Id)
-
+	groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey := fmt.Sprintf("%s%v:%v:%v:%v", cacheGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationPrefix, data.CreateUser, data.MasterGroupId, data.FromGroupId, data.Relation)
+	groupGroupRelationIdKey := fmt.Sprintf("%s%v", cacheGroupGroupRelationIdPrefix, data.Id)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
-	}, goZeroGroupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, goZeroGroupGroupRelationIdKey)
-
+	}, groupGroupRelationCreateUserMasterGroupIdFromGroupIdRelationKey, groupGroupRelationIdKey)
 	return err
 }
 
 func (m *defaultGroupGroupRelationModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheGoZeroGroupGroupRelationIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheGroupGroupRelationIdPrefix, primary)
 }
 
 func (m *defaultGroupGroupRelationModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

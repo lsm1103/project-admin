@@ -40,5 +40,6 @@ func (m *customProjectModel) FindAll(in *sqlUtils.GetsReq, resp interface{}) (er
 
 func (m *customProjectModel) SoftDelete(ctx context.Context, session sqlx.Session, data *Project) error {
 	data.State = sqlUtils.Del
-	return m.Update(ctx, session, data)
+	err := m.Update(ctx, session, data)
+	return err
 }

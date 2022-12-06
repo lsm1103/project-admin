@@ -44,7 +44,7 @@ func TestStartBuild(t *testing.T) {
 			ProjectName: "project-admin",
 			ServiceType: "admin",
 			Host:        "0.0.0.0",
-			Port:        "814",
+			Port:        "810",
 			DataSource: "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
 			CacheHost: "172.16.10.183:6379",
 			//DataSource: "root:lsm.1018@tcp(127.0.0.1:3306)/project-admin",

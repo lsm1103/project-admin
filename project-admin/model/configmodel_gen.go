@@ -21,12 +21,12 @@ import (
 var (
 	configFieldNames          = builder.RawFieldNames(&Config{})
 	configRows                = strings.Join(configFieldNames, ",")
-	configRowsExpectAutoSet   = strings.Join(stringx.Remove(configFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
-	configRowsWithPlaceHolder = strings.Join(stringx.Remove(configFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	configRowsExpectAutoSet   = strings.Join(stringx.Remove(configFieldNames, "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`state`"), ",")
+	configRowsWithPlaceHolder = strings.Join(stringx.Remove(configFieldNames, "`id`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), "=?,") + "=?"
 	configListRows            = strings.Join(builder.RawFieldNames(&Config{}), ",")
 
-	cacheGoZeroConfigIdPrefix        = "cache:goZero:config:id:"
-	cacheGoZeroConfigUserIdKeyPrefix = "cache:goZero:config:userId:key:"
+	cacheConfigIdPrefix        = "cache:config:id:"
+	cacheConfigUserIdKeyPrefix = "cache:config:userId:key:"
 )
 
 type (
@@ -67,8 +67,8 @@ func (m *defaultConfigModel) Delete(ctx context.Context, session sqlx.Session, i
 	if err != nil {
 		return err
 	}
-	goZeroConfigIdKey := fmt.Sprintf("%s%v", cacheGoZeroConfigIdPrefix, id)
-	goZeroConfigUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheGoZeroConfigUserIdKeyPrefix, data.UserId, data.Key)
+	configIdKey := fmt.Sprintf("%s%v", cacheConfigIdPrefix, id)
+	configUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheConfigUserIdKeyPrefix, data.UserId, data.Key)
 
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
@@ -76,13 +76,13 @@ func (m *defaultConfigModel) Delete(ctx context.Context, session sqlx.Session, i
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, goZeroConfigIdKey, goZeroConfigUserIdKeyKey)
+	}, configIdKey, configUserIdKeyKey)
 	return err
 }
 
 func (m *defaultConfigModel) FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error) {
-	goZeroConfigIdKey := fmt.Sprintf("%s%v", cacheGoZeroConfigIdPrefix, id)
-	err = m.QueryRowCtx(ctx, resp, goZeroConfigIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	configIdKey := fmt.Sprintf("%s%v", cacheConfigIdPrefix, id)
+	err = m.QueryRowCtx(ctx, resp, configIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", configRows, m.table)
 		if session != nil {
 			return session.QueryRowCtx(ctx, v, query, id)
@@ -100,9 +100,9 @@ func (m *defaultConfigModel) FindOne(ctx context.Context, session sqlx.Session, 
 }
 
 func (m *defaultConfigModel) FindOneByUserIdKey(ctx context.Context, userId int64, key int64) (*Config, error) {
-	goZeroConfigUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheGoZeroConfigUserIdKeyPrefix, userId, key)
+	configUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheConfigUserIdKeyPrefix, userId, key)
 	var resp Config
-	err := m.QueryRowIndexCtx(ctx, &resp, goZeroConfigUserIdKeyKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, configUserIdKeyKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `user_id` = ? and `key` = ? limit 1", configRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, userId, key); err != nil {
 			return nil, err
@@ -120,15 +120,15 @@ func (m *defaultConfigModel) FindOneByUserIdKey(ctx context.Context, userId int6
 }
 
 func (m *defaultConfigModel) Insert(ctx context.Context, session sqlx.Session, data *Config) (sql.Result, error) {
-	goZeroConfigIdKey := fmt.Sprintf("%s%v", cacheGoZeroConfigIdPrefix, data.Id)
-	goZeroConfigUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheGoZeroConfigUserIdKeyPrefix, data.UserId, data.Key)
+	configIdKey := fmt.Sprintf("%s%v", cacheConfigIdPrefix, data.Id)
+	configUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheConfigUserIdKeyPrefix, data.UserId, data.Key)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, configRowsExpectAutoSet)
 		if session != nil {
 			return session.ExecCtx(ctx, query, data.Id, data.UserId, data.Key, data.Value)
 		}
 		return conn.ExecCtx(ctx, query, data.Id, data.UserId, data.Key, data.Value)
-	}, goZeroConfigIdKey, goZeroConfigUserIdKeyKey)
+	}, configIdKey, configUserIdKeyKey)
 	return ret, err
 }
 
@@ -137,22 +137,20 @@ func (m *defaultConfigModel) Update(ctx context.Context, session sqlx.Session, d
 	if err != nil {
 		return err
 	}
-	goZeroConfigIdKey := fmt.Sprintf("%s%v", cacheGoZeroConfigIdPrefix, data.Id)
-	goZeroConfigUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheGoZeroConfigUserIdKeyPrefix, data.UserId, data.Key)
-
+	configIdKey := fmt.Sprintf("%s%v", cacheConfigIdPrefix, data.Id)
+	configUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheConfigUserIdKeyPrefix, data.UserId, data.Key)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
-	}, goZeroConfigIdKey, goZeroConfigUserIdKeyKey)
-
+	}, configIdKey, configUserIdKeyKey)
 	return err
 }
 
 func (m *defaultConfigModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheGoZeroConfigIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheConfigIdPrefix, primary)
 }
 
 func (m *defaultConfigModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

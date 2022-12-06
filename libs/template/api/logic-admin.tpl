@@ -33,15 +33,18 @@ func (l *{{.logic}}) {{.function}}({{if eq .handlerType "gets"}}req *sqlUtils.Ge
         return
     }
     sqlReq.Id = uniqueid.GenId()
-
     insertR, err := l.svcCtx.{{.moduleName}}Model.Insert(l.ctx, nil, sqlReq)
     if err != nil {
         return
     }
-    sqlReq.Id, err = insertR.LastInsertId()
+
+    id, err := insertR.LastInsertId()
     if err != nil {
         return
     }
+	if id != 0 {
+		sqlReq.Id = id
+	}
     resp = &types.{{.respType}}{}
     err = copier.Copy(resp, sqlReq)
     if err != nil {

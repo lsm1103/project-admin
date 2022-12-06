@@ -28,18 +28,31 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-func (l *CreateLogic) Create(req *types.CreateApplicationConfigReq) error {
-	// 自动生成的后台管理接口
+func (l *CreateLogic) Create(req *types.CreateApplicationConfigReq) (resp *types.ApplicationConfig, err error) {
+	// 自动生成的后台管理接口v1
 	sqlReq := &dataModel.ApplicationConfig{}
-	err := copier.Copy(sqlReq, req)
+	err = copier.Copy(sqlReq, req)
 	if err != nil {
-		return err
+		return
 	}
 	sqlReq.Id = uniqueid.GenId()
-	_, err = l.svcCtx.ApplicationConfigModel.Insert(l.ctx, nil, sqlReq)
+	insertR, err := l.svcCtx.ApplicationConfigModel.Insert(l.ctx, nil, sqlReq)
 	if err != nil {
-		return err
+		return
 	}
 
-	return nil
+	id, err := insertR.LastInsertId()
+	if err != nil {
+		return
+	}
+	if id != 0 {
+		sqlReq.Id = id
+	}
+	resp = &types.ApplicationConfig{}
+	err = copier.Copy(resp, sqlReq)
+	if err != nil {
+		return
+	}
+
+	return
 }

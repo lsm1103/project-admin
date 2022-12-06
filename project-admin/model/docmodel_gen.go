@@ -21,12 +21,12 @@ import (
 var (
 	docFieldNames          = builder.RawFieldNames(&Doc{})
 	docRows                = strings.Join(docFieldNames, ",")
-	docRowsExpectAutoSet   = strings.Join(stringx.Remove(docFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
-	docRowsWithPlaceHolder = strings.Join(stringx.Remove(docFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	docRowsExpectAutoSet   = strings.Join(stringx.Remove(docFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
+	docRowsWithPlaceHolder = strings.Join(stringx.Remove(docFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
 	docListRows            = strings.Join(builder.RawFieldNames(&Doc{}), ",")
 
-	cacheGoZeroDocIdPrefix             = "cache:goZero:doc:id:"
-	cacheGoZeroDocNameCreateUserPrefix = "cache:goZero:doc:name:createUser:"
+	cacheDocIdPrefix             = "cache:doc:id:"
+	cacheDocNameCreateUserPrefix = "cache:doc:name:createUser:"
 )
 
 type (
@@ -74,8 +74,8 @@ func (m *defaultDocModel) Delete(ctx context.Context, session sqlx.Session, id i
 	if err != nil {
 		return err
 	}
-	goZeroDocIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocIdPrefix, id)
-	goZeroDocNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheGoZeroDocNameCreateUserPrefix, data.Name, data.CreateUser)
+	docIdKey := fmt.Sprintf("%s%v", cacheDocIdPrefix, id)
+	docNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheDocNameCreateUserPrefix, data.Name, data.CreateUser)
 
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
@@ -83,13 +83,13 @@ func (m *defaultDocModel) Delete(ctx context.Context, session sqlx.Session, id i
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, goZeroDocIdKey, goZeroDocNameCreateUserKey)
+	}, docIdKey, docNameCreateUserKey)
 	return err
 }
 
 func (m *defaultDocModel) FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error) {
-	goZeroDocIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocIdPrefix, id)
-	err = m.QueryRowCtx(ctx, resp, goZeroDocIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	docIdKey := fmt.Sprintf("%s%v", cacheDocIdPrefix, id)
+	err = m.QueryRowCtx(ctx, resp, docIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", docRows, m.table)
 		if session != nil {
 			return session.QueryRowCtx(ctx, v, query, id)
@@ -107,9 +107,9 @@ func (m *defaultDocModel) FindOne(ctx context.Context, session sqlx.Session, id 
 }
 
 func (m *defaultDocModel) FindOneByNameCreateUser(ctx context.Context, name string, createUser int64) (*Doc, error) {
-	goZeroDocNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheGoZeroDocNameCreateUserPrefix, name, createUser)
+	docNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheDocNameCreateUserPrefix, name, createUser)
 	var resp Doc
-	err := m.QueryRowIndexCtx(ctx, &resp, goZeroDocNameCreateUserKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, docNameCreateUserKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `name` = ? and `create_user` = ? limit 1", docRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, name, createUser); err != nil {
 			return nil, err
@@ -127,15 +127,15 @@ func (m *defaultDocModel) FindOneByNameCreateUser(ctx context.Context, name stri
 }
 
 func (m *defaultDocModel) Insert(ctx context.Context, session sqlx.Session, data *Doc) (sql.Result, error) {
-	goZeroDocIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocIdPrefix, data.Id)
-	goZeroDocNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheGoZeroDocNameCreateUserPrefix, data.Name, data.CreateUser)
+	docIdKey := fmt.Sprintf("%s%v", cacheDocIdPrefix, data.Id)
+	docNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheDocNameCreateUserPrefix, data.Name, data.CreateUser)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, docRowsExpectAutoSet)
 		if session != nil {
 			return session.ExecCtx(ctx, query, data.Id, data.Name, data.CreateUser, data.PreContent, data.Content, data.ParentDoc, data.GroupId, data.Sort, data.EditorMode, data.OpenChildren, data.ShowChildren)
 		}
 		return conn.ExecCtx(ctx, query, data.Id, data.Name, data.CreateUser, data.PreContent, data.Content, data.ParentDoc, data.GroupId, data.Sort, data.EditorMode, data.OpenChildren, data.ShowChildren)
-	}, goZeroDocIdKey, goZeroDocNameCreateUserKey)
+	}, docIdKey, docNameCreateUserKey)
 	return ret, err
 }
 
@@ -144,22 +144,20 @@ func (m *defaultDocModel) Update(ctx context.Context, session sqlx.Session, data
 	if err != nil {
 		return err
 	}
-	goZeroDocIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocIdPrefix, data.Id)
-	goZeroDocNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheGoZeroDocNameCreateUserPrefix, data.Name, data.CreateUser)
-
+	docIdKey := fmt.Sprintf("%s%v", cacheDocIdPrefix, data.Id)
+	docNameCreateUserKey := fmt.Sprintf("%s%v:%v", cacheDocNameCreateUserPrefix, data.Name, data.CreateUser)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
-	}, goZeroDocIdKey, goZeroDocNameCreateUserKey)
-
+	}, docIdKey, docNameCreateUserKey)
 	return err
 }
 
 func (m *defaultDocModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheGoZeroDocIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheDocIdPrefix, primary)
 }
 
 func (m *defaultDocModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

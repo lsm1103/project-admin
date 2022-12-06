@@ -15,11 +15,11 @@ import (
 func HttpResult(r *http.Request, w http.ResponseWriter, err error, resp interface{}) {
 	if err == nil {
 		//成功返回
-		httpx.WriteJson(w, http.StatusOK, Success(resp))
+		httpx.OkJson(w, Success(resp))
 	} else {
 		//错误返回
 		errcode := xerr.SERVER_COMMON_ERROR
-		errmsg := "服务器开小差啦，稍后再来试一试"
+		errmsg := "服务器开小差啦，稍后再试一试"
 		causeErr := errors.Cause(err)                // err类型
 		if e, ok := causeErr.(*xerr.CodeError); ok { //自定义错误类型
 			//自定义CodeError
@@ -34,24 +34,22 @@ func HttpResult(r *http.Request, w http.ResponseWriter, err error, resp interfac
 				}
 			}
 		}
+
 		logx.WithContext(r.Context()).Errorf("【%s-API-ERR】】:%s, resp:%+v", r.RequestURI, err.Error(), resp)
-		if errcode == xerr.OK {
+		switch errcode {
+		case xerr.OK:
 			httpx.OkJson(w, &ResponseSuccessBean{
 				Code: errcode,
 				Msg:  errmsg,
 				Data: resp,
 			})
-			return
-		} else if errcode == xerr.ALREADY_EXISTS {
-			httpx.OkJson(w, &ResponseSuccessBean{
-				Code: errcode,
-				Msg:  errmsg,
-				Data: resp,
-			})
-			return
+		case xerr.TOKEN_EXPIRE_ERROR:
+			httpx.WriteJson(w, http.StatusUnauthorized, Error(errcode, errmsg))
+		default:
+			httpx.WriteJson(w, http.StatusCreated, Error(errcode, errmsg))
 		}
-		httpx.WriteJson(w, http.StatusCreated, Error(errcode, errmsg))
 	}
+	return
 }
 
 //授权的http方法

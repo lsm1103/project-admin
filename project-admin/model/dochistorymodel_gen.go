@@ -21,11 +21,11 @@ import (
 var (
 	docHistoryFieldNames          = builder.RawFieldNames(&DocHistory{})
 	docHistoryRows                = strings.Join(docHistoryFieldNames, ",")
-	docHistoryRowsExpectAutoSet   = strings.Join(stringx.Remove(docHistoryFieldNames, "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`state`"), ",")
-	docHistoryRowsWithPlaceHolder = strings.Join(stringx.Remove(docHistoryFieldNames, "`id`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`"), "=?,") + "=?"
+	docHistoryRowsExpectAutoSet   = strings.Join(stringx.Remove(docHistoryFieldNames, "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`state`"), ",")
+	docHistoryRowsWithPlaceHolder = strings.Join(stringx.Remove(docHistoryFieldNames, "`id`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`"), "=?,") + "=?"
 	docHistoryListRows            = strings.Join(builder.RawFieldNames(&DocHistory{}), ",")
 
-	cacheGoZeroDocHistoryIdPrefix = "cache:goZero:docHistory:id:"
+	cacheDocHistoryIdPrefix = "cache:docHistory:id:"
 )
 
 type (
@@ -58,7 +58,7 @@ func newDocHistoryModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultDocHistory
 }
 
 func (m *defaultDocHistoryModel) Delete(ctx context.Context, session sqlx.Session, id int64) error {
-	goZeroDocHistoryIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocHistoryIdPrefix, id)
+	docHistoryIdKey := fmt.Sprintf("%s%v", cacheDocHistoryIdPrefix, id)
 
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
@@ -66,13 +66,13 @@ func (m *defaultDocHistoryModel) Delete(ctx context.Context, session sqlx.Sessio
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, goZeroDocHistoryIdKey)
+	}, docHistoryIdKey)
 	return err
 }
 
 func (m *defaultDocHistoryModel) FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error) {
-	goZeroDocHistoryIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocHistoryIdPrefix, id)
-	err = m.QueryRowCtx(ctx, resp, goZeroDocHistoryIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	docHistoryIdKey := fmt.Sprintf("%s%v", cacheDocHistoryIdPrefix, id)
+	err = m.QueryRowCtx(ctx, resp, docHistoryIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", docHistoryRows, m.table)
 		if session != nil {
 			return session.QueryRowCtx(ctx, v, query, id)
@@ -90,33 +90,31 @@ func (m *defaultDocHistoryModel) FindOne(ctx context.Context, session sqlx.Sessi
 }
 
 func (m *defaultDocHistoryModel) Insert(ctx context.Context, session sqlx.Session, data *DocHistory) (sql.Result, error) {
-	goZeroDocHistoryIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocHistoryIdPrefix, data.Id)
+	docHistoryIdKey := fmt.Sprintf("%s%v", cacheDocHistoryIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, docHistoryRowsExpectAutoSet)
 		if session != nil {
 			return session.ExecCtx(ctx, query, data.Id, data.PreContent, data.CreateUser, data.DocId)
 		}
 		return conn.ExecCtx(ctx, query, data.Id, data.PreContent, data.CreateUser, data.DocId)
-	}, goZeroDocHistoryIdKey)
+	}, docHistoryIdKey)
 	return ret, err
 }
 
 func (m *defaultDocHistoryModel) Update(ctx context.Context, session sqlx.Session, data *DocHistory) error {
-	goZeroDocHistoryIdKey := fmt.Sprintf("%s%v", cacheGoZeroDocHistoryIdPrefix, data.Id)
-
+	docHistoryIdKey := fmt.Sprintf("%s%v", cacheDocHistoryIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
-	}, goZeroDocHistoryIdKey)
-
+	}, docHistoryIdKey)
 	return err
 }
 
 func (m *defaultDocHistoryModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheGoZeroDocHistoryIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheDocHistoryIdPrefix, primary)
 }
 
 func (m *defaultDocHistoryModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

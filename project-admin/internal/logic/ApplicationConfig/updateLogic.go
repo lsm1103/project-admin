@@ -27,17 +27,23 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 	}
 }
 
-func (l *UpdateLogic) Update(req *types.UpdateApplicationConfigReq) error {
-	// 自动生成的后台管理接口
+func (l *UpdateLogic) Update(req *types.UpdateApplicationConfigReq) (resp *types.ApplicationConfig, err error) {
+	// 自动生成的后台管理接口v1
 	sqlReq := &dataModel.ApplicationConfig{}
-	err := copier.Copy(sqlReq, req)
+	err = copier.Copy(sqlReq, req)
 	if err != nil {
-		return err
-	}
-	err = l.svcCtx.ApplicationConfigModel.Update(l.ctx, nil, sqlReq)
-	if err != nil {
-		return err
+		return
 	}
 
-	return nil
+	err = l.svcCtx.ApplicationConfigModel.Update(l.ctx, nil, sqlReq)
+	if err != nil {
+		return
+	}
+	resp = &types.ApplicationConfig{}
+	err = copier.Copy(resp, sqlReq)
+	if err != nil {
+		return
+	}
+
+	return
 }

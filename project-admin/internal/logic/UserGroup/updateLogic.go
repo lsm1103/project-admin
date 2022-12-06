@@ -27,17 +27,23 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 	}
 }
 
-func (l *UpdateLogic) Update(req *types.UpdateUserGroupReq) error {
-	// 自动生成的后台管理接口
+func (l *UpdateLogic) Update(req *types.UpdateUserGroupReq) (resp *types.UserGroup, err error) {
+	// 自动生成的后台管理接口v1
 	sqlReq := &dataModel.UserGroup{}
-	err := copier.Copy(sqlReq, req)
+	err = copier.Copy(sqlReq, req)
 	if err != nil {
-		return err
-	}
-	err = l.svcCtx.UserGroupModel.Update(l.ctx, nil, sqlReq)
-	if err != nil {
-		return err
+		return
 	}
 
-	return nil
+	err = l.svcCtx.UserGroupModel.Update(l.ctx, nil, sqlReq)
+	if err != nil {
+		return
+	}
+	resp = &types.UserGroup{}
+	err = copier.Copy(resp, sqlReq)
+	if err != nil {
+		return
+	}
+
+	return
 }

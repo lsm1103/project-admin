@@ -21,8 +21,8 @@ import (
 var (
 	applicationConfigFieldNames          = builder.RawFieldNames(&ApplicationConfig{})
 	applicationConfigRows                = strings.Join(applicationConfigFieldNames, ",")
-	applicationConfigRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationConfigFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
-	applicationConfigRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationConfigFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	applicationConfigRowsExpectAutoSet   = strings.Join(stringx.Remove(applicationConfigFieldNames, "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`state`"), ",")
+	applicationConfigRowsWithPlaceHolder = strings.Join(stringx.Remove(applicationConfigFieldNames, "`id`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`"), "=?,") + "=?"
 	applicationConfigListRows            = strings.Join(builder.RawFieldNames(&ApplicationConfig{}), ",")
 
 	cacheApplicationConfigIdPrefix                              = "cache:applicationConfig:id:"

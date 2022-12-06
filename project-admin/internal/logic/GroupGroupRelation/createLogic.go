@@ -28,18 +28,31 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-func (l *CreateLogic) Create(req *types.CreateGroupGroupRelationReq) error {
-	// 自动生成的后台管理接口
+func (l *CreateLogic) Create(req *types.CreateGroupGroupRelationReq) (resp *types.GroupGroupRelation, err error) {
+	// 自动生成的后台管理接口v1
 	sqlReq := &dataModel.GroupGroupRelation{}
-	err := copier.Copy(sqlReq, req)
+	err = copier.Copy(sqlReq, req)
 	if err != nil {
-		return err
+		return
 	}
 	sqlReq.Id = uniqueid.GenId()
-	_, err = l.svcCtx.GroupGroupRelationModel.Insert(l.ctx, nil, sqlReq)
+	insertR, err := l.svcCtx.GroupGroupRelationModel.Insert(l.ctx, nil, sqlReq)
 	if err != nil {
-		return err
+		return
 	}
 
-	return nil
+	id, err := insertR.LastInsertId()
+	if err != nil {
+		return
+	}
+	if id != 0 {
+		sqlReq.Id = id
+	}
+	resp = &types.GroupGroupRelation{}
+	err = copier.Copy(resp, sqlReq)
+	if err != nil {
+		return
+	}
+
+	return
 }

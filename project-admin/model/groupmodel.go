@@ -40,5 +40,6 @@ func (m *customGroupModel) FindAll(in *sqlUtils.GetsReq, resp interface{}) (err 
 
 func (m *customGroupModel) SoftDelete(ctx context.Context, session sqlx.Session, data *Group) error {
 	data.State = sqlUtils.Del
-	return m.Update(ctx, session, data)
+	err := m.Update(ctx, session, data)
+	return err
 }

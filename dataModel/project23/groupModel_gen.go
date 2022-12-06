@@ -21,8 +21,8 @@ import (
 var (
 	groupFieldNames          = builder.RawFieldNames(&Group{})
 	groupRows                = strings.Join(groupFieldNames, ",")
-	groupRowsExpectAutoSet   = strings.Join(stringx.Remove(groupFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
-	groupRowsWithPlaceHolder = strings.Join(stringx.Remove(groupFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	groupRowsExpectAutoSet   = strings.Join(stringx.Remove(groupFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
+	groupRowsWithPlaceHolder = strings.Join(stringx.Remove(groupFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
 	groupListRows            = strings.Join(builder.RawFieldNames(&Group{}), ",")
 
 	cacheGroupIdPrefix             = "cache:group:id:"

@@ -87,3 +87,9 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 	}
 	return nil
 }
+
+
+//BuildApiFile
+//BuildApiService(包含BuildDataModel)
+//BuildSwaggerDoc
+//RunService

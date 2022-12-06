@@ -21,12 +21,12 @@ import (
 var (
 	userGroupFieldNames          = builder.RawFieldNames(&UserGroup{})
 	userGroupRows                = strings.Join(userGroupFieldNames, ",")
-	userGroupRowsExpectAutoSet   = strings.Join(stringx.Remove(userGroupFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
-	userGroupRowsWithPlaceHolder = strings.Join(stringx.Remove(userGroupFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
+	userGroupRowsExpectAutoSet   = strings.Join(stringx.Remove(userGroupFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
+	userGroupRowsWithPlaceHolder = strings.Join(stringx.Remove(userGroupFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
 	userGroupListRows            = strings.Join(builder.RawFieldNames(&UserGroup{}), ",")
 
-	cacheGoZeroUserGroupIdPrefix            = "cache:goZero:userGroup:id:"
-	cacheGoZeroUserGroupUserIdGroupIdPrefix = "cache:goZero:userGroup:userId:groupId:"
+	cacheUserGroupIdPrefix            = "cache:userGroup:id:"
+	cacheUserGroupUserIdGroupIdPrefix = "cache:userGroup:userId:groupId:"
 )
 
 type (
@@ -66,8 +66,8 @@ func (m *defaultUserGroupModel) Delete(ctx context.Context, session sqlx.Session
 	if err != nil {
 		return err
 	}
-	goZeroUserGroupIdKey := fmt.Sprintf("%s%v", cacheGoZeroUserGroupIdPrefix, id)
-	goZeroUserGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheGoZeroUserGroupUserIdGroupIdPrefix, data.UserId, data.GroupId)
+	userGroupIdKey := fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, id)
+	userGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheUserGroupUserIdGroupIdPrefix, data.UserId, data.GroupId)
 
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
@@ -75,13 +75,13 @@ func (m *defaultUserGroupModel) Delete(ctx context.Context, session sqlx.Session
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, goZeroUserGroupIdKey, goZeroUserGroupUserIdGroupIdKey)
+	}, userGroupIdKey, userGroupUserIdGroupIdKey)
 	return err
 }
 
 func (m *defaultUserGroupModel) FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error) {
-	goZeroUserGroupIdKey := fmt.Sprintf("%s%v", cacheGoZeroUserGroupIdPrefix, id)
-	err = m.QueryRowCtx(ctx, resp, goZeroUserGroupIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+	userGroupIdKey := fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, id)
+	err = m.QueryRowCtx(ctx, resp, userGroupIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", userGroupRows, m.table)
 		if session != nil {
 			return session.QueryRowCtx(ctx, v, query, id)
@@ -99,9 +99,9 @@ func (m *defaultUserGroupModel) FindOne(ctx context.Context, session sqlx.Sessio
 }
 
 func (m *defaultUserGroupModel) FindOneByUserIdGroupId(ctx context.Context, userId int64, groupId int64) (*UserGroup, error) {
-	goZeroUserGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheGoZeroUserGroupUserIdGroupIdPrefix, userId, groupId)
+	userGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheUserGroupUserIdGroupIdPrefix, userId, groupId)
 	var resp UserGroup
-	err := m.QueryRowIndexCtx(ctx, &resp, goZeroUserGroupUserIdGroupIdKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, userGroupUserIdGroupIdKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `user_id` = ? and `group_id` = ? limit 1", userGroupRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, userId, groupId); err != nil {
 			return nil, err
@@ -119,15 +119,15 @@ func (m *defaultUserGroupModel) FindOneByUserIdGroupId(ctx context.Context, user
 }
 
 func (m *defaultUserGroupModel) Insert(ctx context.Context, session sqlx.Session, data *UserGroup) (sql.Result, error) {
-	goZeroUserGroupIdKey := fmt.Sprintf("%s%v", cacheGoZeroUserGroupIdPrefix, data.Id)
-	goZeroUserGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheGoZeroUserGroupUserIdGroupIdPrefix, data.UserId, data.GroupId)
+	userGroupIdKey := fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, data.Id)
+	userGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheUserGroupUserIdGroupIdPrefix, data.UserId, data.GroupId)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, userGroupRowsExpectAutoSet)
 		if session != nil {
 			return session.ExecCtx(ctx, query, data.Id, data.UserId, data.GroupId)
 		}
 		return conn.ExecCtx(ctx, query, data.Id, data.UserId, data.GroupId)
-	}, goZeroUserGroupIdKey, goZeroUserGroupUserIdGroupIdKey)
+	}, userGroupIdKey, userGroupUserIdGroupIdKey)
 	return ret, err
 }
 
@@ -136,22 +136,20 @@ func (m *defaultUserGroupModel) Update(ctx context.Context, session sqlx.Session
 	if err != nil {
 		return err
 	}
-	goZeroUserGroupIdKey := fmt.Sprintf("%s%v", cacheGoZeroUserGroupIdPrefix, data.Id)
-	goZeroUserGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheGoZeroUserGroupUserIdGroupIdPrefix, data.UserId, data.GroupId)
-
+	userGroupIdKey := fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, data.Id)
+	userGroupUserIdGroupIdKey := fmt.Sprintf("%s%v:%v", cacheUserGroupUserIdGroupIdPrefix, data.UserId, data.GroupId)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, strings.Join(sqlUtils.BuildFields(data, sqlUtils.IsEmptyValue), ", "))
 		if session != nil {
 			return session.Exec(query, data.Id)
 		}
 		return conn.Exec(query, data.Id)
-	}, goZeroUserGroupIdKey, goZeroUserGroupUserIdGroupIdKey)
-
+	}, userGroupIdKey, userGroupUserIdGroupIdKey)
 	return err
 }
 
 func (m *defaultUserGroupModel) formatPrimary(primary interface{}) string {
-	return fmt.Sprintf("%s%v", cacheGoZeroUserGroupIdPrefix, primary)
+	return fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, primary)
 }
 
 func (m *defaultUserGroupModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

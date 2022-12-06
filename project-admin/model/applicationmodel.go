@@ -40,5 +40,6 @@ func (m *customApplicationModel) FindAll(in *sqlUtils.GetsReq, resp interface{})
 
 func (m *customApplicationModel) SoftDelete(ctx context.Context, session sqlx.Session, data *Application) error {
 	data.State = sqlUtils.Del
-	return m.Update(ctx, session, data)
+	err := m.Update(ctx, session, data)
+	return err
 }

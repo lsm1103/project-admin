@@ -36,14 +36,17 @@ func (l *CreateLogic) Create(req *types.CreateDocReq) (resp *types.Doc, err erro
 		return
 	}
 	sqlReq.Id = uniqueid.GenId()
-
 	insertR, err := l.svcCtx.DocModel.Insert(l.ctx, nil, sqlReq)
 	if err != nil {
 		return
 	}
-	sqlReq.Id, err = insertR.LastInsertId()
+
+	id, err := insertR.LastInsertId()
 	if err != nil {
 		return
+	}
+	if id != 0 {
+		sqlReq.Id = id
 	}
 	resp = &types.Doc{}
 	err = copier.Copy(resp, sqlReq)

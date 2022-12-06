@@ -21,8 +21,8 @@ import (
 var (
 	configFieldNames          = builder.RawFieldNames(&Config{})
 	configRows                = strings.Join(configFieldNames, ",")
-	configRowsExpectAutoSet   = strings.Join(stringx.Remove(configFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
-	configRowsWithPlaceHolder = strings.Join(stringx.Remove(configFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
+	configRowsExpectAutoSet   = strings.Join(stringx.Remove(configFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`state`"), ",")
+	configRowsWithPlaceHolder = strings.Join(stringx.Remove(configFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
 	configListRows            = strings.Join(builder.RawFieldNames(&Config{}), ",")
 
 	cacheConfigIdPrefix        = "cache:config:id:"

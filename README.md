@@ -1,20 +1,14 @@
-
-## 业务功能
-### 组管理
-- 组的增删改查
-### 项目管理
-- 项目的增删改查？
-### application 管理
-- application的增删改查
-- application的数据库表设计文件 application.sql
-- application的接口设计文件 application.api
-- 自动生成文档，且可以修改，导出，全文搜索
-- 记录测试用例，且可以修改，导出
-- 增加新需求时，需要更新api文件
-- application开发进度监控功能, 在github/gitlab通过定时获取commit或者webhook更新commit
-- application持续集成，建议通过webhook推送后，拉代码，然后测试、打包；
-- application部署；通过点击按钮一键部署，通过配置ci后自动部署；
-
+## 目标
+- 支持关系型、非关系型、大数据数据库
+- 支持集群部署，拥有优异的访问性能
+- API 支持设置筛选条件、分页等选项
+- 支持通过界面创建 API
+- 自带请求校验、防SQL注入、HTTPS
+- 支持不同集群配置不同的连接信息
+- 生成规范的 API 文档以及调用代码
+- 支持关系型、非关系型、大数据数据库
+  支持 Mysql、Oracle、MariaDB、 SQL Server、PostgreSQL、MongoDB、Redis、Impala 等常见关系型、非关系型、大数据数据库中间件。对于新的的数据库类型可以动态扩充。
+- 改为 restfull
 
 ## 核心功能
 - 项目设计评审、数据库设计之后，先实现接口设计；
@@ -46,15 +40,31 @@ mock服务的生成，在logic.tpl引入一个mock类方法，该方法可以通
 - 实现生成python代码，而不仅仅是go
 
 - 数据库表自动生成方案要点
-  - 再读取数据库表时，需要对数据库表进行检查，涉及到用户相关等敏感信息，需要进行提醒、处理；
-  - 是否软删除，如果选择软删除则必须要添加 state 字段
+    - 再读取数据库表时，需要对数据库表进行检查，涉及到用户相关等敏感信息，需要进行提醒、处理；
+    - 是否软删除，如果选择软删除则必须要添加 state 字段
 
-## 持续集成
+## 业务功能
+### 组管理
+- 组的增删改查
+### 项目管理
+- 项目的增删改查？
+### application 管理
+- application的增删改查
+- application的数据库表设计文件 application.sql
+- application的接口设计文件 application.api
+- 自动生成文档，且可以修改，导出，全文搜索
+- 记录测试用例，且可以修改，导出
+- 增加新需求时，需要更新api文件
+- application开发进度监控功能, 在github/gitlab通过定时获取commit或者webhook更新commit
+- application持续集成，建议通过webhook推送后，拉代码，然后测试、打包；
+- application部署；通过点击按钮一键部署，通过配置ci后自动部署；
+
+### 持续集成
 - 实现一个镜像管理服务，由ci执行自动测试自动打包，然后出现在管理平台的版本列表里面，自动通知测试人员进行测试然后发行正式版本；
 
 ## 问题
 ### 数据库相关
-- 需要对查询的接口参数，在拼接sql的时候进行处理，把直接写的符号换成eq这些，防止xss攻击；
+- 1、需要对查询的接口参数，在拼接sql的时候进行处理，把直接写的符号换成eq这些，防止xss攻击；
 - 对一些随便写的参数进行过滤
   gt：表示大于>。即greater than
   ge：表示大于等于>=。即greater than or equals to
@@ -62,18 +72,10 @@ mock服务的生成，在logic.tpl引入一个mock类方法，该方法可以通
   le：表示小于等于<=。即less than or equals to
   eq：表示等于=。即equals
   ne：表示不等于!=。即not equals
-
-## 新增功能
-- 支持关系型、非关系型、大数据数据库
-- 支持集群部署，拥有优异的访问性能
-- API 支持设置筛选条件、分页等选项
-- 支持通过界面创建 API
-- 自带请求校验、防SQL注入、HTTPS
-- 支持不同集群配置不同的连接信息
-- 生成规范的 API 文档以及调用代码
-- 支持关系型、非关系型、大数据数据库
-  支持 Mysql、Oracle、MariaDB、 SQL Server、PostgreSQL、MongoDB、Redis、Impala 等常见关系型、非关系型、大数据数据库中间件。对于新的的数据库类型可以动态扩充。
-- 改为 restfull
+### 2、返回的时间字段会输出不标准格式
+    "create_time": "2022-11-14T20:02:25+08:00",
+    "update_time": "2022-11-14T20:02:25+08:00"
+### 3、是否对返回的空字段进行过滤
 
 ## restfull
 ```text
@@ -200,10 +202,11 @@ go run goctl.go model mysql ddl -src=/Users/xm/Desktop/go_package/project-admin/
 })
 - go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/project2 -api ../../projectBuilds/project2/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/project2 -api ../../projectBuilds/project2/service.api
 
-#### 3
+#### 测试3
 - go run goctl.go model mysql ddl -src=../../deploy/init.sql  -dir="../../dataModel/project3/." -c --home ../template
 - go run goctl.go api go -style goZero --home ../template -dir ../../projectBuilds/project3 -api ../../projectBuilds/project3/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../projectBuilds/project3 -api ../../projectBuilds/project3/service.api
 
+goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../project-admin -api ../../project-admin/service.api
 
 go run goctl.go api go -style goZero --home ../template -dir ../../project-admin -api ../../project-admin/service.api && goctl api plugin -plugin goctl-swagger="swagger -filename swagger.json" -dir ../../project-admin -api ../../project-admin/service.api
 
@@ -300,17 +303,38 @@ serviceType:business
 post /getBuild(GetBuildReq) returns(Build)
 ```
 
+```http request
+#构建（自动生成代码）
+/admin/Application/v1/build
+req:
+{
+    "title": "项目23",
+    "author": "lsm",
+    "desc": "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；",
+    "email": "18370872400@163.com",
+    "host": "0.0.0.0",
+    "port": "823",
+    "version": "v0.1.1",
+	
+    "projectName": "project23",
+    "service_type": "admin",
+    "style": "goZero",
+    "templatePath": "",
+    "cacheHost": "172.16.10.183:6379",
+    "dataSource": "root:pujian123@tcp(172.16.10.183:4306)/project-admin",
+    "database": "",
+    "ddlArg": {
+        "cache": true,
+        "src": "",
+        "strict": false
+    }
+}
 
-```text
-goctl error: 4:75: expected operand, found ',' (and 1 more errors)\ngoTL_OS=darwin\nGOCTL_ARCH=amd64\nGOCTL_HOME=/Users/xm/.goctl\nGOCTL_DEBUG=False\nGOCTL_CACHE=/Users/xm/.goctl/cache\nGOCTL_VERSION=1.4.2\nPROTOC_VERSION=3.17.3\nPROTOC_GEN_GO_VERSION=\nPROTO_GEN_GO_GRPC_VERSION=\nmessage: go format error:\n
-
-var (
-    tgroupFieldNames          = builder.RawFieldNames(\u0026Group{})
-    tgroupRows                = strings.Join(groupFieldNames, \",\")
-    groupRowsExpectAutoSet   = strings.Join(stringx.Remove(groupFieldNames,  , \"`state`\"), \",\")
-    tgroupRowsWithPlaceHolder = strings.Join(stringx.Remove(groupFieldNames, \"`id`\", ), \"=?,\") + \"=?\"
-    groupListRows   =  strings.Join( builder.RawFieldNames( \u0026Group{} ), \",\")
-    cacheGroupIdPrefix = \"cache:group:id:\"
-    cacheGroupCreateUserNamePrefix = \"cache:group:createUser:name:\"
-)
+Response:
+{
+  "code": 200,
+  "msg": "OK",
+  "data": null
+}
 ```
+
