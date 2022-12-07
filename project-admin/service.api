@@ -346,7 +346,7 @@ type (
 		DdlArg   DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
 	}
 
-	BuildReq {
+	BuildSwaggerDocReq {
 		Title   string `json:"title,content=项目标题"`
 		Desc    string `json:"desc,content=项目说明"`
 		Author  string `json:"author,content=项目作者"`

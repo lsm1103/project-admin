@@ -6,7 +6,6 @@ import (
 	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
 	"project-admin/common/buildCode"
-	"project-admin/common/dataModelToApi"
 	"project-admin/common/xerr"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -28,8 +27,33 @@ func NewBuildLogic(ctx context.Context, svcCtx *svc.ServiceContext) BuildLogic {
 	}
 }
 
-func (l *BuildLogic) Build(req *types.BuildReq) error {
-	build := buildCode.BuildCode{RootPkgPath: l.svcCtx.RootPkgPath}
+func (l *BuildLogic) Build(req *types.BuildReq, id int64) error {
+	//app := &types.Application{}
+	//err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
+	//if err != nil {
+	//	return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),"获取数据失败：%s", err.Error())
+	//}
+	//
+	build := buildCode.BuildCode{
+		RootPkgPath: l.svcCtx.RootPkgPath,
+		//Info:        buildCode.BuildAppInfo{
+		//	Title:        app.ZnName,
+		//	Desc:         app.Info,
+		//	Author:       "",
+		//	Email:        "",
+		//	Version:      "",
+		//	ProjectName:  app.EnName,
+		//	ServiceType:  "",
+		//	Host:         "",
+		//	Port:         "",
+		//	DataSource:   "",
+		//	CacheHost:    "",
+		//	Style:        "",
+		//	TemplatePath: "",
+		//	Database:     "",
+		//	DdlArg:       buildCode.DdlArg{},
+		//},
+	}
 	err := copier.Copy(&build.Info, req)
 	if err != nil {
 		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
@@ -45,51 +69,62 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 	if len(build.Info.IgnoreColumns) == 0{
 		build.Info.IgnoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
 	}
-	//生成数据库curl代码
-	err = build.BuildDataModel()
-	if err != nil {
-		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
-			"生成数据库curl代码失败：%s", err.Error())
-	}
-	//生成api文件
-	dataModelToApi.DataModelToApi{
-		build.RootPkgPath,
-		dataModelToApi.ServiceInfo{
-			Title:   build.Info.Title,
-			Desc:    build.Info.Desc,
-			Author:  build.Info.Author,
-			Email:   build.Info.Email,
-			Version: build.Info.Version,
 
-			ProjectName: build.Info.ProjectName,
-			ServiceType: build.Info.ServiceType,
-			Host:        build.Info.Host,
-			Port:        build.Info.Port,
-			DataSource: build.Info.DataSource,
-			CacheHost: build.Info.CacheHost,
-		}, dataModelToApi.SqlParseCfg{
-			Filename: build.Info.DdlArg.Src,
-			Database: build.Info.Database,
-			Strict: build.Info.Strict,
-		},
-	}.StartBuild()
-	//生成api服务代码
-	err = build.BuildApiService()
-	if err != nil {
-		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
-			"生成api服务代码失败：%s", err.Error())
-	}
-	//生成swagger doc文件
-	err = build.BuildSwaggerDoc()
-	if err != nil {
-		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
-			"生成swagger doc文件失败：%s", err.Error())
+	buildType := "buildAll"
+	switch buildType {
+	case "buildApiFile":
+		//生成api文件
+		err = build.BuildApiFile()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成api文件失败：%s", err.Error())
+		}
+	case "buildDataModel":
+		//生成数据库curl代码
+		err = build.BuildDataModel()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成数据库curl代码失败：%s", err.Error())
+		}
+	case "buildApiService":
+		//生成api服务代码
+		err = build.BuildApiService()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成api服务代码失败：%s", err.Error())
+		}
+	case "buildSwaggerDoc":
+		//生成swagger doc文件
+		err = build.BuildSwaggerDoc()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成swagger doc文件失败：%s", err.Error())
+		}
+	case "buildAll":
+		//生成api文件
+		err = build.BuildApiFile()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成api文件失败：%s", err.Error())
+		}
+		//生成数据库curl代码
+		err = build.BuildDataModel()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成数据库curl代码失败：%s", err.Error())
+		}
+		//生成api服务代码
+		err = build.BuildApiService()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成api服务代码失败：%s", err.Error())
+		}
+		//生成swagger doc文件
+		err = build.BuildSwaggerDoc()
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
+				"生成swagger doc文件失败：%s", err.Error())
+		}
 	}
 	return nil
 }
-
-
-//BuildApiFile
-//BuildApiService(包含BuildDataModel)
-//BuildSwaggerDoc
-//RunService

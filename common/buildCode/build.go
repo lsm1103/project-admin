@@ -7,6 +7,7 @@ import (
 	"github.com/zeromicro/go-zero/tools/goctl/util/console"
 	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
 	"golang.org/x/xerrors"
+	"project-admin/common/dataModelToApi"
 	"strings"
 
 	gogen "project-admin/libs/goctl_/api-gogen"
@@ -28,14 +29,14 @@ type DdlArg struct {
 	IgnoreColumns 	[]string
 }
 type BuildAppInfo struct {
-	Title       string `json:"title,content=项目标题"`
-	Desc        string `json:"desc,content=项目说明"`
-	Author      string `json:"author,content=项目作者"`
+	Title       string `json:"title,content=应用标题"`
+	Desc        string `json:"desc,content=应用说明"`
+	Author      string `json:"author,content=应用作者"`
 	Email       string `json:"email,content=联系邮箱"`
 	Version     string `json:"version,content=版本号"`
 
-	ProjectName string `json:"projectName,content=项目英文名称"`
-	ServiceType string `json:"service_type,options=admin|mock,content=项目生成类型"`
+	ProjectName string `json:"projectName,content=应用英文名称"`
+	ServiceType string `json:"service_type,options=admin|mock,content=应用生成类型"`
 	Host        string `json:"host,content=域名"`
 	Port        string `json:"port,content=端口"`
 	DataSource  string `json:"dataSource,content=数据源"`
@@ -45,6 +46,31 @@ type BuildAppInfo struct {
 
 	Database 	string `json:"database,content=数据库名"`
 	DdlArg  		   `json:"ddlArg,content=生成数据库curl代码配置"`
+}
+
+//生成api文件
+func (m BuildCode)BuildApiFile() error {
+	return dataModelToApi.DataModelToApi{
+		m.RootPkgPath,
+		dataModelToApi.ServiceInfo{
+			Title:   m.Info.Title,
+			Desc:    m.Info.Desc,
+			Author:  m.Info.Author,
+			Email:   m.Info.Email,
+			Version: m.Info.Version,
+
+			ProjectName: m.Info.ProjectName,
+			ServiceType: m.Info.ServiceType,
+			Host:        m.Info.Host,
+			Port:        m.Info.Port,
+			DataSource: m.Info.DataSource,
+			CacheHost: m.Info.CacheHost,
+		}, dataModelToApi.SqlParseCfg{
+			Filename: m.Info.DdlArg.Src,
+			Database: m.Info.Database,
+			Strict: m.Info.Strict,
+		},
+	}.StartBuild()
 }
 
 //生成数据库curl代码
@@ -88,6 +114,7 @@ func (m BuildCode)BuildApiService() error {
 	return gogen.DoGenProject(apiFile, dir, m.Info.Style)
 }
 
+//生成swagger doc文件
 func (m BuildCode)BuildSwaggerDoc() error {
 	apiFilePath := fmt.Sprintf("%s/projectBuilds/%s/service.api", m.RootPkgPath, m.Info.ProjectName)
 	sp, err := parser.Parse(apiFilePath)

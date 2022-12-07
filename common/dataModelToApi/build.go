@@ -54,21 +54,21 @@ type (
 var ignoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
 var updateColumns = []string{"id", "state"}
 
-func (m DataModelToApi)StartBuild() {
+func (m DataModelToApi)StartBuild() error {
 	//info模版
 	infoText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/info.tpl", m.RootPkgPath))
 	if err != nil {
-		panic(err)
+		return err
 	}
 	infoOutput, err := m.buildCode(infoText, m.ServiceCfg)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	//解析数据库sql文件
 	tables, err := parser.Parse(m.SqlCfg.Filename, m.SqlCfg.Database, m.SqlCfg.Strict)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	typesOutputs := []string{}
 	moduleHandlerOutputs := []string{}
@@ -77,11 +77,11 @@ func (m DataModelToApi)StartBuild() {
 		//types模版
 		fieldText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/field.tpl", m.RootPkgPath))
 		if err != nil {
-			panic(err)
+			return err
 		}
 		allFields, err := m.genFields(fieldText, item.Fields, "", "all")
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		createList := []*parser.Field{}
@@ -97,12 +97,12 @@ func (m DataModelToApi)StartBuild() {
 		//createFields
 		createFields, err := m.genFields(fieldText, createList, "", "create")
 		if err != nil {
-			panic(err)
+			return err
 		}
 		//updateFields
 		updateFields, err := m.genFields(fieldText, updateList, ",optional", "update")
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		typesData := map[string]string{
@@ -113,25 +113,25 @@ func (m DataModelToApi)StartBuild() {
 		}
 		typesText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/types.tpl", m.RootPkgPath))
 		if err != nil {
-			panic(err)
+			return err
 		}
 		typesOutput, err := m.buildCode(typesText, typesData)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		typesOutputs = append(typesOutputs, typesOutput.String())
 
 		//module_handler 模版
 		moduleHandlerText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/module_handler.tpl", m.RootPkgPath))
 		if err != nil {
-			panic(err)
+			return err
 		}
 		moduleHandlerOutput, err := m.buildCode(moduleHandlerText, map[string]string{
 			"tableName": item.Name.ToCamel(),
 			"serviceType": m.ServiceCfg.ServiceType,
 		})
 		if err != nil {
-			panic(err)
+			return err
 		}
 		moduleHandlerOutputs = append(moduleHandlerOutputs, moduleHandlerOutput.String())
 	}
@@ -144,11 +144,11 @@ func (m DataModelToApi)StartBuild() {
 	}
 	text, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/adminManage.tpl", m.RootPkgPath))
 	if err != nil {
-		panic(err)
+		return err
 	}
 	output, err := m.buildCode(text, data)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	outDir := path.Join(fmt.Sprintf("%s/projectBuilds", m.RootPkgPath), m.ServiceCfg.ProjectName)
@@ -160,9 +160,10 @@ func (m DataModelToApi)StartBuild() {
 	//为每个表创建api文件
 	err = ioutil.WriteFile(outFile, output.Bytes(), os.ModePerm)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Printf("project dir:%s is build done\n", outFile)
+	return nil
 }
 
 //生成字段列表
@@ -240,7 +241,7 @@ func (m DataModelToApi)genFields(fieldTemplate string, fields []*parser.Field, t
 func (m DataModelToApi)buildCode(strTemplate string, data interface{}) (*bytes.Buffer, error) {
 	tpl, err := template.New("templateOne").Parse(strTemplate) // （2）解析模板
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	buf := new(bytes.Buffer)
