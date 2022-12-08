@@ -130,24 +130,24 @@ type GroupGroupRelationList struct {
 }
 
 type CreateConfigReq struct {
-	UserId int64 `json:"user_id"` // 用户id
-	Key    int64 `json:"key"`     // key
-	Value  int64 `json:"value"`   // value
+	UserId int64  `json:"user_id"` // 用户id
+	Key    string `json:"key"`     // key
+	Value  string `json:"value"`   // value
 }
 
 type UpdateConfigReq struct {
-	Id     int64 `json:"id"`               // 主键
-	UserId int64 `json:"user_id,optional"` // 用户id
-	Key    int64 `json:"key,optional"`     // key
-	Value  int64 `json:"value,optional"`   // value
-	State  int64 `json:"state,optional"`   // 状态，-2删除，-1禁用，待审核0，启用1
+	Id     int64  `json:"id"`               // 主键
+	UserId int64  `json:"user_id,optional"` // 用户id
+	Key    string `json:"key,optional"`     // key
+	Value  string `json:"value,optional"`   // value
+	State  int64  `json:"state,optional"`   // 状态，-2删除，-1禁用，待审核0，启用1
 }
 
 type Config struct {
 	Id         int64  `json:"id"`          // 主键
 	UserId     int64  `json:"user_id"`     // 用户id
-	Key        int64  `json:"key"`         // key
-	Value      int64  `json:"value"`       // value
+	Key        string `json:"key"`         // key
+	Value      string `json:"value"`       // value
 	State      int64  `json:"state"`       // 状态，-2删除，-1禁用，待审核0，启用1
 	CreateTime string `json:"create_time"` // 创建时间
 	UpdateTime string `json:"update_time"` // 更新时间
@@ -292,35 +292,38 @@ type BuildReq struct {
 	DdlArg       DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
 }
 
-type CreateApplicationConfigReq struct {
-	CreateUser    int64 `json:"create_user"`    // 所属用户
-	ApplicationId int64 `json:"application_id"` // 应用id
-	ConfigId      int64 `json:"config_id"`      // 配置id
+type CreateApplicationInfoReq struct {
+	CreateUser    int64  `json:"create_user"`    // 所属用户
+	ApplicationId int64  `json:"application_id"` // 应用id
+	Version       string `json:"version"`        // 版本号
+	ConfigIds     string `json:"config_ids"`     // 配置ids ","号分隔
 }
 
-type UpdateApplicationConfigReq struct {
-	Id            int64 `json:"id"`                      // 主键
-	CreateUser    int64 `json:"create_user,optional"`    // 所属用户
-	ApplicationId int64 `json:"application_id,optional"` // 应用id
-	ConfigId      int64 `json:"config_id,optional"`      // 配置id
-	State         int64 `json:"state,optional"`          // 状态，-2删除，-1禁用，待审核0，启用1
+type UpdateApplicationInfoReq struct {
+	Id            int64  `json:"id"`                      // 主键
+	CreateUser    int64  `json:"create_user,optional"`    // 所属用户
+	ApplicationId int64  `json:"application_id,optional"` // 应用id
+	Version       string `json:"version"`                 // 版本号
+	ConfigIds     string `json:"config_ids"`              // 配置ids ","号分隔
+	State         int64  `json:"state,optional"`          // 状态，-2删除，-1禁用，待审核0，启用1
 }
 
-type ApplicationConfig struct {
+type ApplicationInfo struct {
 	Id            int64  `json:"id"`             // 主键
 	CreateUser    int64  `json:"create_user"`    // 所属用户
 	ApplicationId int64  `json:"application_id"` // 应用id
-	ConfigId      int64  `json:"config_id"`      // 配置id
+	Version       string `json:"version"`        // 版本号
+	ConfigIds     string `json:"config_ids"`     // 配置ids ","号分隔
 	State         int64  `json:"state"`          // 状态，-2删除，-1禁用，待审核0，启用1
 	CreateTime    string `json:"create_time"`    // 创建时间
 	UpdateTime    string `json:"update_time"`    // 更新时间
 }
 
-type ApplicationConfigList struct {
-	List     []*ApplicationConfig `json:"list"tag:"list"`                     // 数据列表
-	Current  int64                `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
-	PageSize int64                `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
-	IsNext   bool                 `json:"isNext"tag:"bool"`                   // 是否有下一页
+type ApplicationInfoList struct {
+	List     []*ApplicationInfo `json:"list"tag:"list"`                     // 数据列表
+	Current  int64              `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+	PageSize int64              `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+	IsNext   bool               `json:"isNext"tag:"bool"`                   // 是否有下一页
 }
 
 type CreateDocReq struct {

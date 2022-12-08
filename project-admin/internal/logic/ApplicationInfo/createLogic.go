@@ -1,4 +1,4 @@
-package ApplicationConfig
+package ApplicationInfo
 
 import (
 	"context"
@@ -28,15 +28,15 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) CreateLogic
 	}
 }
 
-func (l *CreateLogic) Create(req *types.CreateApplicationConfigReq) (resp *types.ApplicationConfig, err error) {
+func (l *CreateLogic) Create(req *types.CreateApplicationInfoReq) (resp *types.ApplicationInfo, err error) {
 	// 自动生成的后台管理接口v1
-	sqlReq := &dataModel.ApplicationConfig{}
+	sqlReq := &dataModel.ApplicationInfo{}
 	err = copier.Copy(sqlReq, req)
 	if err != nil {
 		return
 	}
 	sqlReq.Id = uniqueid.GenId()
-	insertR, err := l.svcCtx.ApplicationConfigModel.Insert(l.ctx, nil, sqlReq)
+	insertR, err := l.svcCtx.ApplicationInfoModel.Insert(l.ctx, nil, sqlReq)
 	if err != nil {
 		return
 	}
@@ -48,7 +48,7 @@ func (l *CreateLogic) Create(req *types.CreateApplicationConfigReq) (resp *types
 	if id != 0 {
 		sqlReq.Id = id
 	}
-	resp = &types.ApplicationConfig{}
+	resp = &types.ApplicationInfo{}
 	err = copier.Copy(resp, sqlReq)
 	if err != nil {
 		return

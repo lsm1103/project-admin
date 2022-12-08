@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	Application "project-admin/project-admin/internal/handler/Application"
-	ApplicationConfig "project-admin/project-admin/internal/handler/ApplicationConfig"
+	ApplicationInfo "project-admin/project-admin/internal/handler/ApplicationInfo"
 	Config "project-admin/project-admin/internal/handler/Config"
 	Doc "project-admin/project-admin/internal/handler/Doc"
 	DocHistory "project-admin/project-admin/internal/handler/DocHistory"
@@ -215,30 +215,30 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/",
-				Handler: ApplicationConfig.CreateHandler(serverCtx),
+				Handler: ApplicationInfo.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
 				Path:    "/",
-				Handler: ApplicationConfig.UpdateHandler(serverCtx),
+				Handler: ApplicationInfo.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
 				Path:    "/",
-				Handler: ApplicationConfig.DeleteHandler(serverCtx),
+				Handler: ApplicationInfo.DeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
 				Path:    "/:id",
-				Handler: ApplicationConfig.GetHandler(serverCtx),
+				Handler: ApplicationInfo.GetHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/gets",
-				Handler: ApplicationConfig.GetsHandler(serverCtx),
+				Handler: ApplicationInfo.GetsHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/admin/ApplicationConfig/v1"),
+		rest.WithPrefix("/admin/ApplicationInfo/v1"),
 	)
 
 	server.AddRoutes(

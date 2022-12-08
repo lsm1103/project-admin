@@ -155,23 +155,23 @@ type (
 
 type (
 	createConfigReq {
-		UserId int64 `json:"user_id"` // 用户id
-		Key    int64 `json:"key"`     // key
-		Value  int64 `json:"value"`   // value
+		UserId int64  `json:"user_id"` // 用户id
+		Key    string `json:"key"`     // key
+		Value  string `json:"value"`   // value
 	}
 
 	updateConfigReq {
-		Id     int64 `json:"id"`               // 主键
-		UserId int64 `json:"user_id,optional"` // 用户id
-		Key    int64 `json:"key,optional"`     // key
-		Value  int64 `json:"value,optional"`   // value
-		State  int64 `json:"state,optional"`   // 状态，-2删除，-1禁用，待审核0，启用1
+		Id     int64  `json:"id"`               // 主键
+		UserId int64  `json:"user_id,optional"` // 用户id
+		Key    string `json:"key,optional"`     // key
+		Value  string `json:"value,optional"`   // value
+		State  int64  `json:"state,optional"`   // 状态，-2删除，-1禁用，待审核0，启用1
 	}
 	Config {
 		Id         int64  `json:"id"`          // 主键
 		UserId     int64  `json:"user_id"`     // 用户id
-		Key        int64  `json:"key"`         // key
-		Value      int64  `json:"value"`       // value
+		Key        string `json:"key"`         // key
+		Value      string `json:"value"`       // value
 		State      int64  `json:"state"`       // 状态，-2删除，-1禁用，待审核0，启用1
 		CreateTime string `json:"create_time"` // 创建时间
 		UpdateTime string `json:"update_time"` // 更新时间
@@ -325,98 +325,41 @@ type (
 		Database string `json:"database,optional,content=数据库名"`
 		DdlArg   DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
 	}
-
-	BuildApiFileReq {
-		Title   string `json:"title,content=项目标题"`
-		Desc    string `json:"desc,content=项目说明"`
-		Author  string `json:"author,content=项目作者"`
-		Email   string `json:"email,content=联系邮箱"`
-		Version string `json:"version,content=版本号"`
-
-		ProjectName  string `json:"projectName,content=项目英文名称"`
-		ServiceType  string `json:"service_type,options=admin|mock,content=项目生成类型"`
-		Host         string `json:"host,content=域名"`
-		Port         string `json:"port,content=端口"`
-		DataSource   string `json:"dataSource,content=数据源"`
-		CacheHost    string `json:"cacheHost,content=缓存域名"`
-		Style        string `json:"style,default=goZero,content=项目代码风格"`
-		TemplatePath string `json:"templatePath,optional,content=模版地址"`
-
-		Database string `json:"database,optional,content=数据库名"`
-		DdlArg   DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
-	}
-
-	BuildSwaggerDocReq {
-		Title   string `json:"title,content=项目标题"`
-		Desc    string `json:"desc,content=项目说明"`
-		Author  string `json:"author,content=项目作者"`
-		Email   string `json:"email,content=联系邮箱"`
-		Version string `json:"version,content=版本号"`
-
-		ProjectName  string `json:"projectName,content=项目英文名称"`
-		ServiceType  string `json:"service_type,options=admin|mock,content=项目生成类型"`
-		Host         string `json:"host,content=域名"`
-		Port         string `json:"port,content=端口"`
-		DataSource   string `json:"dataSource,content=数据源"`
-		CacheHost    string `json:"cacheHost,content=缓存域名"`
-		Style        string `json:"style,default=goZero,content=项目代码风格"`
-		TemplatePath string `json:"templatePath,optional,content=模版地址"`
-
-		Database string `json:"database,optional,content=数据库名"`
-		DdlArg   DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
-	}
-
-	BuildReq {
-		Title   string `json:"title,content=项目标题"`
-		Desc    string `json:"desc,content=项目说明"`
-		Author  string `json:"author,content=项目作者"`
-		Email   string `json:"email,content=联系邮箱"`
-		Version string `json:"version,content=版本号"`
-
-		ProjectName  string `json:"projectName,content=项目英文名称"`
-		ServiceType  string `json:"service_type,options=admin|mock,content=项目生成类型"`
-		Host         string `json:"host,content=域名"`
-		Port         string `json:"port,content=端口"`
-		DataSource   string `json:"dataSource,content=数据源"`
-		CacheHost    string `json:"cacheHost,content=缓存域名"`
-		Style        string `json:"style,default=goZero,content=项目代码风格"`
-		TemplatePath string `json:"templatePath,optional,content=模版地址"`
-
-		Database string `json:"database,optional,content=数据库名"`
-		DdlArg   DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
-	}
 )
 
 type (
-	createApplicationConfigReq {
-		CreateUser    int64 `json:"create_user"`    // 所属用户
-		ApplicationId int64 `json:"application_id"` // 应用id
-		ConfigId      int64 `json:"config_id"`      // 配置id
+	createApplicationInfoReq {
+		CreateUser    int64  `json:"create_user"`    // 所属用户
+		ApplicationId int64  `json:"application_id"` // 应用id
+		Version       string `json:"version"`        // 版本号
+		ConfigIds     string `json:"config_ids"`     // 配置ids ","号分隔
 	}
 
-	updateApplicationConfigReq {
-		Id            int64 `json:"id"`                      // 主键
-		CreateUser    int64 `json:"create_user,optional"`    // 所属用户
-		ApplicationId int64 `json:"application_id,optional"` // 应用id
-		ConfigId      int64 `json:"config_id,optional"`      // 配置id
-		State         int64 `json:"state,optional"`          // 状态，-2删除，-1禁用，待审核0，启用1
+	updateApplicationInfoReq {
+		Id            int64  `json:"id"`                      // 主键
+		CreateUser    int64  `json:"create_user,optional"`    // 所属用户
+		ApplicationId int64  `json:"application_id,optional"` // 应用id
+		Version       string `json:"version"`                 // 版本号
+		ConfigIds     string `json:"config_ids"`              // 配置ids ","号分隔
+		State         int64  `json:"state,optional"`          // 状态，-2删除，-1禁用，待审核0，启用1
 	}
-	ApplicationConfig {
+	ApplicationInfo {
 		Id            int64  `json:"id"`             // 主键
 		CreateUser    int64  `json:"create_user"`    // 所属用户
 		ApplicationId int64  `json:"application_id"` // 应用id
-		ConfigId      int64  `json:"config_id"`      // 配置id
+		Version       string `json:"version"`        // 版本号
+		ConfigIds     string `json:"config_ids"`     // 配置ids ","号分隔
 		State         int64  `json:"state"`          // 状态，-2删除，-1禁用，待审核0，启用1
 		CreateTime    string `json:"create_time"`    // 创建时间
 		UpdateTime    string `json:"update_time"`    // 更新时间
 	}
 
 	// 查询列表结果
-	ApplicationConfigList {
-		List     []*ApplicationConfig `json:"list"tag:"list"`                     // 数据列表
-		Current  int64                `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
-		PageSize int64                `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
-		IsNext   bool                 `json:"isNext"tag:"bool"`                   // 是否有下一页
+	ApplicationInfoList {
+		List     []*ApplicationInfo `json:"list"tag:"list"`                     // 数据列表
+		Current  int64              `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64              `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool               `json:"isNext"tag:"bool"`                   // 是否有下一页
 		// total           int64        `json:"total"`  // 总数
 	}
 )
@@ -771,44 +714,13 @@ service project {
 	)
 	@handler Build
 	post /build (BuildReq)
-
-	@doc (
-		summary:构建项目api文件
-		handlerType:buildApiFile
-		serviceType:business
-	)
-	@handler BuildApiFile
-	post /buildApiFile (BuildApiFileReq)
-
-	@doc (
-		summary:构建项目api服务代码 (包含BuildDataModel代码)
-		handlerType:buildApiService
-		serviceType:business
-	)
-	@handler BuildApiService
-	post /buildApiService (BuildApiServiceReq)
-
-	@doc (
-		summary:构建Swagger文件
-		handlerType:buildSwaggerDoc
-		serviceType:business
-	)
-	@handler BuildSwaggerDoc
-	post /buildSwaggerDoc (BuildSwaggerDocReq)
-
-	@doc (
-		summary:运行服务，可选api/rpc/websocket/tcp/mqtt等服务
-		handlerType:runService
-		serviceType:business
-	)
-	@handler RunService
-	post /runService (RunServiceReq)
+	
 }
 
 @server(
-	prefix: admin/ApplicationConfig/v1
-	group: ApplicationConfig
-	module: ApplicationConfig
+	prefix: admin/ApplicationInfo/v1
+	group: ApplicationInfo
+	module: ApplicationInfo
 	serviceType: admin
 )
 service project {
@@ -817,14 +729,14 @@ service project {
 		handlerType:create
 	)
 	@handler Create
-	post / (createApplicationConfigReq) returns(ApplicationConfig)
+	post / (createApplicationInfoReq) returns(ApplicationInfo)
 	
 	@doc (
 		summary:更新
 		handlerType:update
 	)
 	@handler Update
-	put / (updateApplicationConfigReq) returns(ApplicationConfig)
+	put / (updateApplicationInfoReq) returns(ApplicationInfo)
 	
 	@doc (
 		summary:删除
@@ -838,14 +750,14 @@ service project {
 		handlerType:get
 	)
 	@handler Get
-	get /:id (GetReq) returns(ApplicationConfig)
+	get /:id (GetReq) returns(ApplicationInfo)
 	
 	@doc (
 		summary:查询列表
 		handlerType:gets
 	)
 	@handler Gets
-	post /gets (GetsReq) returns(ApplicationConfigList)
+	post /gets (GetsReq) returns(ApplicationInfoList)
 }
 
 @server(

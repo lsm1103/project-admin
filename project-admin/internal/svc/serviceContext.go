@@ -19,7 +19,7 @@ type ServiceContext struct {
 	ConfigModel             dataModel.ConfigModel
 	ProjectModel            dataModel.ProjectModel
 	ApplicationModel        dataModel.ApplicationModel
-	ApplicationConfigModel  dataModel.ApplicationConfigModel
+	ApplicationInfoModel  dataModel.ApplicationInfoModel
 	DocModel                dataModel.DocModel
 	DocHistoryModel         dataModel.DocHistoryModel
 }
@@ -39,7 +39,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		ConfigModel:             dataModel.NewConfigModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		ProjectModel:            dataModel.NewProjectModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		ApplicationModel:        dataModel.NewApplicationModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
-		ApplicationConfigModel:  dataModel.NewApplicationConfigModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
+		ApplicationInfoModel:  	 dataModel.NewApplicationInfoModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		DocModel:                dataModel.NewDocModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		DocHistoryModel:         dataModel.NewDocHistoryModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 	}

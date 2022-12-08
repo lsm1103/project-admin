@@ -168,7 +168,7 @@
         ]
       }
     },
-    "/admin/ApplicationConfig/v1/": {
+    "/admin/ApplicationInfo/v1/": {
       "delete": {
         "summary": "删除",
         "operationId": "Delete",
@@ -189,7 +189,7 @@
           }
         ],
         "tags": [
-          "ApplicationConfig"
+          "ApplicationInfo"
         ]
       },
       "post": {
@@ -199,7 +199,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ApplicationConfig"
+              "$ref": "#/definitions/ApplicationInfo"
             }
           }
         },
@@ -209,12 +209,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/createApplicationConfigReq"
+              "$ref": "#/definitions/createApplicationInfoReq"
             }
           }
         ],
         "tags": [
-          "ApplicationConfig"
+          "ApplicationInfo"
         ]
       },
       "put": {
@@ -224,7 +224,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ApplicationConfig"
+              "$ref": "#/definitions/ApplicationInfo"
             }
           }
         },
@@ -234,16 +234,16 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/updateApplicationConfigReq"
+              "$ref": "#/definitions/updateApplicationInfoReq"
             }
           }
         ],
         "tags": [
-          "ApplicationConfig"
+          "ApplicationInfo"
         ]
       }
     },
-    "/admin/ApplicationConfig/v1/gets": {
+    "/admin/ApplicationInfo/v1/gets": {
       "post": {
         "summary": "查询列表",
         "operationId": "Gets",
@@ -251,7 +251,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ApplicationConfigList"
+              "$ref": "#/definitions/ApplicationInfoList"
             }
           }
         },
@@ -266,11 +266,11 @@
           }
         ],
         "tags": [
-          "ApplicationConfig"
+          "ApplicationInfo"
         ]
       }
     },
-    "/admin/ApplicationConfig/v1/{id}": {
+    "/admin/ApplicationInfo/v1/{id}": {
       "get": {
         "summary": "查询一个",
         "operationId": "Get",
@@ -278,7 +278,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ApplicationConfig"
+              "$ref": "#/definitions/ApplicationInfo"
             }
           }
         },
@@ -291,7 +291,7 @@
           }
         ],
         "tags": [
-          "ApplicationConfig"
+          "ApplicationInfo"
         ]
       }
     },
@@ -1279,7 +1279,7 @@
         "update_time"
       ]
     },
-    "ApplicationConfig": {
+    "ApplicationInfo": {
       "type": "object",
       "properties": {
         "id": {
@@ -1297,10 +1297,13 @@
           "format": "int64",
           "description": " 应用id"
         },
-        "config_id": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 配置id"
+        "version": {
+          "type": "string",
+          "description": " 版本号"
+        },
+        "config_ids": {
+          "type": "string",
+          "description": " 配置ids \",\"号分隔"
         },
         "state": {
           "type": "integer",
@@ -1316,24 +1319,25 @@
           "description": " 更新时间"
         }
       },
-      "title": "ApplicationConfig",
+      "title": "ApplicationInfo",
       "required": [
         "id",
         "create_user",
         "application_id",
-        "config_id",
+        "version",
+        "config_ids",
         "state",
         "create_time",
         "update_time"
       ]
     },
-    "ApplicationConfigList": {
+    "ApplicationInfoList": {
       "type": "object",
       "properties": {
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ApplicationConfig"
+            "$ref": "#/definitions/ApplicationInfo"
           },
           "description": " 数据列表"
         },
@@ -1353,7 +1357,7 @@
           "description": " 是否有下一页"
         }
       },
-      "title": "ApplicationConfigList",
+      "title": "ApplicationInfoList",
       "required": [
         "list",
         "current",
@@ -1492,13 +1496,11 @@
           "description": " 用户id"
         },
         "key": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " key"
         },
         "value": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " value"
         },
         "state": {
@@ -2297,7 +2299,7 @@
         "bool"
       ]
     },
-    "createApplicationConfigReq": {
+    "createApplicationInfoReq": {
       "type": "object",
       "properties": {
         "create_user": {
@@ -2310,17 +2312,21 @@
           "format": "int64",
           "description": " 应用id"
         },
-        "config_id": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 配置id"
+        "version": {
+          "type": "string",
+          "description": " 版本号"
+        },
+        "config_ids": {
+          "type": "string",
+          "description": " 配置ids \",\"号分隔"
         }
       },
-      "title": "createApplicationConfigReq",
+      "title": "createApplicationInfoReq",
       "required": [
         "create_user",
         "application_id",
-        "config_id"
+        "version",
+        "config_ids"
       ]
     },
     "createApplicationReq": {
@@ -2403,13 +2409,11 @@
           "description": " 用户id"
         },
         "key": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " key"
         },
         "value": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " value"
         }
       },
@@ -2665,7 +2669,7 @@
         "group_id"
       ]
     },
-    "updateApplicationConfigReq": {
+    "updateApplicationInfoReq": {
       "type": "object",
       "properties": {
         "id": {
@@ -2683,10 +2687,13 @@
           "format": "int64",
           "description": " 应用id"
         },
-        "config_id": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 配置id"
+        "version": {
+          "type": "string",
+          "description": " 版本号"
+        },
+        "config_ids": {
+          "type": "string",
+          "description": " 配置ids \",\"号分隔"
         },
         "state": {
           "type": "integer",
@@ -2694,9 +2701,11 @@
           "description": " 状态，-2删除，-1禁用，待审核0，启用1"
         }
       },
-      "title": "updateApplicationConfigReq",
+      "title": "updateApplicationInfoReq",
       "required": [
-        "id"
+        "id",
+        "version",
+        "config_ids"
       ]
     },
     "updateApplicationReq": {
@@ -2783,13 +2792,11 @@
           "description": " 用户id"
         },
         "key": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " key"
         },
         "value": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " value"
         },
         "state": {

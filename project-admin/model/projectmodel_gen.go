@@ -21,8 +21,8 @@ import (
 var (
 	projectFieldNames          = builder.RawFieldNames(&Project{})
 	projectRows                = strings.Join(projectFieldNames, ",")
-	projectRowsExpectAutoSet   = strings.Join(stringx.Remove(projectFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
-	projectRowsWithPlaceHolder = strings.Join(stringx.Remove(projectFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
+	projectRowsExpectAutoSet   = strings.Join(stringx.Remove(projectFieldNames, "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`state`"), ",")
+	projectRowsWithPlaceHolder = strings.Join(stringx.Remove(projectFieldNames, "`id`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`"), "=?,") + "=?"
 	projectListRows            = strings.Join(builder.RawFieldNames(&Project{}), ",")
 
 	cacheProjectIdPrefix                        = "cache:project:id:"

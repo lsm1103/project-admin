@@ -21,8 +21,8 @@ import (
 var (
 	configFieldNames          = builder.RawFieldNames(&Config{})
 	configRows                = strings.Join(configFieldNames, ",")
-	configRowsExpectAutoSet   = strings.Join(stringx.Remove(configFieldNames, "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`state`"), ",")
-	configRowsWithPlaceHolder = strings.Join(stringx.Remove(configFieldNames, "`id`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), "=?,") + "=?"
+	configRowsExpectAutoSet   = strings.Join(stringx.Remove(configFieldNames, "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`state`"), ",")
+	configRowsWithPlaceHolder = strings.Join(stringx.Remove(configFieldNames, "`id`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`"), "=?,") + "=?"
 	configListRows            = strings.Join(builder.RawFieldNames(&Config{}), ",")
 
 	cacheConfigIdPrefix        = "cache:config:id:"
@@ -33,7 +33,7 @@ type (
 	configModel interface {
 		Insert(ctx context.Context, session sqlx.Session, data *Config) (sql.Result, error)
 		FindOne(ctx context.Context, session sqlx.Session, id int64, resp interface{}) (err error)
-		FindOneByUserIdKey(ctx context.Context, userId int64, key int64) (*Config, error)
+		FindOneByUserIdKey(ctx context.Context, userId int64, key string) (*Config, error)
 		Update(ctx context.Context, session sqlx.Session, data *Config) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
@@ -46,8 +46,8 @@ type (
 	Config struct {
 		Id         int64     `db:"id"`          // 主键
 		UserId     int64     `db:"user_id"`     // 用户id
-		Key        int64     `db:"key"`         // key
-		Value      int64     `db:"value"`       // value
+		Key        string    `db:"key"`         // key
+		Value      string    `db:"value"`       // value
 		State      int64     `db:"state"`       // 状态，-2删除，-1禁用，待审核0，启用1
 		CreateTime time.Time `db:"create_time"` // 创建时间
 		UpdateTime time.Time `db:"update_time"` // 更新时间
@@ -99,7 +99,7 @@ func (m *defaultConfigModel) FindOne(ctx context.Context, session sqlx.Session, 
 	}
 }
 
-func (m *defaultConfigModel) FindOneByUserIdKey(ctx context.Context, userId int64, key int64) (*Config, error) {
+func (m *defaultConfigModel) FindOneByUserIdKey(ctx context.Context, userId int64, key string) (*Config, error) {
 	configUserIdKeyKey := fmt.Sprintf("%s%v:%v", cacheConfigUserIdKeyPrefix, userId, key)
 	var resp Config
 	err := m.QueryRowIndexCtx(ctx, &resp, configUserIdKeyKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {

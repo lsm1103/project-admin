@@ -1,4 +1,4 @@
-package ApplicationConfig
+package ApplicationInfo
 
 import (
 	"context"
@@ -25,7 +25,7 @@ func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) DeleteLogic
 
 func (l *DeleteLogic) Delete(req *types.DeleteReq) error {
 	// 自动生成的后台管理接口v1
-	err := l.svcCtx.ApplicationConfigModel.Delete(l.ctx, nil, req.Id)
+	err := l.svcCtx.ApplicationInfoModel.Delete(l.ctx, nil, req.Id)
 	if err != nil {
 		return err
 	}

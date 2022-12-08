@@ -27,13 +27,20 @@ func NewBuildLogic(ctx context.Context, svcCtx *svc.ServiceContext) BuildLogic {
 	}
 }
 
-func (l *BuildLogic) Build(req *types.BuildReq, id int64) error {
+/*
+- 应用版本问题，每个版本做为一个数据库记录，增加版本号字段；
+- 应用表记录该应用信息，版本等其他信息写在config表；
+- sql文件存储，按版本存储
+- api文件存储，按版本存储
+
+*/
+func (l *BuildLogic) Build(req *types.BuildReq) error {
 	//app := &types.Application{}
 	//err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
 	//if err != nil {
 	//	return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),"获取数据失败：%s", err.Error())
 	//}
-	//
+
 	build := buildCode.BuildCode{
 		RootPkgPath: l.svcCtx.RootPkgPath,
 		//Info:        buildCode.BuildAppInfo{

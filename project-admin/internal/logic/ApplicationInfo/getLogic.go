@@ -1,4 +1,4 @@
-package ApplicationConfig
+package ApplicationInfo
 
 import (
 	"context"
@@ -23,10 +23,10 @@ func NewGetLogic(ctx context.Context, svcCtx *svc.ServiceContext) GetLogic {
 	}
 }
 
-func (l *GetLogic) Get(req *types.GetReq) (resp *types.ApplicationConfig, err error) {
+func (l *GetLogic) Get(req *types.GetReq) (resp *types.ApplicationInfo, err error) {
 	// 自动生成的后台管理接口v1
-	resp = &types.ApplicationConfig{}
-	err = l.svcCtx.ApplicationConfigModel.FindOne(l.ctx, nil, req.Id, resp)
+	resp = &types.ApplicationInfo{}
+	err = l.svcCtx.ApplicationInfoModel.FindOne(l.ctx, nil, req.Id, resp)
 	if err != nil {
 		return nil, err
 	}

@@ -21,8 +21,8 @@ import (
 var (
 	docFieldNames          = builder.RawFieldNames(&Doc{})
 	docRows                = strings.Join(docFieldNames, ",")
-	docRowsExpectAutoSet   = strings.Join(stringx.Remove(docFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
-	docRowsWithPlaceHolder = strings.Join(stringx.Remove(docFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
+	docRowsExpectAutoSet   = strings.Join(stringx.Remove(docFieldNames, "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`state`"), ",")
+	docRowsWithPlaceHolder = strings.Join(stringx.Remove(docFieldNames, "`id`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`"), "=?,") + "=?"
 	docListRows            = strings.Join(builder.RawFieldNames(&Doc{}), ",")
 
 	cacheDocIdPrefix             = "cache:doc:id:"

@@ -1,4 +1,4 @@
-package ApplicationConfig
+package ApplicationInfo
 
 import (
 	"context"
@@ -27,19 +27,19 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) UpdateLogic
 	}
 }
 
-func (l *UpdateLogic) Update(req *types.UpdateApplicationConfigReq) (resp *types.ApplicationConfig, err error) {
+func (l *UpdateLogic) Update(req *types.UpdateApplicationInfoReq) (resp *types.ApplicationInfo, err error) {
 	// 自动生成的后台管理接口v1
-	sqlReq := &dataModel.ApplicationConfig{}
+	sqlReq := &dataModel.ApplicationInfo{}
 	err = copier.Copy(sqlReq, req)
 	if err != nil {
 		return
 	}
 
-	err = l.svcCtx.ApplicationConfigModel.Update(l.ctx, nil, sqlReq)
+	err = l.svcCtx.ApplicationInfoModel.Update(l.ctx, nil, sqlReq)
 	if err != nil {
 		return
 	}
-	resp = &types.ApplicationConfig{}
+	resp = &types.ApplicationInfo{}
 	err = copier.Copy(resp, sqlReq)
 	if err != nil {
 		return

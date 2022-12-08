@@ -45,7 +45,7 @@ CREATE TABLE `group_group_relation` (
     `create_user`     bigint NOT NULL COMMENT '创建者id',
     `master_group_id` bigint NOT NULL COMMENT '主组id',
     `from_group_id`   bigint NOT NULL COMMENT '从组id',
-    `relation`        tinyint(4) NOT NULL DEFAULT '1' COMMENT '关系，-1不允许，1允许读写(非自己)，2只允许读(非自己)',
+    `relation`        tinyint(4) NOT NULL DEFAULT '1' COMMENT '关系，-1禁止(非自己)，1可读(非自己)，2可读写(非自己)',
     `state`           tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
     `create_time`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -62,8 +62,8 @@ CREATE TABLE `config`
 (
     `id`             bigint unsigned NOT NULL COMMENT '主键',
     `user_id`        bigint NOT NULL COMMENT '用户id',
-    `key`            bigint NOT NULL COMMENT 'key',
-    `value`          bigint NOT NULL COMMENT 'value',
+    `key`            char(100) NOT NULL COMMENT 'key',
+    `value`          text NOT NULL COMMENT 'value',
     `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -125,24 +125,25 @@ CREATE TABLE `application`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin COMMENT ='应用表';
 
--- ------------application-config 表----------------
+-- ------------application_info 表----------------
 # 配置github/gitlab代码仓库, 配置webhook
-DROP TABLE IF EXISTS `application_config`;
-CREATE TABLE `application_config`
+DROP TABLE IF EXISTS `application_info`;
+CREATE TABLE `application_info`
 (
     `id`             bigint unsigned NOT NULL COMMENT '主键',
-    `create_user`   int(20) NOT NULL COMMENT '所属用户',
+    `create_user`    bigint NOT NULL COMMENT '所属用户',
     `application_id` bigint NOT NULL COMMENT '应用id',
-    `config_id`      bigint NOT NULL COMMENT '配置id',
+    `version`        char(20) NOT NULL COMMENT '版本号',
+    `config_ids`     varchar(500) NOT NULL COMMENT '配置ids ","号分隔',
     `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `index_unique` (`create_user`,`application_id`,`config_id`),
+    UNIQUE KEY `index_unique` (`create_user`,`application_id`,`version`),
     KEY `index_filter` (`create_time`, `state`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT ='应用配置表';
+  COLLATE = utf8mb4_bin COMMENT ='应用附属表';
 
 -- ------------doc 表----------------
 DROP TABLE IF EXISTS `doc`;

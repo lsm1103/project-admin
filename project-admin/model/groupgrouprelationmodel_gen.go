@@ -21,8 +21,8 @@ import (
 var (
 	groupGroupRelationFieldNames          = builder.RawFieldNames(&GroupGroupRelation{})
 	groupGroupRelationRows                = strings.Join(groupGroupRelationFieldNames, ",")
-	groupGroupRelationRowsExpectAutoSet   = strings.Join(stringx.Remove(groupGroupRelationFieldNames, "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`state`"), ",")
-	groupGroupRelationRowsWithPlaceHolder = strings.Join(stringx.Remove(groupGroupRelationFieldNames, "`id`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`"), "=?,") + "=?"
+	groupGroupRelationRowsExpectAutoSet   = strings.Join(stringx.Remove(groupGroupRelationFieldNames, "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`state`"), ",")
+	groupGroupRelationRowsWithPlaceHolder = strings.Join(stringx.Remove(groupGroupRelationFieldNames, "`id`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`"), "=?,") + "=?"
 	groupGroupRelationListRows            = strings.Join(builder.RawFieldNames(&GroupGroupRelation{}), ",")
 
 	cacheGroupGroupRelationIdPrefix                                         = "cache:groupGroupRelation:id:"
@@ -48,7 +48,7 @@ type (
 		CreateUser    int64     `db:"create_user"`     // 创建者id
 		MasterGroupId int64     `db:"master_group_id"` // 主组id
 		FromGroupId   int64     `db:"from_group_id"`   // 从组id
-		Relation      int64     `db:"relation"`        // 关系，-1不允许，1允许读写(非自己)，2只允许读(非自己)
+		Relation      int64     `db:"relation"`        // 关系，-1禁止(非自己)，1可读(非自己)，2可读写(非自己)
 		State         int64     `db:"state"`           // 状态，-2删除，-1禁用，待审核0，启用1
 		CreateTime    time.Time `db:"create_time"`     // 创建时间
 		UpdateTime    time.Time `db:"update_time"`     // 更新时间

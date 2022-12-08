@@ -21,8 +21,8 @@ import (
 var (
 	docHistoryFieldNames          = builder.RawFieldNames(&DocHistory{})
 	docHistoryRows                = strings.Join(docHistoryFieldNames, ",")
-	docHistoryRowsExpectAutoSet   = strings.Join(stringx.Remove(docHistoryFieldNames, "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`state`"), ",")
-	docHistoryRowsWithPlaceHolder = strings.Join(stringx.Remove(docHistoryFieldNames, "`id`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`"), "=?,") + "=?"
+	docHistoryRowsExpectAutoSet   = strings.Join(stringx.Remove(docHistoryFieldNames, "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`state`"), ",")
+	docHistoryRowsWithPlaceHolder = strings.Join(stringx.Remove(docHistoryFieldNames, "`id`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`"), "=?,") + "=?"
 	docHistoryListRows            = strings.Join(builder.RawFieldNames(&DocHistory{}), ",")
 
 	cacheDocHistoryIdPrefix = "cache:docHistory:id:"
