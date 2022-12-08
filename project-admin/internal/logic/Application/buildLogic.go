@@ -35,33 +35,37 @@ func NewBuildLogic(ctx context.Context, svcCtx *svc.ServiceContext) BuildLogic {
 
 */
 func (l *BuildLogic) Build(req *types.BuildReq) error {
-	//app := &types.Application{}
-	//err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
-	//if err != nil {
-	//	return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),"获取数据失败：%s", err.Error())
-	//}
+	var id int64
+	app := &types.Application{}
+	err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
+	if err != nil {
+		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),"获取数据失败：%s", err.Error())
+	}
+	//l.svcCtx.ApplicationInfoModel.FindOneByCreateUserApplicationIdVersion()
+	//连表查询applicationInfo、config表，获取该版本应用的所以配置，构成build配置，进行构建
+	//application_id、version
 
 	build := buildCode.BuildCode{
 		RootPkgPath: l.svcCtx.RootPkgPath,
-		//Info:        buildCode.BuildAppInfo{
-		//	Title:        app.ZnName,
-		//	Desc:         app.Info,
-		//	Author:       "",
-		//	Email:        "",
-		//	Version:      "",
-		//	ProjectName:  app.EnName,
-		//	ServiceType:  "",
-		//	Host:         "",
-		//	Port:         "",
-		//	DataSource:   "",
-		//	CacheHost:    "",
-		//	Style:        "",
-		//	TemplatePath: "",
-		//	Database:     "",
-		//	DdlArg:       buildCode.DdlArg{},
-		//},
+		Info:        buildCode.BuildAppInfo{
+			Title:        app.ZnName,
+			Desc:         app.Info,
+			Author:       "",
+			Email:        "",
+			Version:      "",
+			ProjectName:  app.EnName,
+			ServiceType:  "",
+			Host:         "",
+			Port:         "",
+			DataSource:   "",
+			CacheHost:    "",
+			Style:        "",
+			TemplatePath: "",
+			Database:     "",
+			DdlArg:       buildCode.DdlArg{},
+		},
 	}
-	err := copier.Copy(&build.Info, req)
+	err = copier.Copy(&build.Info, req)
 	if err != nil {
 		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
 			"数据格式转化失败：%s", err.Error())
