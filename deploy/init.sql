@@ -182,7 +182,6 @@ CREATE TABLE `doc_history` (
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin COMMENT ='文档历史表';
 
-
 -- ------------demand 表----------------
 -- ------------demandGroup 表----------------
 
