@@ -3,7 +3,7 @@ package Application
 import (
 	"context"
 	"fmt"
-	"github.com/jinzhu/copier"
+	// "github.com/jinzhu/copier"
 	"github.com/pkg/errors"
 	"project-admin/common/buildCode"
 	"project-admin/common/xerr"
@@ -32,22 +32,24 @@ func NewBuildLogic(ctx context.Context, svcCtx *svc.ServiceContext) BuildLogic {
 - 应用表记录该应用信息，版本等其他信息写在config表；
 - sql文件存储，按版本存储
 - api文件存储，按版本存储
-
 */
 func (l *BuildLogic) Build(req *types.BuildReq) error {
 	var id int64
+	var version string
 	app := &types.Application{}
 	err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
 	if err != nil {
-		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),"获取数据失败：%s", err.Error())
+		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR), "获取数据失败：%s", err.Error())
 	}
-	//l.svcCtx.ApplicationInfoModel.FindOneByCreateUserApplicationIdVersion()
-	//连表查询applicationInfo、config表，获取该版本应用的所以配置，构成build配置，进行构建
-	//application_id、version
+	appConf := &[]types.Config{}
+	err = l.svcCtx.JoinTableQuery.FindApplicationJoinConfig(l.ctx, app.CreateUser, id, version, appConf)
+	if err != nil {
+		return err
+	}
 
 	build := buildCode.BuildCode{
 		RootPkgPath: l.svcCtx.RootPkgPath,
-		Info:        buildCode.BuildAppInfo{
+		Info: buildCode.BuildAppInfo{
 			Title:        app.ZnName,
 			Desc:         app.Info,
 			Author:       "",
@@ -65,19 +67,19 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 			DdlArg:       buildCode.DdlArg{},
 		},
 	}
-	err = copier.Copy(&build.Info, req)
+	//err := copier.Copy(&build.Info, req)
 	if err != nil {
 		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
 			"数据格式转化失败：%s", err.Error())
 	}
 
-	if build.Info.TemplatePath == ""{
+	if build.Info.TemplatePath == "" {
 		build.Info.TemplatePath = fmt.Sprintf("%s/libs/template", build.RootPkgPath)
 	}
-	if build.Info.Src == ""{
+	if build.Info.Src == "" {
 		build.Info.Src = fmt.Sprintf("%s/deploy/init.sql", build.RootPkgPath)
 	}
-	if len(build.Info.IgnoreColumns) == 0{
+	if len(build.Info.IgnoreColumns) == 0 {
 		build.Info.IgnoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
 	}
 

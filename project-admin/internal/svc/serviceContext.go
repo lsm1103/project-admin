@@ -2,6 +2,7 @@ package svc
 
 import (
 	"os"
+	"project-admin/common/sqlUtils"
 	"project-admin/project-admin/internal/config"
 	"strings"
 
@@ -10,16 +11,17 @@ import (
 )
 
 type ServiceContext struct {
-	Config config.Config
+	Config      config.Config
 	RootPkgPath string
 
+	JoinTableQuery          sqlUtils.JoinTableQuery
 	GroupModel              dataModel.GroupModel
 	UserGroupModel          dataModel.UserGroupModel
 	GroupGroupRelationModel dataModel.GroupGroupRelationModel
 	ConfigModel             dataModel.ConfigModel
 	ProjectModel            dataModel.ProjectModel
 	ApplicationModel        dataModel.ApplicationModel
-	ApplicationInfoModel  dataModel.ApplicationInfoModel
+	ApplicationInfoModel    dataModel.ApplicationInfoModel
 	DocModel                dataModel.DocModel
 	DocHistoryModel         dataModel.DocHistoryModel
 }
@@ -30,16 +32,17 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		return nil
 	}
 	return &ServiceContext{
-		Config: c,
-		RootPkgPath: strings.Replace(pwd, "/project-admin", "",1),
+		Config:      c,
+		RootPkgPath: strings.Replace(pwd, "/project-admin", "", 1),
 
+		JoinTableQuery:          sqlUtils.NewJoinTableQuery(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		GroupModel:              dataModel.NewGroupModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		UserGroupModel:          dataModel.NewUserGroupModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		GroupGroupRelationModel: dataModel.NewGroupGroupRelationModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		ConfigModel:             dataModel.NewConfigModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		ProjectModel:            dataModel.NewProjectModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		ApplicationModel:        dataModel.NewApplicationModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
-		ApplicationInfoModel:  	 dataModel.NewApplicationInfoModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
+		ApplicationInfoModel:    dataModel.NewApplicationInfoModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		DocModel:                dataModel.NewDocModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		DocHistoryModel:         dataModel.NewDocHistoryModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 	}
