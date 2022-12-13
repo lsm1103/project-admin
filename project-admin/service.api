@@ -714,7 +714,14 @@ service project {
 	)
 	@handler Build
 	post /build (BuildReq)
-	
+
+	@doc (
+		summary:运行服务，可选api/rpc/websocket/tcp/mqtt等服务
+		handlerType:runService
+		serviceType:business
+	)
+	@handler RunService
+	post /runService (RunServiceReq)
 }
 
 @server(
@@ -730,28 +737,28 @@ service project {
 	)
 	@handler Create
 	post / (createApplicationInfoReq) returns(ApplicationInfo)
-	
-	@doc (
-		summary:更新
-		handlerType:update
-	)
-	@handler Update
-	put / (updateApplicationInfoReq) returns(ApplicationInfo)
-	
+
 	@doc (
 		summary:删除
 		handlerType:delete
 	)
 	@handler Delete
 	delete / (DeleteReq)
-	
+
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateApplicationInfoReq) returns(ApplicationInfo)
+
 	@doc (
 		summary:查询一个
 		handlerType:get
 	)
 	@handler Get
 	get /:id (GetReq) returns(ApplicationInfo)
-	
+
 	@doc (
 		summary:查询列表
 		handlerType:gets

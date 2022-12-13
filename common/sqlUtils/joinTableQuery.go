@@ -1,6 +1,7 @@
 package sqlUtils
 
 import (
+	"context"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -11,7 +12,8 @@ import (
 
 type (
 	JoinTableQuery interface {
-		FindUserJoinUserAuthsById(keyType string, key string) (*UserJoinUserAuths, error)
+		FindUserJoinUserAuthsByKey(keyType string, key string) (*UserJoinUserAuths, error)
+		FindApplicationJoinConfig(ctx context.Context, create_user, application_id int64, version string, resp interface{}) (err error)
 	}
 	defaultJoinTableQuery struct {
 		sqlc.CachedConn
@@ -40,7 +42,7 @@ func NewJoinTableQuery(conn sqlx.SqlConn, c cache.CacheConf) JoinTableQuery {
 	}
 }
 
-func (m *defaultJoinTableQuery) FindUserJoinUserAuthsById(keyType string, key string) (*UserJoinUserAuths, error) {
+func (m *defaultJoinTableQuery) FindUserJoinUserAuthsByKey(keyType string, key string) (*UserJoinUserAuths, error) {
 	var resp UserJoinUserAuths
 	UserJoinUserAuthsRows := ""
 	for _, str := range builder.RawFieldNames(&resp) {
@@ -52,7 +54,6 @@ func (m *defaultJoinTableQuery) FindUserJoinUserAuthsById(keyType string, key st
 			}
 		}
 	}
-
 	//UserJoinUserAuthsRows := strings.Join(stringx.Remove(builder.RawFieldNames(&resp), "`user_id`", "`uStatus`", "`identity_type`", "`identifier`"), ",")
 	//UserJoinUserAuthsRows = strings.ReplaceAll(UserJoinUserAuthsRows, ",`", ",`u.")
 	query := fmt.Sprintf("select %s,u.status uStatus from user u inner join user_auths ua on u.id=ua.user_id where `%s` = ? limit 1", UserJoinUserAuthsRows[:len(UserJoinUserAuthsRows)-1], keyType)
@@ -64,5 +65,21 @@ func (m *defaultJoinTableQuery) FindUserJoinUserAuthsById(keyType string, key st
 		return nil, ErrNotFound
 	default:
 		return nil, err
+	}
+}
+
+func (m *defaultJoinTableQuery) FindApplicationJoinConfig(ctx context.Context, create_user, application_id int64, version string, resp interface{}) (err error) {
+	applicationJoinConfigKey := fmt.Sprintf("cache:userId:appId:version:%s:%s:%s", create_user, application_id, version)
+	err = m.QueryRowCtx(ctx, resp, applicationJoinConfigKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+		query := "select * from config where FIND_IN_SET(`key`, (select `config_ids` from `application_info` where create_user = ? and application_id = ? and version = '?') ) and `state` > 0 and `user_id` = ?;"
+		return conn.QueryRowCtx(ctx, resp, query, create_user, application_id, version, create_user)
+	})
+	switch err {
+	case nil:
+		return nil
+	case sqlc.ErrNotFound:
+		return ErrNotFound
+	default:
+		return err
 	}
 }

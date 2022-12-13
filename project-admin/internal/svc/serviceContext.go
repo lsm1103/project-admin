@@ -2,6 +2,7 @@ package svc
 
 import (
 	"os"
+	"project-admin/common/sqlUtils"
 	"project-admin/project-admin/internal/config"
 	"strings"
 
@@ -13,13 +14,14 @@ type ServiceContext struct {
 	Config config.Config
 	RootPkgPath string
 
+	JoinTableQuery          sqlUtils.JoinTableQuery
 	GroupModel              dataModel.GroupModel
 	UserGroupModel          dataModel.UserGroupModel
 	GroupGroupRelationModel dataModel.GroupGroupRelationModel
 	ConfigModel             dataModel.ConfigModel
 	ProjectModel            dataModel.ProjectModel
 	ApplicationModel        dataModel.ApplicationModel
-	ApplicationInfoModel  dataModel.ApplicationInfoModel
+	ApplicationInfoModel    dataModel.ApplicationInfoModel
 	DocModel                dataModel.DocModel
 	DocHistoryModel         dataModel.DocHistoryModel
 }
@@ -33,6 +35,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config: c,
 		RootPkgPath: strings.Replace(pwd, "/project-admin", "",1),
 
+		JoinTableQuery:			 sqlUtils.NewJoinTableQuery(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		GroupModel:              dataModel.NewGroupModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		UserGroupModel:          dataModel.NewUserGroupModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),
 		GroupGroupRelationModel: dataModel.NewGroupGroupRelationModel(sqlx.NewMysql(c.DB.DataSource), c.Cache),

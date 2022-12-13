@@ -3,7 +3,6 @@ package Application
 import (
 	"context"
 	"fmt"
-	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
 	"project-admin/common/buildCode"
 	"project-admin/common/xerr"
@@ -32,36 +31,42 @@ func NewBuildLogic(ctx context.Context, svcCtx *svc.ServiceContext) BuildLogic {
 - 应用表记录该应用信息，版本等其他信息写在config表；
 - sql文件存储，按版本存储
 - api文件存储，按版本存储
-
 */
 func (l *BuildLogic) Build(req *types.BuildReq) error {
-	//app := &types.Application{}
-	//err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
-	//if err != nil {
-	//	return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),"获取数据失败：%s", err.Error())
-	//}
+	var id int64
+	var version string
+	app := &types.Application{}
+	err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
+	if err != nil {
+		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),"获取数据失败：%s", err.Error())
+	}
+	appConf := &[]types.Config{}
+	err = l.svcCtx.JoinTableQuery.FindApplicationJoinConfig(l.ctx, app.CreateUser, id, version, appConf)
+	if err != nil {
+		return err
+	}
 
 	build := buildCode.BuildCode{
 		RootPkgPath: l.svcCtx.RootPkgPath,
-		//Info:        buildCode.BuildAppInfo{
-		//	Title:        app.ZnName,
-		//	Desc:         app.Info,
-		//	Author:       "",
-		//	Email:        "",
-		//	Version:      "",
-		//	ProjectName:  app.EnName,
-		//	ServiceType:  "",
-		//	Host:         "",
-		//	Port:         "",
-		//	DataSource:   "",
-		//	CacheHost:    "",
-		//	Style:        "",
-		//	TemplatePath: "",
-		//	Database:     "",
-		//	DdlArg:       buildCode.DdlArg{},
-		//},
+		Info:        buildCode.BuildAppInfo{
+			Title:        app.ZnName,
+			Desc:         app.Info,
+			Author:       "",
+			Email:        "",
+			Version:      "",
+			ProjectName:  app.EnName,
+			ServiceType:  "",
+			Host:         "",
+			Port:         "",
+			DataSource:   "",
+			CacheHost:    "",
+			Style:        "",
+			TemplatePath: "",
+			Database:     "",
+			DdlArg:       buildCode.DdlArg{},
+		},
 	}
-	err := copier.Copy(&build.Info, req)
+	//err := copier.Copy(&build.Info, req)
 	if err != nil {
 		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
 			"数据格式转化失败：%s", err.Error())
