@@ -275,21 +275,17 @@ type DdlArg struct {
 }
 
 type BuildReq struct {
-	Title        string `json:"title,content=项目标题"`
-	Desc         string `json:"desc,content=项目说明"`
-	Author       string `json:"author,content=项目作者"`
-	Email        string `json:"email,content=联系邮箱"`
-	Version      string `json:"version,content=版本号"`
-	ProjectName  string `json:"projectName,content=项目英文名称"`
-	ServiceType  string `json:"service_type,options=admin|mock,content=项目生成类型"`
-	Host         string `json:"host,content=域名"`
-	Port         string `json:"port,content=端口"`
-	DataSource   string `json:"dataSource,content=数据源"`
-	CacheHost    string `json:"cacheHost,content=缓存域名"`
-	Style        string `json:"style,default=goZero,content=项目代码风格"`
-	TemplatePath string `json:"templatePath,optional,content=模版地址"`
-	Database     string `json:"database,optional,content=数据库名"`
-	DdlArg       DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
+	UserId        int64 `json:"userId,content=用户人"`
+	ApplicationId int64 `json:"applicationId,content=应用id"`
+	Version       string `json:"version,content=版本号"`
+	BuildType     string `json:"buildType,content=构建类型"`
+}
+
+type RunServiceReq struct {
+	UserId        int64 `json:"userId,content=用户人"`
+	ApplicationId int64 `json:"applicationId,content=应用id"`
+	Version       string `json:"version,content=版本号"`
+	RunType       string `json:"RunType,content=运行类型"`
 }
 
 type CreateApplicationInfoReq struct {

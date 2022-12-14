@@ -3,6 +3,10 @@ package Application
 import (
 	"context"
 	"fmt"
+	"os/exec"
+	"strconv"
+	"strings"
+
 	// "github.com/jinzhu/copier"
 	"github.com/pkg/errors"
 	"project-admin/common/buildCode"
@@ -34,45 +38,48 @@ func NewBuildLogic(ctx context.Context, svcCtx *svc.ServiceContext) BuildLogic {
 - api文件存储，按版本存储
 */
 func (l *BuildLogic) Build(req *types.BuildReq) error {
-	var id int64
-	var version string
 	app := &types.Application{}
-	err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, id, app)
+	err := l.svcCtx.ApplicationModel.FindOne(l.ctx, nil, req.ApplicationId, app)
 	if err != nil {
 		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR), "获取数据失败：%s", err.Error())
 	}
 	appConf := &[]types.Config{}
-	err = l.svcCtx.JoinTableQuery.FindApplicationJoinConfig(l.ctx, app.CreateUser, id, version, appConf)
+	err = l.svcCtx.JoinTableQuery.FindApplicationJoinConfig(l.ctx, req.UserId, req.ApplicationId, req.Version, appConf)
 	if err != nil {
-		return err
+		return errors.Wrap(xerr.NewErrCodeMsg(xerr.DATA_NOT_FIND, "找不到该版本应用的配置"), err.Error())
 	}
+	conf := map[string]string{}
+	for _,item := range *appConf{
+		conf[item.Key] = item.Value
+	}
+	isCache, _ := strconv.ParseBool(conf["cache"])
+	isStrict,_ := strconv.ParseBool(conf["strict"])
 
 	build := buildCode.BuildCode{
 		RootPkgPath: l.svcCtx.RootPkgPath,
 		Info: buildCode.BuildAppInfo{
 			Title:        app.ZnName,
 			Desc:         app.Info,
-			Author:       "",
-			Email:        "",
-			Version:      "",
-			ProjectName:  app.EnName,
-			ServiceType:  "",
-			Host:         "",
-			Port:         "",
-			DataSource:   "",
-			CacheHost:    "",
-			Style:        "",
-			TemplatePath: "",
-			Database:     "",
-			DdlArg:       buildCode.DdlArg{},
+			Author:       conf["author"],
+			Email:        conf["email"],
+			Version:      conf["version"],
+			ProjectName:  fmt.Sprintf("%s-%s", app.EnName, conf["version"]),
+			ServiceType:  conf["serviceType"],
+			Host:         conf["host"],
+			Port:         conf["port"],
+			DataSource:   conf["dataSource"],
+			CacheHost:    conf["cacheHost"],
+			Style:        conf["style"],
+			TemplatePath: conf["templatePath"],
+			Database:     conf["database"],
+			DdlArg:       buildCode.DdlArg{
+				Src:           conf["src"],
+				Cache:         isCache,
+				Strict:        isStrict,
+				IgnoreColumns: strings.Split(conf["ignoreColumns"], ","),
+			},
 		},
 	}
-	//err := copier.Copy(&build.Info, req)
-	if err != nil {
-		return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
-			"数据格式转化失败：%s", err.Error())
-	}
-
 	if build.Info.TemplatePath == "" {
 		build.Info.TemplatePath = fmt.Sprintf("%s/libs/template", build.RootPkgPath)
 	}
@@ -83,8 +90,7 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 		build.Info.IgnoreColumns = []string{"create_at", "created_at", "create_time", "update_at", "updated_at", "update_time"}
 	}
 
-	buildType := "buildAll"
-	switch buildType {
+	switch req.BuildType {
 	case "buildApiFile":
 		//生成api文件
 		err = build.BuildApiFile()
@@ -139,5 +145,7 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 				"生成swagger doc文件失败：%s", err.Error())
 		}
 	}
+	cmd := exec.Command("/bin/sh", "-c", fmt.Sprintf("cd %s/projectBuilds/%s && go build project.go"), l.svcCtx.RootPkgPath, build.Info.ProjectName )
+	err = cmd.Run()
 	return nil
 }

@@ -1,0 +1,811 @@
+syntax = "v1"
+
+info(
+	title: "项目24"
+	desc: "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；"
+	version: "v0.1.1"
+	author: "lsm"
+	email: "18370872400@163.com"
+	
+	projectName: project-24
+	host: 0.0.0.0
+	port: 824
+	dataSource: root:pujian123@tcp(172.16.10.183:4306)/project-admin
+	cacheHost: 172.16.10.183:6379
+)
+
+type (
+	DeleteReq {
+		Id int64 `json:"id"` // 主键
+	}
+
+	GetReq {
+		Id int64 `path:"id"` // 主键
+	}
+
+	// 查询列表；
+	GetsQueryItem {
+		Key        string `json:"key"`                                   // key
+		Val        string `json:"val"`                                   // val int/str('xxx')/list('xx,xx,xx')
+		Handle     string `json:"handle"`                                // 操作方法 =/>/</like
+		NextHandle string `json:"nextHandle,options=or|and,default=and"` // 与下一个条件的操作方法 or/and
+	}
+	GetsReq {
+		Query    []*GetsQueryItem `json:"query"`                              //查询
+		OrderBy  string           `json:"orderBy,default=id"`                 //分组
+		Sort     string           `json:"sort,options=desc|asc,default=desc"` //排序 desc/asc
+		Current  int64            `json:"current,default=1"`                  //当前页
+		PageSize int64            `json:"pageSize,default=10"`                //页面大小
+	}
+)
+
+type (
+	createGroupReq {
+		Name       string `json:"name"`        // 组名称
+		CreateUser int64  `json:"create_user"` // 创建者id
+		Ico        string `json:"ico"`         // 组图标
+		Remark     string `json:"remark"`      // 备注
+		ParentId   int64  `json:"parent_id"`   // 父级id
+		GroupType  int64  `json:"group_type"`  // 类型: 1部门、2用户组、3群组、4圈子、5话题
+		Rank       int64  `json:"rank"`        // 排序
+	}
+
+	updateGroupReq {
+		Id         int64  `json:"id"`                   // 自增主键
+		Name       string `json:"name,optional"`        // 组名称
+		CreateUser int64  `json:"create_user,optional"` // 创建者id
+		Ico        string `json:"ico,optional"`         // 组图标
+		Remark     string `json:"remark,optional"`      // 备注
+		ParentId   int64  `json:"parent_id,optional"`   // 父级id
+		GroupType  int64  `json:"group_type,optional"`  // 类型: 1部门、2用户组、3群组、4圈子、5话题
+		Rank       int64  `json:"rank,optional"`        // 排序
+		State      int64  `json:"state,optional"`       // 状态，-2删除，-1禁用，待审核0，启用1
+	}
+	Group {
+		Id         int64  `json:"id"`          // 自增主键
+		Name       string `json:"name"`        // 组名称
+		CreateUser int64  `json:"create_user"` // 创建者id
+		Ico        string `json:"ico"`         // 组图标
+		Remark     string `json:"remark"`      // 备注
+		ParentId   int64  `json:"parent_id"`   // 父级id
+		GroupType  int64  `json:"group_type"`  // 类型: 1部门、2用户组、3群组、4圈子、5话题
+		Rank       int64  `json:"rank"`        // 排序
+		State      int64  `json:"state"`       // 状态，-2删除，-1禁用，待审核0，启用1
+		CreateTime string `json:"create_time"` // 创建时间
+		UpdateTime string `json:"update_time"` // 更新时间
+	}
+
+	// 查询列表结果
+	GroupList {
+		List     []*Group `json:"list"tag:"list"`                     // 数据列表
+		Current  int64    `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64    `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool     `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createUserGroupReq {
+		UserId  int64 `json:"user_id"`  // 用户id
+		GroupId int64 `json:"group_id"` // 组id
+	}
+
+	updateUserGroupReq {
+		Id      int64 `json:"id"`                // 自增主键
+		UserId  int64 `json:"user_id,optional"`  // 用户id
+		GroupId int64 `json:"group_id,optional"` // 组id
+		State   int64 `json:"state,optional"`    // 状态，-2删除，-1禁用，待审核0，启用1
+	}
+	UserGroup {
+		Id         int64  `json:"id"`          // 自增主键
+		UserId     int64  `json:"user_id"`     // 用户id
+		GroupId    int64  `json:"group_id"`    // 组id
+		State      int64  `json:"state"`       // 状态，-2删除，-1禁用，待审核0，启用1
+		CreateTime string `json:"create_time"` // 创建时间
+		UpdateTime string `json:"update_time"` // 更新时间
+	}
+
+	// 查询列表结果
+	UserGroupList {
+		List     []*UserGroup `json:"list"tag:"list"`                     // 数据列表
+		Current  int64        `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64        `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool         `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createGroupGroupRelationReq {
+		CreateUser    int64 `json:"create_user"`     // 创建者id
+		MasterGroupId int64 `json:"master_group_id"` // 主组id
+		FromGroupId   int64 `json:"from_group_id"`   // 从组id
+		Relation      int64 `json:"relation"`        // 关系，-1禁止(非自己)，1可读(非自己)，2可读写(非自己)
+	}
+
+	updateGroupGroupRelationReq {
+		Id            int64 `json:"id"`                       // 自增主键
+		CreateUser    int64 `json:"create_user,optional"`     // 创建者id
+		MasterGroupId int64 `json:"master_group_id,optional"` // 主组id
+		FromGroupId   int64 `json:"from_group_id,optional"`   // 从组id
+		Relation      int64 `json:"relation,optional"`        // 关系，-1禁止(非自己)，1可读(非自己)，2可读写(非自己)
+		State         int64 `json:"state,optional"`           // 状态，-2删除，-1禁用，待审核0，启用1
+	}
+	GroupGroupRelation {
+		Id            int64  `json:"id"`              // 自增主键
+		CreateUser    int64  `json:"create_user"`     // 创建者id
+		MasterGroupId int64  `json:"master_group_id"` // 主组id
+		FromGroupId   int64  `json:"from_group_id"`   // 从组id
+		Relation      int64  `json:"relation"`        // 关系，-1禁止(非自己)，1可读(非自己)，2可读写(非自己)
+		State         int64  `json:"state"`           // 状态，-2删除，-1禁用，待审核0，启用1
+		CreateTime    string `json:"create_time"`     // 创建时间
+		UpdateTime    string `json:"update_time"`     // 更新时间
+	}
+
+	// 查询列表结果
+	GroupGroupRelationList {
+		List     []*GroupGroupRelation `json:"list"tag:"list"`                     // 数据列表
+		Current  int64                 `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64                 `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool                  `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createConfigReq {
+		UserId int64  `json:"user_id"` // 用户id
+		Key    string `json:"key"`     // key
+		Value  string `json:"value"`   // value
+	}
+
+	updateConfigReq {
+		Id     int64  `json:"id"`               // 主键
+		UserId int64  `json:"user_id,optional"` // 用户id
+		Key    string `json:"key,optional"`     // key
+		Value  string `json:"value,optional"`   // value
+		State  int64  `json:"state,optional"`   // 状态，-2删除，-1禁用，待审核0，启用1
+	}
+	Config {
+		Id         int64  `json:"id"`          // 主键
+		UserId     int64  `json:"user_id"`     // 用户id
+		Key        string `json:"key"`         // key
+		Value      string `json:"value"`       // value
+		State      int64  `json:"state"`       // 状态，-2删除，-1禁用，待审核0，启用1
+		CreateTime string `json:"create_time"` // 创建时间
+		UpdateTime string `json:"update_time"` // 更新时间
+	}
+
+	// 查询列表结果
+	ConfigList {
+		List     []*Config `json:"list"tag:"list"`                     // 数据列表
+		Current  int64     `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64     `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool      `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createProjectReq {
+		Name        string `json:"name"`         // 名称
+		Ico         string `json:"ico"`          // 图标
+		Info        string `json:"info"`         // 简介
+		ProjectType int64  `json:"project_type"` // 类型: 1编程、2其他
+		CreateUser  int64  `json:"create_user"`  // 创建者id
+		JoinUsers   string `json:"join_users"`   // 参与者ids
+		JoinGroups  string `json:"join_groups"`  // 参与组ids
+		Remark      string `json:"remark"`       // 备注
+		Rank        int64  `json:"rank"`         // 排序
+	}
+
+	updateProjectReq {
+		Id          int64  `json:"id"`                    // 主键
+		Name        string `json:"name,optional"`         // 名称
+		Ico         string `json:"ico,optional"`          // 图标
+		Info        string `json:"info,optional"`         // 简介
+		ProjectType int64  `json:"project_type,optional"` // 类型: 1编程、2其他
+		CreateUser  int64  `json:"create_user,optional"`  // 创建者id
+		JoinUsers   string `json:"join_users,optional"`   // 参与者ids
+		JoinGroups  string `json:"join_groups,optional"`  // 参与组ids
+		Remark      string `json:"remark,optional"`       // 备注
+		Rank        int64  `json:"rank,optional"`         // 排序
+		State       int64  `json:"state,optional"`        // 状态，-2删除，-1禁用，待审核0，启用1
+	}
+	Project {
+		Id          int64  `json:"id"`           // 主键
+		Name        string `json:"name"`         // 名称
+		Ico         string `json:"ico"`          // 图标
+		Info        string `json:"info"`         // 简介
+		ProjectType int64  `json:"project_type"` // 类型: 1编程、2其他
+		CreateUser  int64  `json:"create_user"`  // 创建者id
+		JoinUsers   string `json:"join_users"`   // 参与者ids
+		JoinGroups  string `json:"join_groups"`  // 参与组ids
+		Remark      string `json:"remark"`       // 备注
+		Rank        int64  `json:"rank"`         // 排序
+		State       int64  `json:"state"`        // 状态，-2删除，-1禁用，待审核0，启用1
+		CreateTime  string `json:"create_time"`  // 创建时间
+		UpdateTime  string `json:"update_time"`  // 更新时间
+	}
+
+	// 查询列表结果
+	ProjectList {
+		List     []*Project `json:"list"tag:"list"`                     // 数据列表
+		Current  int64      `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64      `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool       `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createApplicationReq {
+		ZnName     string `json:"zn_name"`     // 中文名称
+		EnName     string `json:"en_name"`     // 英文名称，相当于程序名称
+		Ico        string `json:"ico"`         // 图标
+		Info       string `json:"info"`        // 简介
+		CreateUser int64  `json:"create_user"` // 创建者id
+		DemandIds  int64  `json:"demand_ids"`  // 需求组ids
+		DocIds     string `json:"doc_ids"`     // 文档组ids
+		JoinUsers  string `json:"join_users"`  // 参与者ids
+		JoinGroups string `json:"join_groups"` // 参与组ids
+		ProjectId  string `json:"project_id"`  // 所属项目id
+		Remark     string `json:"remark"`      // 备注
+		Rank       int64  `json:"rank"`        // 排序
+	}
+
+	updateApplicationReq {
+		Id         int64  `json:"id"`                   // 主键
+		ZnName     string `json:"zn_name,optional"`     // 中文名称
+		EnName     string `json:"en_name,optional"`     // 英文名称，相当于程序名称
+		Ico        string `json:"ico,optional"`         // 图标
+		Info       string `json:"info,optional"`        // 简介
+		CreateUser int64  `json:"create_user,optional"` // 创建者id
+		DemandIds  int64  `json:"demand_ids,optional"`  // 需求组ids
+		DocIds     string `json:"doc_ids,optional"`     // 文档组ids
+		JoinUsers  string `json:"join_users,optional"`  // 参与者ids
+		JoinGroups string `json:"join_groups,optional"` // 参与组ids
+		ProjectId  string `json:"project_id,optional"`  // 所属项目id
+		Remark     string `json:"remark,optional"`      // 备注
+		Rank       int64  `json:"rank,optional"`        // 排序
+		State      int64  `json:"state,optional"`       // 状态，-2删除，-1禁用，待审核0，启用1
+	}
+	Application {
+		Id         int64  `json:"id"`          // 主键
+		ZnName     string `json:"zn_name"`     // 中文名称
+		EnName     string `json:"en_name"`     // 英文名称，相当于程序名称
+		Ico        string `json:"ico"`         // 图标
+		Info       string `json:"info"`        // 简介
+		CreateUser int64  `json:"create_user"` // 创建者id
+		DemandIds  int64  `json:"demand_ids"`  // 需求组ids
+		DocIds     string `json:"doc_ids"`     // 文档组ids
+		JoinUsers  string `json:"join_users"`  // 参与者ids
+		JoinGroups string `json:"join_groups"` // 参与组ids
+		ProjectId  string `json:"project_id"`  // 所属项目id
+		Remark     string `json:"remark"`      // 备注
+		Rank       int64  `json:"rank"`        // 排序
+		State      int64  `json:"state"`       // 状态，-2删除，-1禁用，待审核0，启用1
+		CreateTime string `json:"create_time"` // 创建时间
+		UpdateTime string `json:"update_time"` // 更新时间
+	}
+
+	// 查询列表结果
+	ApplicationList {
+		List     []*Application `json:"list"tag:"list"`                     // 数据列表
+		Current  int64          `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64          `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool           `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createApplicationInfoReq {
+		CreateUser    int64  `json:"create_user"`    // 所属用户
+		ApplicationId int64  `json:"application_id"` // 应用id
+		Version       string `json:"version"`        // 版本号
+		ConfigIds     string `json:"config_ids"`     // 配置ids ","号分隔
+	}
+
+	updateApplicationInfoReq {
+		Id            int64  `json:"id"`                      // 主键
+		CreateUser    int64  `json:"create_user,optional"`    // 所属用户
+		ApplicationId int64  `json:"application_id,optional"` // 应用id
+		Version       string `json:"version,optional"`        // 版本号
+		ConfigIds     string `json:"config_ids,optional"`     // 配置ids ","号分隔
+		State         int64  `json:"state,optional"`          // 状态，-2删除，-1禁用，待审核0，启用1
+	}
+	ApplicationInfo {
+		Id            int64  `json:"id"`             // 主键
+		CreateUser    int64  `json:"create_user"`    // 所属用户
+		ApplicationId int64  `json:"application_id"` // 应用id
+		Version       string `json:"version"`        // 版本号
+		ConfigIds     string `json:"config_ids"`     // 配置ids ","号分隔
+		State         int64  `json:"state"`          // 状态，-2删除，-1禁用，待审核0，启用1
+		CreateTime    string `json:"create_time"`    // 创建时间
+		UpdateTime    string `json:"update_time"`    // 更新时间
+	}
+
+	// 查询列表结果
+	ApplicationInfoList {
+		List     []*ApplicationInfo `json:"list"tag:"list"`                     // 数据列表
+		Current  int64              `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64              `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool               `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createDocReq {
+		Name         string `json:"name"`          // 文档标题
+		CreateUser   int64  `json:"create_user"`   // 所属用户
+		PreContent   string `json:"pre_content"`   // 编辑内容
+		Content      string `json:"content"`       // 文档内容
+		ParentDoc    int64  `json:"parent_doc"`    // 上级文档
+		GroupId      int64  `json:"group_id"`      // 所属文档组
+		Sort         int64  `json:"sort"`          // 排序
+		EditorMode   int64  `json:"editor_mode"`   // 编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器
+		OpenChildren int64  `json:"open_children"` // 展开下级目录
+		ShowChildren int64  `json:"show_children"` // 显示下级文档
+	}
+
+	updateDocReq {
+		Id           int64  `json:"id"`                     // 主键
+		Name         string `json:"name,optional"`          // 文档标题
+		CreateUser   int64  `json:"create_user,optional"`   // 所属用户
+		PreContent   string `json:"pre_content,optional"`   // 编辑内容
+		Content      string `json:"content,optional"`       // 文档内容
+		ParentDoc    int64  `json:"parent_doc,optional"`    // 上级文档
+		GroupId      int64  `json:"group_id,optional"`      // 所属文档组
+		Sort         int64  `json:"sort,optional"`          // 排序
+		EditorMode   int64  `json:"editor_mode,optional"`   // 编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器
+		OpenChildren int64  `json:"open_children,optional"` // 展开下级目录
+		ShowChildren int64  `json:"show_children,optional"` // 显示下级文档
+		State        int64  `json:"state,optional"`         // 文档状态，-2删除，-1禁用，待审核-草稿0，启用1
+	}
+	Doc {
+		Id           int64  `json:"id"`            // 主键
+		Name         string `json:"name"`          // 文档标题
+		CreateUser   int64  `json:"create_user"`   // 所属用户
+		PreContent   string `json:"pre_content"`   // 编辑内容
+		Content      string `json:"content"`       // 文档内容
+		ParentDoc    int64  `json:"parent_doc"`    // 上级文档
+		GroupId      int64  `json:"group_id"`      // 所属文档组
+		Sort         int64  `json:"sort"`          // 排序
+		EditorMode   int64  `json:"editor_mode"`   // 编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器
+		OpenChildren int64  `json:"open_children"` // 展开下级目录
+		ShowChildren int64  `json:"show_children"` // 显示下级文档
+		State        int64  `json:"state"`         // 文档状态，-2删除，-1禁用，待审核-草稿0，启用1
+		CreateTime   string `json:"create_time"`   // 创建时间
+		UpdateTime   string `json:"update_time"`   // 更新时间
+	}
+
+	// 查询列表结果
+	DocList {
+		List     []*Doc `json:"list"tag:"list"`                     // 数据列表
+		Current  int64  `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64  `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool   `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+type (
+	createDocHistoryReq {
+		PreContent string `json:"pre_content"` // 编辑内容
+		CreateUser int64  `json:"create_user"` // 所属用户
+		DocId      int64  `json:"doc_id"`      // 文档id
+	}
+
+	updateDocHistoryReq {
+		Id         int64  `json:"id"`                   // 主键
+		PreContent string `json:"pre_content,optional"` // 编辑内容
+		CreateUser int64  `json:"create_user,optional"` // 所属用户
+		DocId      int64  `json:"doc_id,optional"`      // 文档id
+	}
+	DocHistory {
+		Id         int64  `json:"id"`          // 主键
+		PreContent string `json:"pre_content"` // 编辑内容
+		CreateUser int64  `json:"create_user"` // 所属用户
+		DocId      int64  `json:"doc_id"`      // 文档id
+		CreateTime string `json:"create_time"` // 创建时间
+	}
+
+	// 查询列表结果
+	DocHistoryList {
+		List     []*DocHistory `json:"list"tag:"list"`                     // 数据列表
+		Current  int64         `json:"current"tag:"uint"min:"1"max:"1000"` // 当前页
+		PageSize int64         `json:"pageSize"tag:"uint"min:"10"max:"20"` // 页面大小
+		IsNext   bool          `json:"isNext"tag:"bool"`                   // 是否有下一页
+		// total           int64        `json:"total"`  // 总数
+	}
+)
+
+@server(
+	prefix: admin/Group/v1
+	group: Group
+	module: Group
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createGroupReq) returns(Group)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateGroupReq) returns(Group)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(Group)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(GroupList)
+}
+
+@server(
+	prefix: admin/UserGroup/v1
+	group: UserGroup
+	module: UserGroup
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createUserGroupReq) returns(UserGroup)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateUserGroupReq) returns(UserGroup)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(UserGroup)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(UserGroupList)
+}
+
+@server(
+	prefix: admin/GroupGroupRelation/v1
+	group: GroupGroupRelation
+	module: GroupGroupRelation
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createGroupGroupRelationReq) returns(GroupGroupRelation)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateGroupGroupRelationReq) returns(GroupGroupRelation)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(GroupGroupRelation)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(GroupGroupRelationList)
+}
+
+@server(
+	prefix: admin/Config/v1
+	group: Config
+	module: Config
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createConfigReq) returns(Config)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateConfigReq) returns(Config)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(Config)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(ConfigList)
+}
+
+@server(
+	prefix: admin/Project/v1
+	group: Project
+	module: Project
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createProjectReq) returns(Project)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateProjectReq) returns(Project)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(Project)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(ProjectList)
+}
+
+@server(
+	prefix: admin/Application/v1
+	group: Application
+	module: Application
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createApplicationReq) returns(Application)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateApplicationReq) returns(Application)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(Application)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(ApplicationList)
+}
+
+@server(
+	prefix: admin/ApplicationInfo/v1
+	group: ApplicationInfo
+	module: ApplicationInfo
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createApplicationInfoReq) returns(ApplicationInfo)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateApplicationInfoReq) returns(ApplicationInfo)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(ApplicationInfo)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(ApplicationInfoList)
+}
+
+@server(
+	prefix: admin/Doc/v1
+	group: Doc
+	module: Doc
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createDocReq) returns(Doc)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateDocReq) returns(Doc)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(Doc)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(DocList)
+}
+
+@server(
+	prefix: admin/DocHistory/v1
+	group: DocHistory
+	module: DocHistory
+	serviceType: admin
+)
+service project {
+	@doc (
+		summary:创建
+		handlerType:create
+	)
+	@handler Create
+	post / (createDocHistoryReq) returns(DocHistory)
+	
+	@doc (
+		summary:删除
+		handlerType:delete
+	)
+	@handler Delete
+	delete / (DeleteReq)
+	
+	@doc (
+		summary:更新
+		handlerType:update
+	)
+	@handler Update
+	put / (updateDocHistoryReq) returns(DocHistory)
+	
+	@doc (
+		summary:查询一个
+		handlerType:get
+	)
+	@handler Get
+	get /:id (GetReq) returns(DocHistory)
+	
+	@doc (
+		summary:查询列表
+		handlerType:gets
+	)
+	@handler Gets
+	post /gets (GetsReq) returns(DocHistoryList)
+}

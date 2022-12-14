@@ -3,8 +3,18 @@
   "info": {
     "title": "项目管理服务",
     "description": "对研发项目进行管理，包括代码生成、mock服务生成、cicd等；如通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
-    "version": "v0.1.1"
+    "version": "v0.1.1",
+    "termsOfService": "http://xxx.com",
+    "contact": {
+      "name": "lsm",
+      "email": "18370872400@163.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
   },
+  "host": "127.0.0.1:810",
   "schemes": [
     "http",
     "https"
@@ -135,6 +145,31 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/GetsReq"
+            }
+          }
+        ],
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/admin/Application/v1/runService": {
+      "post": {
+        "summary": "运行服务，可选api/rpc/websocket/tcp/mqtt等服务",
+        "operationId": "RunService",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RunServiceReq"
             }
           }
         ],
@@ -1414,72 +1449,27 @@
     "BuildReq": {
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string"
+        "userId": {
+          "type": "integer",
+          "format": "int64"
         },
-        "desc": {
-          "type": "string"
-        },
-        "author": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
         },
         "version": {
           "type": "string"
         },
-        "projectName": {
+        "buildType": {
           "type": "string"
-        },
-        "service_type": {
-          "type": "string",
-          "enum": [
-            "admin",
-            "mock"
-          ]
-        },
-        "host": {
-          "type": "string"
-        },
-        "port": {
-          "type": "string"
-        },
-        "dataSource": {
-          "type": "string"
-        },
-        "cacheHost": {
-          "type": "string"
-        },
-        "style": {
-          "type": "string",
-          "default": "goZero"
-        },
-        "templatePath": {
-          "type": "string"
-        },
-        "database": {
-          "type": "string"
-        },
-        "ddlArg": {
-          "$ref": "#/definitions/DdlArg"
         }
       },
       "title": "BuildReq",
       "required": [
-        "title",
-        "desc",
-        "author",
-        "email",
+        "userId",
+        "applicationId",
         "version",
-        "projectName",
-        "service_type",
-        "host",
-        "port",
-        "dataSource",
-        "cacheHost",
-        "style",
-        "ddlArg"
+        "buildType"
       ]
     },
     "Config": {
@@ -2215,6 +2205,32 @@
         "20",
         "isNext",
         "bool"
+      ]
+    },
+    "RunServiceReq": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "version": {
+          "type": "string"
+        },
+        "RunType": {
+          "type": "string"
+        }
+      },
+      "title": "RunServiceReq",
+      "required": [
+        "userId",
+        "applicationId",
+        "version",
+        "RunType"
       ]
     },
     "UserGroup": {
@@ -3083,11 +3099,24 @@
     }
   },
   "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
     "apiKey": {
       "type": "apiKey",
       "description": "Enter JWT Bearer token **_only_**",
       "name": "Authorization",
       "in": "header"
     }
+  },
+  "externalDocs": {
+    "description": "详细文档",
+    "url": "http://swagger.io"
   }
 }

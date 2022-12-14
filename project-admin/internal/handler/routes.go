@@ -206,6 +206,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/build",
 				Handler: Application.BuildHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/runService",
+				Handler: Application.RunServiceHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/admin/Application/v1"),
 	)
@@ -218,14 +223,14 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: ApplicationInfo.CreateHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPut,
-				Path:    "/",
-				Handler: ApplicationInfo.UpdateHandler(serverCtx),
-			},
-			{
 				Method:  http.MethodDelete,
 				Path:    "/",
 				Handler: ApplicationInfo.DeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/",
+				Handler: ApplicationInfo.UpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,

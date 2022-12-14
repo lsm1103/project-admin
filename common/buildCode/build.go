@@ -15,7 +15,6 @@ import (
 	"project-admin/libs/goctl_/goctl-swagger-generate"
 	gen "project-admin/libs/goctl_/sql-gen"
 	util "project-admin/libs/goctl_/sql-util"
-	//pathx "project-admin/libs/goctl_/util-pathx"
 )
 
 type BuildCode struct {
