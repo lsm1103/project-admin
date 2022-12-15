@@ -45,19 +45,19 @@ func (l *RunServiceLogic) RunService(req *types.RunServiceReq) error {
 	case "mqtt":
 		return xerr.NewErrCodeMsg(xerr.USER_OPERATION_ERR, "mqtt服务功能开发中，静候佳音🐱！")
 	}
-	//cmd := exec.Command("/bin/sh", "-c", sh)
-	//err = cmd.Start()
-	//fmt.Printf("[fc.execScript-pid:%d,err:%+v],\nsh:%s\n", cmd.Process.Pid, err, sh)
-	//data,err := cmd.Output()
-	//fmt.Println(string(data))
+	cmd := exec.Command("/bin/sh", "-c", sh)
+	err = cmd.Run()
+	fmt.Printf("[fc.execScript-pid:%d,err:%+v],\nsh:%s\n", cmd.Process.Pid, err, sh)
+	data,err := cmd.CombinedOutput()
+	fmt.Println(string(data))
 
-	go func (){
-		cmd := exec.Command("/bin/sh", "-c", sh)
-		err = cmd.Run()
-		fmt.Printf("[fc.execScript-pid:%d,err:%+v],\nsh:%s\n", cmd.Process.Pid, err, sh)
-		data,err := cmd.CombinedOutput()
-		fmt.Println(string(data), err)
-	}()
+	//go func (){
+	//	cmd := exec.Command("/bin/sh", "-c", sh)
+	//	err = cmd.Run()
+	//	fmt.Printf("[fc.execScript-pid:%d,err:%+v],\nsh:%s\n", cmd.Process.Pid, err, sh)
+	//	data,err := cmd.CombinedOutput()
+	//	fmt.Println(string(data), err)
+	//}()
 
 	return err
 }
