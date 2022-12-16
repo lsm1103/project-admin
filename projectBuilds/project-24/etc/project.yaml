@@ -4,7 +4,7 @@ Port: 824
 #日志配置
 Log:
   Mode: file
-  Level: error
+  Level: info
   Compress: true
   KeepDays: 3
 

@@ -3,7 +3,6 @@ package Application
 import (
 	"context"
 	"fmt"
-	"os/exec"
 	"strconv"
 	"strings"
 
@@ -95,8 +94,7 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 		//生成api文件
 		err = build.BuildApiFile()
 		if err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR),
-				"生成api文件失败：%s", err.Error())
+			return errors.Wrapf(xerr.NewErrCode(xerr.USER_OPERATION_ERR), "生成api文件失败：%s", err.Error())
 		}
 	case "buildDataModel":
 		//生成数据库curl代码
@@ -145,7 +143,5 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 				"生成swagger doc文件失败：%s", err.Error())
 		}
 	}
-	cmd := exec.Command("/bin/sh", "-c", fmt.Sprintf("cd %s/projectBuilds/%s && go build project.go"), l.svcCtx.RootPkgPath, build.Info.ProjectName )
-	err = cmd.Run()
 	return nil
 }
