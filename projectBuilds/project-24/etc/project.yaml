@@ -1,6 +1,12 @@
 Name: project
 Host: 0.0.0.0
 Port: 824
+#日志配置
+Log:
+  Mode: file
+  Level: error
+  Compress: true
+  KeepDays: 3
 
 DB:
   DataSource: root:pujian123@tcp(172.16.10.183:4306)/project-admin?charset=utf8mb4&loc=Asia%2FShanghai&parseTime=true

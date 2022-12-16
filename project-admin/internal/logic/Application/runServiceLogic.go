@@ -35,7 +35,7 @@ func (l *RunServiceLogic) RunService(req *types.RunServiceReq) error {
 	var sh string
 	switch req.RunType {
 	case "http":
-		sh = fmt.Sprintf("cd %s/projectBuilds/%s-%s && nohup ./project &", l.svcCtx.RootPkgPath, app.EnName, req.Version)
+		sh = fmt.Sprintf("cd %s/projectBuilds/%s-%s && go run project.go", l.svcCtx.RootPkgPath, app.EnName, req.Version)
 	case "rpc":
 		return xerr.NewErrCodeMsg(xerr.USER_OPERATION_ERR, "rpc服务功能开发中，静候佳音🐱！")
 	case "websocket":
@@ -59,5 +59,5 @@ func (l *RunServiceLogic) RunService(req *types.RunServiceReq) error {
 	//	fmt.Println(string(data), err)
 	//}()
 
-	return err
+	return nil
 }

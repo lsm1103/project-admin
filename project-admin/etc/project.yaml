@@ -1,6 +1,19 @@
 Name: project
 Host: 0.0.0.0
 Port: 810
+Verbose: False
+# 系统接口超时限制/毫秒
+Timeout: 60000
+#最大请求数/秒
+MaxConns: 30000
+#最大请求字节数
+MaxBytes: 10485760
+#日志配置
+Log:
+  Mode: file
+  Level: error
+  Compress: true
+  KeepDays: 3
 
 DB:
   DataSource: root:pujian123@tcp(172.16.10.183:4306)/project-admin?charset=utf8mb4&loc=Asia%2FShanghai&parseTime=true
