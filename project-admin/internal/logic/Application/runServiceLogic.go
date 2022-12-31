@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/pkg/errors"
-	"os"
 	"os/exec"
 	"project-admin/common/xerr"
 
@@ -42,16 +41,16 @@ func (l *RunServiceLogic) RunService(req *types.RunServiceReq) error {
 		cmd_ := exec.Command("/bin/sh", "-c", "/usr/local/go/bin/go build project.go")
 		cmd_.Dir = appPath
 
-		var out bytes.Buffer
-		cmd_.Stdout = &out
-		cmd_.Stderr = os.Stderr
+		var stdout, stderr bytes.Buffer
+		cmd_.Stdout = &stdout
+		cmd_.Stderr = &stderr
 
 		err = cmd_.Start()
 		if err != nil {
 			l.Errorf("err:%v", err)
 		}
 		err = cmd_.Wait()
-		l.Info("out: ",out.String())
+		l.Infof("stdout: %s, stderr: %s",stdout.String(), stderr.String())
 		if err != nil{
 			l.Errorf("err:%v", err)
 			return errors.Wrap(xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "服务编译失败"),err.Error())
