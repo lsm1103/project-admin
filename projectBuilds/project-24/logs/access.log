@@ -1,4 +1,0 @@
-{"@timestamp":"2022-12-28T00:00:07.747+08:00","caller":"logx/rotatelogger.go:405","content":"compressing log file: logs/stat.log-2022-12-27","level":"info"}
-{"@timestamp":"2022-12-28T00:00:07.747+08:00","caller":"logx/rotatelogger.go:405","content":"compressing log file: logs/access.log-2022-12-27","level":"info"}
-{"@timestamp":"2022-12-28T00:00:07.755+08:00","caller":"logx/rotatelogger.go:409","content":"compressed log file: logs/access.log-2022-12-27, took 6.471869ms","level":"info"}
-{"@timestamp":"2022-12-28T00:00:07.759+08:00","caller":"logx/rotatelogger.go:409","content":"compressed log file: logs/stat.log-2022-12-27, took 13.534494ms","level":"info"}
