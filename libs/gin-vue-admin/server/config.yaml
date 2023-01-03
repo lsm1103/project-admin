@@ -7,7 +7,7 @@ aliyun-oss:
   base-path: yourBasePath
 autocode:
   transfer-restart: true
-  root: /Users/xm/Desktop/go_package/gin-vue-admin
+  root: /Users/xm/Desktop/go_project/project-admin/libs/gin-vue-admin
   server: /server
   server-api: /api/v1/%s
   server-plug: /plugin/%s
@@ -80,7 +80,7 @@ hua-wei-obs:
   access-key: you-access-key
   secret-key: you-secret-key
 jwt:
-  signing-key: 3298a56b-f637-4488-9af1-058f310dad41
+  signing-key: 464ac3cc-f3f1-4359-a5aa-088faf6e55ff
   expires-time: 7d
   buffer-time: 1d
   issuer: qmPlus
@@ -88,12 +88,12 @@ local:
   path: uploads/file
   store-path: uploads/file
 mysql:
-  path: 172.16.10.183
-  port: "4306"
+  path: 127.0.0.1
+  port: "3306"
   config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: gva
   username: root
-  password: pujian123
+  password: "123456"
   max-idle-conns: 10
   max-open-conns: 100
   log-mode: error
