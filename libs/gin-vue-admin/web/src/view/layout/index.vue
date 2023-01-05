@@ -7,6 +7,7 @@
           <img alt class="logoimg" :src="$PROJECT_ADMIN.appLogo">
           <div v-if="isSider" class="tit-text" :style="{color:textColor}">{{ $PROJECT_ADMIN.appName }}</div>
         </div>
+        <!-- 左侧菜单栏 -->
         <Aside class="aside" />
       </el-aside>
       <!-- 分块滑动功能 -->
