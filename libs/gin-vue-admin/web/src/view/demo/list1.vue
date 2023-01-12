@@ -21,19 +21,19 @@
       <el-table-column prop="city" label="城市" :show-overflow-tooltip="true" min-width="100" />
       <el-table-column prop="address" label="地址" :show-overflow-tooltip="true" min-width="120" />
       <el-table-column prop="zip" label="压缩" min-width="100" />
-      <el-table-column label="操作" min-width="150" fixed="right">
+      <el-table-column label="操作" min-width="140" fixed="right">
         <template #header>
           <el-input v-model="search" size="small" placeholder="模糊搜索" />
         </template>
         <template #default="scope">
-          <el-popover v-model="scope.row.visible" placement="top" width="160">
+          <el-popover :visible="scope.row.visible" placement="top" width="160">
             <p>确定要删除此用户吗</p>
             <div style="text-align: right; margin-top: 8px;">
               <el-button size="small" type="primary" link @click="scope.row.visible = false">取消</el-button>
               <el-button type="primary" size="small"  @click="handleDelete(scope.$index, scope.row)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="danger" link icon="delete" size="small">删除</el-button>
+              <el-button type="danger" link icon="delete" size="small" @click="scope.row.visible = true">删除</el-button>
             </template>
           </el-popover>
           <el-button type="primary" link icon="edit" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -94,7 +94,7 @@ export default {
 import { ref } from 'vue'
 
 const tableData = ref([])
-const search = ref()
+const search = ref('')
 const selectd = ref([])
 const pageSizes = ref([10, 20, 30, 50])
 const currentPage = ref(1)
@@ -172,10 +172,24 @@ const filterHandler = (value, row, column) => {
   return row[property] === value
 }
 const handleAdd = () => {
-
+  dialogType.value = "add"
+  dialogFormVisible.value = true
+}
+const enterDialog = () => {
+  
+}
+const closeDialog = () => {
+  
 }
 const handleEdit = (index, row) => {
   console.log(index, row)
+  form.value = {
+    authorityId: 12,
+    authorityName: '晓红',
+    parentId: 0
+  }
+  dialogType.value = "edit"
+  dialogFormVisible.value = true
 }
 const handleDelete = (index, row) => {
   console.log(index, row)
