@@ -5,22 +5,35 @@
       <el-button size="small" type="danger" icon="delete" @click="handleDelete()">批量删除</el-button>
     </div>
     <el-table
-        row-key="data"
+        row-key="remark"
         :data="tableData"
         :default-sort="{ prop: 'date', order: 'descending' }"
         @selection-change="handleSelectionChange"
         border style="width: 100%" height="600">
       <el-table-column type="selection" width="40" />
-      <el-table-column fixed prop="date" label="Date" sortable min-width="120" />
+      <el-table-column fixed prop="create_time" label="创建时间" sortable min-width="120" />
+      <el-table-column fixed prop="id" label="id" :show-overflow-tooltip=" true" min-width="50" />
       <el-table-column
-          column-key="name"
+          column-key="create_user"
           :filters="nameList"
           :filter-method="filterHandler"
-          prop="name" label="姓名" min-width="100" />
-      <el-table-column prop="state" label="状态" min-width="100" />
-      <el-table-column prop="city" label="城市" :show-overflow-tooltip="true" min-width="100" />
-      <el-table-column prop="address" label="地址" :show-overflow-tooltip="true" min-width="120" />
-      <el-table-column prop="zip" label="压缩" min-width="100" />
+          prop="create_user" label="创建人" min-width="100" />
+      <el-table-column prop="en_name" label="en应用名" min-width="80" />
+      <el-table-column prop="zn_name" label="zh应用名" min-width="80" />
+      <el-table-column prop="info" label="介绍" :show-overflow-tooltip=" true" min-width="120" />
+      <el-table-column prop="project_id" label="项目id" min-width="100" />
+      <el-table-column label="状态" min-width="40">
+        <template #default="scope">
+          <el-switch
+              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #797777"
+              v-model="scope.row.state"
+              inline-prompt
+              :active-value="1"
+              :inactive-value="-1"
+              @change="()=>{switchEnable(scope.row, v)}"
+          />
+        </template>
+      </el-table-column>
       <el-table-column label="操作" min-width="140" fixed="right">
         <template #header>
           <el-input v-model="search" size="small" placeholder="模糊搜索" />
@@ -92,6 +105,8 @@ export default {
 <script setup>
 // https://element-plus.gitee.io/zh-CN/component/table.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%A8%E5%A4%B4
 import { ref } from 'vue'
+import axios from "axios";
+import {ElMessage} from "element-plus";
 
 const tableData = ref([])
 const search = ref('')
@@ -99,26 +114,86 @@ const selectd = ref([])
 const pageSizes = ref([10, 20, 30, 50])
 const currentPage = ref(1)
 const pageSize = ref(10)
-const total = ref(25)
+const total = ref(0)
 
-const nameList = [
-  { text: '小明', value: '小明' },
-  { text: '小红', value: '小红' },
-  { text: '小白', value: '小白' },
-  { text: '小蓝', value: '小蓝' },
-]
-for (var i=0;i<total.value;i++){
-  tableData.value.push(
-      {
-        date: '2016-05-0'+i,
-        name: nameList[i % 4]["text"],
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Home',
+const nameList = ref([])
+
+const getList = () => {
+  const url = "http://127.0.0.1:810/admin/Application/v1/gets"
+  // for (var i=0;i<total.value;i++){
+  //   tableData.value.push(
+  //       {
+  //         date: '2016-05-0'+i,
+  //         name: nameList[i % 4]["text"],
+  //         state: 'California',
+  //         city: 'Los Angeles',
+  //         address: 'No. 189, Grove St, Los Angeles',
+  //         zip: 'CA 90036',
+  //         tag: 'Home',
+  //       }
+  //   )
+  // }
+
+  axios.post(url, {
+    "current": 1,
+    "orderBy": "id",
+    "pageSize": 10,
+    "query": [],
+    "sort": "desc"
+  }, {
+    timeout: 99999,
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token':'000'
+    }
+  }).catch(function (error) {
+    ElMessage({
+      showClose: true,
+      message: error,
+      type: 'error'
+    })
+    // ElMessage.error('Oops, this is a error message.')
+  }).then(function (response) {
+    if (!response){
+      return
+    }
+    if (response.status >= 300){
+      ElMessage({
+        showClose: true,
+        message: "数据获取失败",
+        type: 'error'
+      })
+    }
+    var res = response.data;
+    console.log("res", res)
+    if (res.code != 200){
+      ElMessage({
+        showClose: true,
+        message: "数据获取出错",
+        type: 'warning'
+      })
+    }
+
+    currentPage.value = res.data.current
+    total.value = res.data.isNext? total.value+1 : total.value
+    pageSize.value = res.data.pageSize
+    tableData.value = res.data.list
+    const tmp = []
+    const tmp_ = []
+    res.data.list.forEach((item) => {
+      if ( !tmp_.includes(item.create_user )){
+        tmp.push({ text: item.create_user, value: item.create_user })
+        tmp_.push(item.create_user)
       }
-  )
+    });
+    console.log("tmp",tmp)
+    nameList.value = tmp
+  })
+}
+getList()
+
+const switchEnable = (row) => {
+  console.log("row", row)
 }
 
 // 弹窗
