@@ -68,22 +68,65 @@
     <!-- 新增弹窗 -->
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle">
       <el-form ref="authorityForm" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="父级角色" prop="parentId">
-          <el-cascader
-              v-model="form.parentId"
-              style="width:100%"
-              :disabled="dialogType==='add'"
-              :options="AuthorityOption"
-              :props="{ checkStrictly: true,label:'authorityName',value:'authorityId',disabled:'disabled',emitPath:false}"
-              :show-all-levels="false"
-              filterable
-          />
+<!--        <el-form-item label="父级角色" prop="parentId">-->
+<!--          <el-cascader-->
+<!--              v-model="form.parentId"-->
+<!--              style="width:100%"-->
+<!--              :disabled="dialogType==='add'"-->
+<!--              :options="AuthorityOption"-->
+<!--              :props="{ checkStrictly: true,label:'authorityName',value:'authorityId',disabled:'disabled',emitPath:false}"-->
+<!--              :show-all-levels="false"-->
+<!--              filterable-->
+<!--          />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="角色ID" prop="authorityId">-->
+<!--          <el-input v-model="form.authorityId" :disabled="dialogType=='edit'" autocomplete="off" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="角色姓名" prop="authorityName">-->
+<!--          <el-input v-model="form.authorityName" autocomplete="off" />-->
+<!--        </el-form-item>-->
+
+        <el-form-item label="中文名称" prop="create_time">
+          <el-input v-model="form.create_time" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="角色ID" prop="authorityId">
-          <el-input v-model="form.authorityId" :disabled="dialogType=='edit'" autocomplete="off" />
+        <el-form-item label="英文名称" prop="create_time">
+          <el-input v-model="form.create_time" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="角色姓名" prop="authorityName">
-          <el-input v-model="form.authorityName" autocomplete="off" />
+        <el-form-item label="图标" prop="create_time" min-width="120">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="简介" prop="id" :show-overflow-tooltip="true" min-width="50">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="创建者id" prop="create_user" min-width="100">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="需求组ids" prop="en_name" min-width="80">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="文档组ids" prop="zn_name" min-width="80">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="参与者ids" prop="info" :show-overflow-tooltip="true" min-width="120">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="参与组ids" prop="project_id" min-width="100">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="所属项目id" prop="project_id" min-width="100">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="备注" prop="project_id" min-width="100">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="排序" prop="project_id" min-width="100">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="状态" min-width="40">
+          <el-input v-model="form.create_time" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="创建时间" min-width="40">
+          <el-input v-model="form.create_time" autocomplete="off" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -115,25 +158,10 @@ const pageSizes = ref([10, 20, 30, 50])
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
-
 const nameList = ref([])
 
 const getList = () => {
   const url = "http://127.0.0.1:810/admin/Application/v1/gets"
-  // for (var i=0;i<total.value;i++){
-  //   tableData.value.push(
-  //       {
-  //         date: '2016-05-0'+i,
-  //         name: nameList[i % 4]["text"],
-  //         state: 'California',
-  //         city: 'Los Angeles',
-  //         address: 'No. 189, Grove St, Los Angeles',
-  //         zip: 'CA 90036',
-  //         tag: 'Home',
-  //       }
-  //   )
-  // }
-
   axios.post(url, {
     "current": 1,
     "orderBy": "id",
@@ -207,9 +235,26 @@ const dialogType = ref('add')
 const dialogTitle = ref('新增角色')
 const dialogFormVisible = ref(false)
 const form = ref({
-  authorityId: 0,
-  authorityName: '',
-  parentId: 0
+  // authorityId: 0,
+  // authorityName: '',
+  // parentId: 0,
+
+  create_time: '',
+  create_user: 0,
+  demand_ids: '',
+  doc_ids: '',
+  en_name: '',
+  ico: '',
+  id: '',
+  info: '',
+  join_groups: '',
+  join_users: '',
+  project_id: '',
+  rank: '',
+  remark: '',
+  state: '',
+  update_time: '',
+  zn_name: '',
 })
 const AuthorityOption = ref([
   {

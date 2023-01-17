@@ -57,7 +57,7 @@ func (l *BuildLogic) Build(req *types.BuildReq) error {
 	build := buildCode.BuildCode{
 		RootPkgPath: l.svcCtx.RootPkgPath,
 		Info: buildCode.BuildAppInfo{
-			Title:        app.ZnName,
+			Title:        app.ZhName,
 			Desc:         app.Info,
 			Author:       conf["author"],
 			Email:        conf["email"],

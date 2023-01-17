@@ -103,12 +103,12 @@ DROP TABLE IF EXISTS `application`;
 CREATE TABLE `application`
 (
     `id`             bigint unsigned NOT NULL COMMENT '主键',
-    `zn_name`        char(20) NOT NULL COMMENT '中文名称',
+    `zh_name`        char(20) NOT NULL COMMENT '中文名称',
     `en_name`        char(20) NOT NULL COMMENT '英文名称，相当于程序名称',
     `ico`            char(200) NOT NULL DEFAULT '' COMMENT '图标',
     `info`           char(200) NOT NULL COMMENT '简介',
     `create_user`    bigint NOT NULL COMMENT '创建者id',
-    `demand_ids`     bigint NOT NULL COMMENT '需求组ids',
+    `demand_ids`     char(200) NOT NULL COMMENT '需求组ids',
     `doc_ids`        char(200) NOT NULL COMMENT '文档组ids',
     `join_users`     char(200) NOT NULL COMMENT '参与者ids',
     `join_groups`    char(200) NOT NULL COMMENT '参与组ids',
@@ -120,7 +120,7 @@ CREATE TABLE `application`
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `index_unique` (`create_user`, `en_name`, `project_id`),
-    KEY `index_filter` (`create_time`, `state`, `zn_name`)
+    KEY `index_filter` (`create_time`, `state`, `zh_name`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_bin COMMENT ='应用表';

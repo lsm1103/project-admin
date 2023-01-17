@@ -381,7 +381,6 @@ const editAuthority = (row) => {
 </script>
 
 <script>
-
 export default {
   name: 'Authority'
 }

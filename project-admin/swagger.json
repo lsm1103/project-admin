@@ -1229,7 +1229,7 @@
           "format": "int64",
           "description": " 主键"
         },
-        "zn_name": {
+        "zh_name": {
           "type": "string",
           "description": " 中文名称"
         },
@@ -1252,7 +1252,7 @@
         },
         "demand_ids": {
           "type": "integer",
-          "format": "int64",
+          "format": "string",
           "description": " 需求组ids"
         },
         "doc_ids": {
@@ -1297,7 +1297,7 @@
       "title": "Application",
       "required": [
         "id",
-        "zn_name",
+        "zh_name",
         "en_name",
         "ico",
         "info",
@@ -2348,7 +2348,7 @@
     "createApplicationReq": {
       "type": "object",
       "properties": {
-        "zn_name": {
+        "zh_name": {
           "type": "string",
           "description": " 中文名称"
         },
@@ -2371,7 +2371,7 @@
         },
         "demand_ids": {
           "type": "integer",
-          "format": "int64",
+          "format": "string",
           "description": " 需求组ids"
         },
         "doc_ids": {
@@ -2402,7 +2402,7 @@
       },
       "title": "createApplicationReq",
       "required": [
-        "zn_name",
+        "zh_name",
         "en_name",
         "ico",
         "info",
@@ -2732,7 +2732,7 @@
           "format": "int64",
           "description": " 主键"
         },
-        "zn_name": {
+        "zh_name": {
           "type": "string",
           "description": " 中文名称"
         },
@@ -2755,7 +2755,7 @@
         },
         "demand_ids": {
           "type": "integer",
-          "format": "int64",
+          "format": "string",
           "description": " 需求组ids"
         },
         "doc_ids": {

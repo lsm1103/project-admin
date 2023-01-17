@@ -45,12 +45,12 @@ type (
 
 	Application struct {
 		Id         int64     `db:"id"`          // 主键
-		ZnName     string    `db:"zn_name"`     // 中文名称
+		ZhName     string    `db:"zh_name"`     // 中文名称
 		EnName     string    `db:"en_name"`     // 英文名称，相当于程序名称
 		Ico        string    `db:"ico"`         // 图标
 		Info       string    `db:"info"`        // 简介
 		CreateUser int64     `db:"create_user"` // 创建者id
-		DemandIds  int64     `db:"demand_ids"`  // 需求组ids
+		DemandIds  string     `db:"demand_ids"`  // 需求组ids
 		DocIds     string    `db:"doc_ids"`     // 文档组ids
 		JoinUsers  string    `db:"join_users"`  // 参与者ids
 		JoinGroups string    `db:"join_groups"` // 参与组ids
@@ -134,9 +134,9 @@ func (m *defaultApplicationModel) Insert(ctx context.Context, session sqlx.Sessi
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, applicationRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Id, data.ZnName, data.EnName, data.Ico, data.Info, data.CreateUser, data.DemandIds, data.DocIds, data.JoinUsers, data.JoinGroups, data.ProjectId, data.Remark, data.Rank)
+			return session.ExecCtx(ctx, query, data.Id, data.ZhName, data.EnName, data.Ico, data.Info, data.CreateUser, data.DemandIds, data.DocIds, data.JoinUsers, data.JoinGroups, data.ProjectId, data.Remark, data.Rank)
 		}
-		return conn.ExecCtx(ctx, query, data.Id, data.ZnName, data.EnName, data.Ico, data.Info, data.CreateUser, data.DemandIds, data.DocIds, data.JoinUsers, data.JoinGroups, data.ProjectId, data.Remark, data.Rank)
+		return conn.ExecCtx(ctx, query, data.Id, data.ZhName, data.EnName, data.Ico, data.Info, data.CreateUser, data.DemandIds, data.DocIds, data.JoinUsers, data.JoinGroups, data.ProjectId, data.Remark, data.Rank)
 	}, applicationCreateUserEnNameProjectIdKey, applicationIdKey)
 	return ret, err
 }

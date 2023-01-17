@@ -210,12 +210,12 @@ type ProjectList struct {
 }
 
 type CreateApplicationReq struct {
-	ZnName     string `json:"zn_name"`     // 中文名称
+	ZhName     string `json:"zh_name"`     // 中文名称
 	EnName     string `json:"en_name"`     // 英文名称，相当于程序名称
 	Ico        string `json:"ico"`         // 图标
 	Info       string `json:"info"`        // 简介
 	CreateUser int64  `json:"create_user"` // 创建者id
-	DemandIds  int64  `json:"demand_ids"`  // 需求组ids
+	DemandIds  string  `json:"demand_ids"`  // 需求组ids
 	DocIds     string `json:"doc_ids"`     // 文档组ids
 	JoinUsers  string `json:"join_users"`  // 参与者ids
 	JoinGroups string `json:"join_groups"` // 参与组ids
@@ -226,12 +226,12 @@ type CreateApplicationReq struct {
 
 type UpdateApplicationReq struct {
 	Id         int64  `json:"id"`                   // 主键
-	ZnName     string `json:"zn_name,optional"`     // 中文名称
+	ZhName     string `json:"zh_name,optional"`     // 中文名称
 	EnName     string `json:"en_name,optional"`     // 英文名称，相当于程序名称
 	Ico        string `json:"ico,optional"`         // 图标
 	Info       string `json:"info,optional"`        // 简介
 	CreateUser int64  `json:"create_user,optional"` // 创建者id
-	DemandIds  int64  `json:"demand_ids,optional"`  // 需求组ids
+	DemandIds  string  `json:"demand_ids,optional"`  // 需求组ids
 	DocIds     string `json:"doc_ids,optional"`     // 文档组ids
 	JoinUsers  string `json:"join_users,optional"`  // 参与者ids
 	JoinGroups string `json:"join_groups,optional"` // 参与组ids
@@ -243,12 +243,12 @@ type UpdateApplicationReq struct {
 
 type Application struct {
 	Id         int64  `json:"id"`          // 主键
-	ZnName     string `json:"zn_name"`     // 中文名称
+	ZhName     string `json:"zh_name"`     // 中文名称
 	EnName     string `json:"en_name"`     // 英文名称，相当于程序名称
 	Ico        string `json:"ico"`         // 图标
 	Info       string `json:"info"`        // 简介
 	CreateUser int64  `json:"create_user"` // 创建者id
-	DemandIds  int64  `json:"demand_ids"`  // 需求组ids
+	DemandIds  string  `json:"demand_ids"`  // 需求组ids
 	DocIds     string `json:"doc_ids"`     // 文档组ids
 	JoinUsers  string `json:"join_users"`  // 参与者ids
 	JoinGroups string `json:"join_groups"` // 参与组ids
