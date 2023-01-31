@@ -19,7 +19,7 @@
           :filter-method="filterHandler"
           prop="create_user" label="创建人" min-width="100" />
       <el-table-column prop="en_name" label="en应用名" min-width="80" />
-      <el-table-column prop="zn_name" label="zh应用名" min-width="80" />
+      <el-table-column prop="zh_name" label="zh应用名" min-width="80" />
       <el-table-column prop="info" label="介绍" :show-overflow-tooltip=" true" min-width="120" />
       <el-table-column prop="project_id" label="项目id" min-width="100" />
       <el-table-column label="状态" min-width="40">
@@ -67,7 +67,7 @@
     </div>
     <!-- 新增弹窗 -->
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle">
-      <el-form ref="authorityForm" :model="form" :rules="rules" label-width="80px">
+      <el-form :model="form" :rules="rules" label-width="80px">
 <!--        <el-form-item label="父级角色" prop="parentId">-->
 <!--          <el-cascader-->
 <!--              v-model="form.parentId"-->
@@ -86,46 +86,46 @@
 <!--          <el-input v-model="form.authorityName" autocomplete="off" />-->
 <!--        </el-form-item>-->
 
-        <el-form-item label="中文名称" prop="create_time">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="中文名称" prop="zh_name">
+          <el-input v-model="form.zh_name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="英文名称" prop="create_time">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="英文名称" prop="en_name">
+          <el-input v-model="form.en_name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="图标" prop="create_time" min-width="120">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="图标" prop="ico" min-width="120">
+          <el-input v-model="form.ico" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="简介" prop="id" :show-overflow-tooltip="true" min-width="50">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="简介" prop="info" :show-overflow-tooltip="true" min-width="50">
+          <el-input v-model="form.info" autocomplete="off" />
         </el-form-item>
         <el-form-item label="创建者id" prop="create_user" min-width="100">
-          <el-input v-model="form.create_time" autocomplete="off" />
+          <el-input v-model="form.create_user" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="需求组ids" prop="en_name" min-width="80">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="需求组ids" prop="demand_ids" min-width="80">
+          <el-input v-model="form.demand_ids" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="文档组ids" prop="zn_name" min-width="80">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="文档组ids" prop="doc_ids" min-width="80">
+          <el-input v-model="form.doc_ids" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="参与者ids" prop="info" :show-overflow-tooltip="true" min-width="120">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="参与者ids" prop="join_users" :show-overflow-tooltip="true" min-width="120">
+          <el-input v-model="form.join_users" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="参与组ids" prop="project_id" min-width="100">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="参与组ids" prop="join_groups" min-width="100">
+          <el-input v-model="form.join_groups" autocomplete="off" />
         </el-form-item>
         <el-form-item label="所属项目id" prop="project_id" min-width="100">
-          <el-input v-model="form.create_time" autocomplete="off" />
+          <el-input v-model="form.project_id" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="备注" prop="project_id" min-width="100">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="备注" prop="remark" min-width="100">
+          <el-input v-model="form.remark" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="排序" prop="project_id" min-width="100">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="排序" prop="rank" min-width="100">
+          <el-input v-model="form.rank" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="状态" min-width="40">
-          <el-input v-model="form.create_time" autocomplete="off" />
+        <el-form-item label="状态" prop="state" min-width="40">
+          <el-input v-model="form.state" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="创建时间" min-width="40">
+        <el-form-item label="创建时间" prop="create_time" min-width="40">
           <el-input v-model="form.create_time" autocomplete="off" />
         </el-form-item>
       </el-form>
@@ -225,12 +225,6 @@ const switchEnable = (row) => {
 }
 
 // 弹窗
-const mustUint = (rule, value, callback) => {
-  if (!/^[0-9]*[1-9][0-9]*$/.test(value)) {
-    return callback(new Error('请输入正整数'))
-  }
-  return callback()
-}
 const dialogType = ref('add')
 const dialogTitle = ref('新增角色')
 const dialogFormVisible = ref(false)
@@ -256,12 +250,18 @@ const form = ref({
   update_time: '',
   zn_name: '',
 })
-const AuthorityOption = ref([
-  {
-    authorityId: 0,
-    authorityName: '根角色'
+// const AuthorityOption = ref([
+//   {
+//     authorityId: 0,
+//     authorityName: '根角色'
+//   }
+// ])
+const mustUint = (rule, value, callback) => {
+  if (!/^[0-9]*[1-9][0-9]*$/.test(value)) {
+    return callback(new Error('请输入正整数'))
   }
-])
+  return callback()
+}
 const rules = ref({
   authorityId: [
     { required: true, message: '请输入角色ID', trigger: 'blur' },
@@ -296,18 +296,15 @@ const handleAdd = () => {
   dialogFormVisible.value = true
 }
 const enterDialog = () => {
-  
+  console.log("enterDialog", form)
+  dialogFormVisible.value = false
 }
 const closeDialog = () => {
-  
+  dialogFormVisible.value = false
 }
 const handleEdit = (index, row) => {
   console.log(index, row)
-  form.value = {
-    authorityId: 12,
-    authorityName: '晓红',
-    parentId: 0
-  }
+  form.value = row
   dialogType.value = "edit"
   dialogFormVisible.value = true
 }

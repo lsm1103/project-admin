@@ -88,12 +88,12 @@ local:
   path: uploads/file
   store-path: uploads/file
 mysql:
-  path: 127.0.0.1
-  port: "3306"
+  path: 172.16.10.183
+  port: "4306"
   config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: gva
   username: root
-  password: "123456"
+  password: "pujian123"
   max-idle-conns: 10
   max-open-conns: 100
   log-mode: error

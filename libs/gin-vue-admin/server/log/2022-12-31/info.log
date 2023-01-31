@@ -1,4 +1,0 @@
-[github.com/flipped-aurora/gin-vue-admin/server]2022/12/31 - 21:15:38.526	[34minfo[0m	/Users/xm/Desktop/go_project/project-admin/libs/gin-vue-admin/server/initialize/router.go:37	register swagger handler
-[github.com/flipped-aurora/gin-vue-admin/server]2022/12/31 - 21:15:38.533	[34minfo[0m	/Users/xm/Desktop/go_project/project-admin/libs/gin-vue-admin/server/initialize/router.go:79	router register success
-[github.com/flipped-aurora/gin-vue-admin/server]2022/12/31 - 21:15:38.534	[34minfo[0m	/Users/xm/Desktop/go_project/project-admin/libs/gin-vue-admin/server/core/server.go:36	server run success on 	{"address": ":8888"}
-[github.com/flipped-aurora/gin-vue-admin/server]2022/12/31 - 21:24:23.052	[34minfo[0m	/Users/xm/Desktop/go_project/project-admin/libs/gin-vue-admin/server/api/v1/system/sys_initdb.go:57	前往初始化数据库
