@@ -1,8 +1,13 @@
 <template>
   <div class="gva-table-box">
-    <div class="gva-btn-list">
-      <el-button size="small" type="primary" icon="plus" @click="handleAdd()">新增</el-button>
-      <el-button size="small" type="danger" icon="delete" @click="handleDelete()">批量删除</el-button>
+    <div class="gva-btn-list" style="text-align: justify;">
+      <div style="width: 80%; height: 100%">
+        <el-button size="small" type="primary" icon="plus" @click="handleAdd()">新增</el-button>
+        <el-button size="small" type="danger" icon="delete" @click="handleDelete()">批量删除</el-button>
+      </div>
+      <div style="width: 20%; height: 100%">
+        <el-input clearable :prefix-icon="Search" size="large" v-model="input" min-width="140" placeholder="模糊搜索"/>
+      </div>
     </div>
     <el-table
         row-key="remark"
@@ -11,7 +16,7 @@
         @selection-change="handleSelectionChange"
         border style="width: 100%" height="600">
       <el-table-column type="selection" width="40" />
-      <el-table-column fixed prop="create_time" label="创建时间" sortable min-width="120" />
+      <el-table-column fixed sortable prop="create_time" label="日期" width="180"/>
       <el-table-column fixed prop="id" label="id" :show-overflow-tooltip=" true" min-width="50" />
       <el-table-column
           column-key="create_user"
@@ -30,14 +35,14 @@
               inline-prompt
               :active-value="1"
               :inactive-value="-1"
-              @change="()=>{switchEnable(scope.row, v)}"
+              @change="()=>{handleStateChange(scope.row, v)}"
           />
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="140" fixed="right">
-        <template #header>
-          <el-input v-model="search" size="small" placeholder="模糊搜索" />
-        </template>
+<!--        <template #header>-->
+<!--          <el-input v-model="search" size="small" placeholder="模糊搜索" />-->
+<!--        </template>-->
         <template #default="scope">
           <el-popover :visible="scope.row.visible" placement="top" width="160">
             <p>确定要删除此用户吗</p>
@@ -57,10 +62,10 @@
     <div class="pagination">
       <el-pagination background
           layout="total, sizes, prev, pager, next"
-          :page-sizes="pageSizes"
+          :page-sizes="[10, 20, 30, 50]"
           :total="total"
-          v-model:current-page="currentPage"
-          v-model:page-size="pageSize"
+          :current-page="currentPage"
+          :page-size="pageSize"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
       />
@@ -68,24 +73,6 @@
     <!-- 新增弹窗 -->
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle">
       <el-form :model="form" :rules="rules" label-width="80px">
-<!--        <el-form-item label="父级角色" prop="parentId">-->
-<!--          <el-cascader-->
-<!--              v-model="form.parentId"-->
-<!--              style="width:100%"-->
-<!--              :disabled="dialogType==='add'"-->
-<!--              :options="AuthorityOption"-->
-<!--              :props="{ checkStrictly: true,label:'authorityName',value:'authorityId',disabled:'disabled',emitPath:false}"-->
-<!--              :show-all-levels="false"-->
-<!--              filterable-->
-<!--          />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="角色ID" prop="authorityId">-->
-<!--          <el-input v-model="form.authorityId" :disabled="dialogType=='edit'" autocomplete="off" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="角色姓名" prop="authorityName">-->
-<!--          <el-input v-model="form.authorityName" autocomplete="off" />-->
-<!--        </el-form-item>-->
-
         <el-form-item label="中文名称" prop="zh_name">
           <el-input v-model="form.zh_name" autocomplete="off" />
         </el-form-item>
@@ -126,7 +113,7 @@
           <el-input v-model="form.state" autocomplete="off" />
         </el-form-item>
         <el-form-item label="创建时间" prop="create_time" min-width="40">
-          <el-input v-model="form.create_time" autocomplete="off" />
+          <el-input v-model="form.create_time" autocomplete="off"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -150,22 +137,26 @@ export default {
 import { ref } from 'vue'
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import { formatDate } from '@/utils/format'
+import { Search } from '@element-plus/icons-vue'
 
+const input = ref([])
 const tableData = ref([])
 const search = ref('')
 const selectd = ref([])
-const pageSizes = ref([10, 20, 30, 50])
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
 const nameList = ref([])
 
-const getList = () => {
-  const url = "http://127.0.0.1:810/admin/Application/v1/gets"
-  axios.post(url, {
-    "current": 1,
+const baseUrl = "http://127.0.0.1:810"
+// 获取列表信息
+const getList = (val) => {
+  console.log("getList",val)
+  axios.post(baseUrl+"/admin/Application/v1/gets", {
+    "current": currentPage.value,
     "orderBy": "id",
-    "pageSize": 10,
+    "pageSize": pageSize.value,
     "query": [],
     "sort": "desc"
   }, {
@@ -180,9 +171,13 @@ const getList = () => {
       message: error,
       type: 'error'
     })
-    // ElMessage.error('Oops, this is a error message.')
   }).then(function (response) {
     if (!response){
+      ElMessage({
+        showClose: true,
+        message: "数据获取失败",
+        type: 'error'
+      })
       return
     }
     if (response.status >= 300){
@@ -191,37 +186,83 @@ const getList = () => {
         message: "数据获取失败",
         type: 'error'
       })
+      return
     }
     var res = response.data;
     console.log("res", res)
     if (res.code != 200){
       ElMessage({
         showClose: true,
-        message: "数据获取出错",
+        message: "数据获取出错,"+res.msg,
         type: 'warning'
       })
+      return
     }
-
-    currentPage.value = res.data.current
-    total.value = res.data.isNext? total.value+1 : total.value
-    pageSize.value = res.data.pageSize
-    tableData.value = res.data.list
     const tmp = []
     const tmp_ = []
     res.data.list.forEach((item) => {
+      item.create_time = formatDate(item.create_time)
+      //人名筛选功能
       if ( !tmp_.includes(item.create_user )){
         tmp.push({ text: item.create_user, value: item.create_user })
         tmp_.push(item.create_user)
       }
     });
-    console.log("tmp",tmp)
     nameList.value = tmp
+
+    tableData.value = res.data.list
+    currentPage.value = res.data.current
+    const total_ = res.data.current===1? res.data.list.length : (res.data.pageSize*(res.data.current-1))+res.data.list.length
+    total.value = res.data.isNext? total_+1 : total_
+    pageSize.value = res.data.pageSize
+    console.log("total", total_, total.value, currentPage.value, pageSize.value)
   })
 }
-getList()
+getList("1")
 
-const switchEnable = (row) => {
+//列表多选事件触发处理
+const multipleSelection = ref([])
+const handleSelectionChange = (val) => {
+  multipleSelection.value = val
+  console.log("multipleSelection",multipleSelection.value, val)
+}
+//人名筛选功能
+const filterHandler = (value, row, column) => {
+  const property = column['property']
+  return row[property] === value
+}
+
+//状态更改
+const handleStateChange = (row) => {
   console.log("row", row)
+}
+//新增
+const handleAdd = () => {
+  dialogType.value = "add"
+  dialogFormVisible.value = true
+}
+//修改
+const handleEdit = (index, row) => {
+  console.log(index, row, row.create_time, formatDate(row.create_time))
+  form.value = row
+  // form.value.create_time = formatDate(row.create_time)
+  dialogType.value = "edit"
+  dialogFormVisible.value = true
+}
+//删除
+const handleDelete = (index, row) => {
+  console.log(index, row)
+  console.log("selectd", selectd)
+}
+
+//分页
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  getList("handleSizeChange")
+}
+const handleCurrentChange = (val) => {
+  currentPage.value = val
+  getList("handleCurrentChange")
 }
 
 // 弹窗
@@ -229,10 +270,6 @@ const dialogType = ref('add')
 const dialogTitle = ref('新增角色')
 const dialogFormVisible = ref(false)
 const form = ref({
-  // authorityId: 0,
-  // authorityName: '',
-  // parentId: 0,
-
   create_time: '',
   create_user: 0,
   demand_ids: '',
@@ -250,12 +287,6 @@ const form = ref({
   update_time: '',
   zn_name: '',
 })
-// const AuthorityOption = ref([
-//   {
-//     authorityId: 0,
-//     authorityName: '根角色'
-//   }
-// ])
 const mustUint = (rule, value, callback) => {
   if (!/^[0-9]*[1-9][0-9]*$/.test(value)) {
     return callback(new Error('请输入正整数'))
@@ -274,43 +305,12 @@ const rules = ref({
     { required: true, message: '请选择父角色', trigger: 'blur' },
   ]
 })
-
-const multipleSelection = ref([])
-const handleSelectionChange = (val) => {
-  multipleSelection.value = val
-  console.log("multipleSelection",multipleSelection.value, val)
-}
-const handleSizeChange = () => {
-
-}
-const handleCurrentChange = () => {
-
-}
-
-const filterHandler = (value, row, column) => {
-  const property = column['property']
-  return row[property] === value
-}
-const handleAdd = () => {
-  dialogType.value = "add"
-  dialogFormVisible.value = true
-}
 const enterDialog = () => {
   console.log("enterDialog", form)
   dialogFormVisible.value = false
 }
 const closeDialog = () => {
   dialogFormVisible.value = false
-}
-const handleEdit = (index, row) => {
-  console.log(index, row)
-  form.value = row
-  dialogType.value = "edit"
-  dialogFormVisible.value = true
-}
-const handleDelete = (index, row) => {
-  console.log(index, row)
-  console.log("selectd", selectd)
 }
 
 </script>

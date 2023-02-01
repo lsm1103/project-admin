@@ -61,6 +61,10 @@ func (t defaultModelTool) BuildQuery(in *GetsReq, ListRows string, tableName str
 	//		Fields_ = fmt.Sprintf("%s, `%s`", Fields_, strings.ToLower(v_))
 	//	}
 	//}
+	var limit int64 = 0
+	if in.Current > int64(1){
+		limit = (in.Current-1)*in.PageSize
+	}
 	return fmt.Sprintf(
 		"select %s from %s %s order by %s %v limit %v offset %v",
 		ListRows,
@@ -69,6 +73,6 @@ func (t defaultModelTool) BuildQuery(in *GetsReq, ListRows string, tableName str
 		in.OrderBy,
 		in.Sort,
 		in.PageSize+1,
-		(in.Current-1)*in.PageSize,
+		limit,
 	)
 }

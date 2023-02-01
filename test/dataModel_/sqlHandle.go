@@ -23,10 +23,10 @@ type (
 
 	GetsReq struct {
 		Query    []*GetsQueryItem `json:"query"`                              //查询
-		OrderBy  string           `form:"orderBy,default=id"`                 //分组
-		Sort     string           `form:"sort,options=desc|asc,default=desc"` //排序 desc/asc
-		Current  int64            `form:"current,default=1"`                  //当前页
-		PageSize int64            `form:"pageSize,default=10"`                //页面大小
+		OrderBy  string           `json:"orderBy,default=id"`                 //分组
+		Sort     string           `json:"sort,options=desc|asc,default=desc"` //排序 desc/asc
+		Current  int64            `json:"current,default=1"`                  //当前页
+		PageSize int64            `json:"pageSize,default=10"`                //页面大小
 	}
 )
 
