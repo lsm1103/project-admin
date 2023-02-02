@@ -44,7 +44,6 @@
             />
           </template>
         </el-table-column>
-
         <el-table-column label="操作" min-width="250" fixed="right">
           <template #default="scope">
             <el-popover v-model="scope.row.visible" placement="top" width="160">
@@ -61,7 +60,6 @@
             <el-button type="primary" link icon="magic-stick" size="small" @click="resetPasswordFunc(scope.row)">重置密码</el-button>
           </template>
         </el-table-column>
-
       </el-table>
       <div class="gva-pagination">
         <el-pagination

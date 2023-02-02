@@ -2,11 +2,22 @@
   <div class="gva-table-box">
     <div class="gva-btn-list" style="text-align: justify;">
       <div style="width: 80%; height: 100%">
-        <el-button size="small" type="primary" icon="plus" @click="handleAdd()">新增</el-button>
-        <el-button size="small" type="danger" icon="delete" @click="handleDelete()">批量删除</el-button>
+        <el-button size="small" type="primary" icon="plus" @click="handleAdd">新增</el-button>
+        <el-button size="small" type="danger" icon="delete" @click="handleBatchDelete">批量删除</el-button>
       </div>
       <div style="width: 20%; height: 100%">
-        <el-input clearable :prefix-icon="Search" size="large" v-model="input" min-width="140" placeholder="模糊搜索"/>
+        <el-input
+            clearable
+            :prefix-icon="Search"
+            size="small"
+            v-model="searchKW"
+            show-word-limit
+            min-width="160"
+            minlength="1"
+            maxlength="100"
+            placeholder="模糊搜索"
+            @keyup.enter.native="toSearch"
+        />
       </div>
     </div>
     <el-table
@@ -14,32 +25,31 @@
         :data="tableData"
         :default-sort="{ prop: 'date', order: 'descending' }"
         @selection-change="handleSelectionChange"
-        border style="width: 100%" height="600">
+        border style="width: 100%" height="600" >
       <el-table-column type="selection" width="40" />
-      <el-table-column fixed sortable prop="create_time" label="日期" width="180"/>
-      <el-table-column fixed prop="id" label="id" :show-overflow-tooltip=" true" min-width="50" />
+      <el-table-column fixed sortable prop="create_time" label="日期" min-width="80" :show-overflow-tooltip=" true" align="center" />
+      <el-table-column prop="id" label="id" min-width="60" :show-overflow-tooltip=" true" align="center" />
       <el-table-column
           column-key="create_user"
           :filters="nameList"
           :filter-method="filterHandler"
-          prop="create_user" label="创建人" min-width="100" />
-      <el-table-column prop="en_name" label="en应用名" min-width="80" />
-      <el-table-column prop="zh_name" label="zh应用名" min-width="80" />
-      <el-table-column prop="info" label="介绍" :show-overflow-tooltip=" true" min-width="120" />
-      <el-table-column prop="project_id" label="项目id" min-width="100" />
-      <el-table-column label="状态" min-width="40">
+          prop="create_user" label="创建人" min-width="40" align="center" />
+      <el-table-column prop="en_name" label="en应用名" min-width="80" align="center" />
+      <el-table-column prop="zh_name" label="zh应用名" min-width="80" align="center" />
+      <el-table-column prop="info" label="介绍" :show-overflow-tooltip=" true" min-width="100" align="center" />
+      <el-table-column prop="project_id" label="项目id" min-width="80" align="center" />
+      <el-table-column label="状态" min-width="40" align="center">
         <template #default="scope">
           <el-switch
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #797777"
               v-model="scope.row.state"
               inline-prompt
               :active-value="1"
               :inactive-value="-1"
-              @change="()=>{handleStateChange(scope.row, v)}"
+              @change="handleStateChange(scope.row, v)"
           />
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="140" fixed="right">
+      <el-table-column label="操作" min-width="100" fixed="right" align="center">
 <!--        <template #header>-->
 <!--          <el-input v-model="search" size="small" placeholder="模糊搜索" />-->
 <!--        </template>-->
@@ -70,50 +80,60 @@
           @current-change="handleCurrentChange"
       />
     </div>
-    <!-- 新增弹窗 -->
-    <el-dialog v-model="dialogFormVisible" :title="dialogTitle">
-      <el-form :model="form" :rules="rules" label-width="80px">
+    <!-- 弹窗 -->
+    <el-dialog v-model="dialogFormVisible" :show-close="false" width="40%" >
+<!--    <el-dialog v-model="dialogFormVisible" :title="dialogTitle">-->
+      <template #header="{ close, titleId, titleClass }">
+        <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: baseline;">
+          <h4 :id="titleId" :class="titleClass">{{ dialogTitle }}</h4>
+          <div>
+            <el-button type="primary" v-show="dialogType === 'add'" @click="close" >参考之前</el-button>
+            <el-button :icon="CloseBold" @click="close" />
+          </div>
+        </div>
+      </template>
+      <el-form :model="formData" :rules="rules" label-width="80px" @change="formDataChange">
         <el-form-item label="中文名称" prop="zh_name">
-          <el-input v-model="form.zh_name" autocomplete="off" />
+          <el-input v-model="formData.zh_name" autocomplete="off" />
         </el-form-item>
         <el-form-item label="英文名称" prop="en_name">
-          <el-input v-model="form.en_name" autocomplete="off" />
+          <el-input v-model="formData.en_name" autocomplete="off" />
         </el-form-item>
         <el-form-item label="图标" prop="ico" min-width="120">
-          <el-input v-model="form.ico" autocomplete="off" />
+          <el-input v-model="formData.ico" autocomplete="off" />
         </el-form-item>
         <el-form-item label="简介" prop="info" :show-overflow-tooltip="true" min-width="50">
-          <el-input v-model="form.info" autocomplete="off" />
+          <el-input v-model="formData.info" autocomplete="off" />
         </el-form-item>
         <el-form-item label="创建者id" prop="create_user" min-width="100">
-          <el-input v-model="form.create_user" autocomplete="off" />
+          <el-input v-model="formData.create_user" autocomplete="off" />
         </el-form-item>
         <el-form-item label="需求组ids" prop="demand_ids" min-width="80">
-          <el-input v-model="form.demand_ids" autocomplete="off" />
+          <el-input v-model="formData.demand_ids" autocomplete="off" />
         </el-form-item>
         <el-form-item label="文档组ids" prop="doc_ids" min-width="80">
-          <el-input v-model="form.doc_ids" autocomplete="off" />
+          <el-input v-model="formData.doc_ids" autocomplete="off" />
         </el-form-item>
         <el-form-item label="参与者ids" prop="join_users" :show-overflow-tooltip="true" min-width="120">
-          <el-input v-model="form.join_users" autocomplete="off" />
+          <el-input v-model="formData.join_users" autocomplete="off" />
         </el-form-item>
         <el-form-item label="参与组ids" prop="join_groups" min-width="100">
-          <el-input v-model="form.join_groups" autocomplete="off" />
+          <el-input v-model="formData.join_groups" autocomplete="off" />
         </el-form-item>
         <el-form-item label="所属项目id" prop="project_id" min-width="100">
-          <el-input v-model="form.project_id" autocomplete="off" />
+          <el-input v-model="formData.project_id" autocomplete="off" />
         </el-form-item>
         <el-form-item label="备注" prop="remark" min-width="100">
-          <el-input v-model="form.remark" autocomplete="off" />
+          <el-input v-model="formData.remark" autocomplete="off" />
         </el-form-item>
         <el-form-item label="排序" prop="rank" min-width="100">
-          <el-input v-model="form.rank" autocomplete="off" />
+          <el-input v-model="formData.rank" autocomplete="off" />
         </el-form-item>
         <el-form-item label="状态" prop="state" min-width="40">
-          <el-input v-model="form.state" autocomplete="off" />
+          <el-input v-model="formData.state" autocomplete="off" />
         </el-form-item>
         <el-form-item label="创建时间" prop="create_time" min-width="40">
-          <el-input v-model="form.create_time" autocomplete="off"/>
+          <el-input v-model="formData.create_time" autocomplete="off"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -134,15 +154,15 @@ export default {
 
 <script setup>
 // https://element-plus.gitee.io/zh-CN/component/table.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%A8%E5%A4%B4
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import axios from "axios";
 import {ElMessage} from "element-plus";
 import { formatDate } from '@/utils/format'
-import { Search } from '@element-plus/icons-vue'
+import { Search,CloseBold } from '@element-plus/icons-vue'
 
-const input = ref([])
 const tableData = ref([])
-const search = ref('')
+const searchKW = ref('')
+let searchHistoryKW = ""
 const selectd = ref([])
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -153,13 +173,7 @@ const baseUrl = "http://127.0.0.1:810"
 // 获取列表信息
 const getList = (val) => {
   console.log("getList",val)
-  axios.post(baseUrl+"/admin/Application/v1/gets", {
-    "current": currentPage.value,
-    "orderBy": "id",
-    "pageSize": pageSize.value,
-    "query": [],
-    "sort": "desc"
-  }, {
+  axios.post(baseUrl+"/admin/Application/v1/gets", val, {
     timeout: 99999,
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -198,6 +212,16 @@ const getList = (val) => {
       })
       return
     }
+    if (!res.data.list){
+      tableData.value = []
+      ElMessage({
+        showClose: true,
+        message: "找不到数据",
+        type: 'warning'
+      })
+      return
+    }
+
     const tmp = []
     const tmp_ = []
     res.data.list.forEach((item) => {
@@ -218,7 +242,58 @@ const getList = (val) => {
     console.log("total", total_, total.value, currentPage.value, pageSize.value)
   })
 }
-getList("1")
+getList({
+  "current": currentPage.value,
+  "orderBy": "create_time",
+  "pageSize": pageSize.value,
+  "query": [],
+  "sort": "desc"
+})
+
+//xx
+const formChangeData = {}
+const formDataChange = (env) => {
+  console.log("formDataChange",env, env.target.value, env.target.key)
+  // formChangeData[]
+  // 因为vue生成的原生html代码里面，没有key，所以在事件里面找不到key；要么通过中文名称进行转一下取值，做成代码生成的话，也要解决从key到中文的问题
+}
+
+//搜索
+const toSearch = () => {
+  console.log("toSearch",searchKW.value, tableData.value.length == 0, tableData.value)
+  if(searchKW.value === "") {
+    if (tableData.value.length == 0 || searchHistoryKW != ""){
+      getList({
+        "current": 1,
+        "orderBy": "create_time",
+        "pageSize": pageSize.value,
+        "query": [],
+        "sort": "desc"
+      })
+    }
+    searchHistoryKW = searchKW.value
+    return;
+  } else if (searchHistoryKW == searchKW.value){
+    return;
+  }else {
+    // 请求查询接口，将列表展现出来
+    getList({
+      "current": 1,
+      "orderBy": "create_time",
+      "pageSize": pageSize.value,
+      "query": [
+        {
+          "handle": "like",
+          "key": "zh_name",
+          "nextHandle": "and",
+          "val": searchKW.value
+        }
+      ],
+      "sort": "desc"
+    })
+    searchHistoryKW = searchKW.value
+  }
+}
 
 //列表多选事件触发处理
 const multipleSelection = ref([])
@@ -232,9 +307,172 @@ const filterHandler = (value, row, column) => {
   return row[property] === value
 }
 
+//add
+const add = (val) => {
+  axios.post(baseUrl+"/admin/Application/v1/", val, {
+    timeout: 99999,
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token':'000'
+    }
+  }).catch(function (error) {
+    ElMessage({
+      showClose: true,
+      message: error,
+      type: 'error'
+    })
+  }).then(function (response) {
+    if (!response) {
+      ElMessage({
+        showClose: true,
+        message: "请求接口失败",
+        type: 'error'
+      })
+      return
+    }
+    if (response.status >= 300) {
+      ElMessage({
+        showClose: true,
+        message: "操作失败",
+        type: 'error'
+      })
+      return
+    }
+    var res = response.data;
+    console.log("res", res)
+    if (res.code != 200) {
+      ElMessage({
+        showClose: true,
+        message: "操作出错," + res.msg,
+        type: 'warning'
+      })
+      return
+    }
+    ElMessage({
+      showClose: true,
+      message: "操作成功",
+      type: 'success'
+    })
+    getList({
+      "current": 1,
+      "orderBy": "create_time",
+      "pageSize": pageSize.value,
+      "query": [],
+      "sort": "desc"
+    })
+  })
+}
+//del
+const del = (val) =>{
+  axios.delete(baseUrl+"/admin/Application/v1/", { data:val }, {
+    timeout: 99999,
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token':'000'
+    }
+  }).catch(function (error) {
+    ElMessage({
+      showClose: true,
+      message: error,
+      type: 'error'
+    })
+  }).then(function (response) {
+    if (!response) {
+      ElMessage({
+        showClose: true,
+        message: "请求接口失败",
+        type: 'error'
+      })
+      return
+    }
+    if (response.status >= 300) {
+      ElMessage({
+        showClose: true,
+        message: "操作失败",
+        type: 'error'
+      })
+      return
+    }
+    var res = response.data;
+    console.log("res", res)
+    if (res.code != 200) {
+      ElMessage({
+        showClose: true,
+        message: "操作出错," + res.msg,
+        type: 'warning'
+      })
+      return
+    }
+    ElMessage({
+      showClose: true,
+      message: "操作成功",
+      type: 'success'
+    })
+    getList({
+      "current": 1,
+      "orderBy": "create_time",
+      "pageSize": pageSize.value,
+      "query": [],
+      "sort": "desc"
+    })
+  })
+}
+//update
+const update = (val) =>{
+  axios.put(baseUrl+"/admin/Application/v1/", {"data":val}, {
+    timeout: 99999,
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token':'000'
+    }
+  }).catch(function (error) {
+    ElMessage({
+      showClose: true,
+      message: error,
+      type: 'error'
+    })
+  }).then(function (response) {
+    if (!response) {
+      ElMessage({
+        showClose: true,
+        message: "请求接口失败",
+        type: 'error'
+      })
+      return
+    }
+    if (response.status >= 300) {
+      ElMessage({
+        showClose: true,
+        message: "操作失败",
+        type: 'error'
+      })
+      return
+    }
+    var res = response.data;
+    console.log("res", res)
+    if (res.code != 200) {
+      ElMessage({
+        showClose: true,
+        message: "操作出错," + res.msg,
+        type: 'warning'
+      })
+      return
+    }
+    ElMessage({
+      showClose: true,
+      message: "操作成功",
+      type: 'success'
+    })
+  })
+}
+
 //状态更改
 const handleStateChange = (row) => {
   console.log("row", row)
+  update({
+    "id": row.id,
+    "state": row.state,
+  })
 }
 //新增
 const handleAdd = () => {
@@ -243,33 +481,55 @@ const handleAdd = () => {
 }
 //修改
 const handleEdit = (index, row) => {
-  console.log(index, row, row.create_time, formatDate(row.create_time))
-  form.value = row
-  // form.value.create_time = formatDate(row.create_time)
+  console.log("handleEdit", index, row)
   dialogType.value = "edit"
+  formData.value = JSON.parse(JSON.stringify(row))
   dialogFormVisible.value = true
 }
 //删除
 const handleDelete = (index, row) => {
   console.log(index, row)
+  del({
+    "id": row.id
+  })
+}
+//批量删除
+const handleBatchDelete = () => {
   console.log("selectd", selectd)
+  selectd.value.forEach((item) => {
+    del({
+      "id": item
+    })
+  })
 }
 
 //分页
 const handleSizeChange = (val) => {
   pageSize.value = val
-  getList("handleSizeChange")
+  getList({
+    "current": currentPage.value,
+    "orderBy": "create_time",
+    "pageSize": pageSize.value,
+    "query": [],
+    "sort": "desc"
+  })
 }
 const handleCurrentChange = (val) => {
   currentPage.value = val
-  getList("handleCurrentChange")
+  getList({
+    "current": currentPage.value,
+    "orderBy": "create_time",
+    "pageSize": pageSize.value,
+    "query": [],
+    "sort": "desc"
+  })
 }
 
 // 弹窗
 const dialogType = ref('add')
 const dialogTitle = ref('新增角色')
 const dialogFormVisible = ref(false)
-const form = ref({
+const formData = ref({
   create_time: '',
   create_user: 0,
   demand_ids: '',
@@ -305,9 +565,16 @@ const rules = ref({
     { required: true, message: '请选择父角色', trigger: 'blur' },
   ]
 })
+
 const enterDialog = () => {
-  console.log("enterDialog", form)
+  console.log("enterDialog", formData)
+  if (dialogType.value == "add"){
+    add(formData.value)
+  } else if (dialogType.value == "edit"){
+    update(formData.value)
+  }
   dialogFormVisible.value = false
+  formData.value = {}
 }
 const closeDialog = () => {
   dialogFormVisible.value = false

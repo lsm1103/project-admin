@@ -26,6 +26,14 @@ func (t defaultModelTool) BuildQuery(in *GetsReq, ListRows string, tableName str
 			Val := strings.TrimSpace(value.Val)
 			Handle := strings.TrimSpace(value.Handle)
 			NextHandle := strings.TrimSpace(value.NextHandle)
+			/*
+			  gt：表示大于>。即greater than
+			  ge：表示大于等于>=。即greater than or equals to
+			  lt：表示小于<。即less than
+			  le：表示小于等于<=。即less than or equals to
+			  eq：表示等于=。即equals
+			  ne：表示不等于!=。即not equals
+			*/
 			switch Handle {
 			case "between":
 				t_ := strings.Split(Val, ",")
@@ -40,8 +48,23 @@ func (t defaultModelTool) BuildQuery(in *GetsReq, ListRows string, tableName str
 					}
 				}
 				tmp_ = fmt.Sprintf(" `%s` in (%s) ", Key, t_)
-			default:
-				tmp_ = fmt.Sprintf(" `%s` %s '%s' ", Key, Handle, Val)
+			case "like":
+				tmp_ = fmt.Sprintf(" `%s` like '%%%s%%' ", Key, Val)
+				fmt.Print(tmp_)
+			case "gt":
+				tmp_ = fmt.Sprintf(" `%s` > '%s' ", Key, Val)
+			case "ge":
+				tmp_ = fmt.Sprintf(" `%s` >= '%s' ", Key, Val)
+			case "lt":
+				tmp_ = fmt.Sprintf(" `%s` < '%s' ", Key, Val)
+			case "le":
+				tmp_ = fmt.Sprintf(" `%s` <= '%s' ", Key, Val)
+			case "eq":
+				tmp_ = fmt.Sprintf(" `%s` = '%s' ", Key, Val)
+			case "ne":
+				tmp_ = fmt.Sprintf(" `%s` != '%s' ", Key, Val)
+			//default:
+			//	tmp_ = fmt.Sprintf(" `%s` %s '%s' ", Key, Handle, Val)
 			}
 			if index == 0 {
 				filter_ = tmp_
