@@ -419,7 +419,7 @@ const del = (val) =>{
 }
 //update
 const update = (val) =>{
-  axios.put(baseUrl+"/admin/Application/v1/", {"data":val}, {
+  axios.put(baseUrl+"/admin/Application/v1/", val, {
     timeout: 99999,
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -567,7 +567,7 @@ const rules = ref({
 })
 
 const enterDialog = () => {
-  console.log("enterDialog", formData)
+  console.log("enterDialog", formData.value)
   if (dialogType.value == "add"){
     add(formData.value)
   } else if (dialogType.value == "edit"){

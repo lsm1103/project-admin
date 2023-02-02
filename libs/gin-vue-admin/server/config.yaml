@@ -88,7 +88,8 @@ local:
   path: uploads/file
   store-path: uploads/file
 mysql:
-  path: 172.16.10.183
+  path: 127.0.0.1
+  #path: 172.16.10.183
   port: "4306"
   config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: gva
@@ -119,7 +120,8 @@ qiniu:
   use-cdn-domains: false
 redis:
   db: 0
-  addr: 172.16.10.183:6379
+  addr: 127.0.0.1:6379
+  #addr: 172.16.10.183:6379
   password: ""
 system:
   env: public

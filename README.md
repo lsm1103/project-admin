@@ -224,7 +224,7 @@ go run goctl.go api go -style goZero --home ../template -dir ../../project-admin
   "project_id": "34534523",
   "rank": 1,
   "remark": "gsdgds",
-  "zn_name": "5675756"
+  "zh_name": "5675756"
 }
 ```
 
