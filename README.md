@@ -412,3 +412,8 @@ Response:
 		DdlArg   DdlArg `json:"ddlArg,content=生成数据库curl代码配置"`
 	}
 ```
+
+### 前端参考文档
+- https://cn.vuejs.org/api/built-in-directives.html#v-model
+- https://element-plus.gitee.io/zh-CN/component/table.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%A8%E5%A4%B4
+- https://www.gin-vue-admin.com/guide/web/button-auth.html
