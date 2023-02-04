@@ -238,6 +238,7 @@ func (m DataModelToApi)genFields(fieldTemplate string, fields []*parser.Field, t
 	return strings.Join(list, "\n"), nil
 }
 
+//生成代码
 func (m DataModelToApi)buildCode(strTemplate string, data interface{}) (*bytes.Buffer, error) {
 	tpl, err := template.New("templateOne").Parse(strTemplate) // （2）解析模板
 	if err != nil {
@@ -251,8 +252,7 @@ func (m DataModelToApi)buildCode(strTemplate string, data interface{}) (*bytes.B
 	return buf, nil
 }
 
-
-// LoadTemplate get template content by the filePath.
+//LoadTemplate 通过文件路径获取模板内容。LoadTemplate get template content by the filePath.
 func LoadTemplate(filePath string) (string, error) {
 	content, err := os.ReadFile(filePath)
 	if err != nil {

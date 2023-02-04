@@ -51,13 +51,13 @@ func Test_BuildApiFile(t *testing.T)  {
 	dataModelToApi.DataModelToApi{
 		RootPkgPath,
 		dataModelToApi.ServiceInfo{
-			Title:   "项目12",
-			Desc:    "项目12，包括代码生成、mock服务生成、cicd等；如通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
+			Title:   "项目13",
+			Desc:    "项目13，包括代码生成、mock服务生成、cicd等；如通过api设计文档自动生成服务，并根据api文件配置的字段mock规则进行mock生成结果",
 			Author:  "lsm",
 			Email:   "18370872400@163.com",
 			Version: "v0.1.1",
 
-			ProjectName: "project12",
+			ProjectName: "project13",
 			ServiceType: "admin",
 			Host:        "0.0.0.0",
 			Port:        "812",

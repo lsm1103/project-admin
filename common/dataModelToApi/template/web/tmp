@@ -1,0 +1,44 @@
+<el-table-column
+  column-key="create_user"
+  :filters="nameList"
+  :filter-method="filterHandler"
+  prop="create_user" label="创建者id" min-width="50" align="center" />
+<el-table-column prop="en_name" label="英文名称" min-width="80" align="center" />
+<el-table-column prop="zh_name" label="中文名称" min-width="80" align="center" />
+<el-table-column prop="info" label="简介" :show-overflow-tooltip=" true" min-width="100" align="center" />
+<el-table-column prop="project_id" label="所属项目id" min-width="80" align="center" />
+
+
+<el-form-item label="英文名称" prop="en_name">
+  <el-input v-model="formData.en_name" autocomplete="off" />
+</el-form-item>
+<el-form-item label="图标" prop="ico" min-width="120">
+  <el-input v-model="formData.ico" autocomplete="off" />
+</el-form-item>
+<el-form-item label="简介" prop="info" :show-overflow-tooltip="true" min-width="50">
+  <el-input v-model="formData.info" autocomplete="off" />
+</el-form-item>
+<el-form-item label="创建者id" prop="create_user" min-width="100">
+  <el-input v-model="formData.create_user" autocomplete="off" maxlength="36" />
+</el-form-item>
+<el-form-item label="需求组ids" prop="demand_ids" min-width="80">
+  <el-input v-model="formData.demand_ids" autocomplete="off" />
+</el-form-item>
+<el-form-item label="文档组ids" prop="doc_ids" min-width="80">
+  <el-input v-model="formData.doc_ids" autocomplete="off" />
+</el-form-item>
+<el-form-item label="参与者ids" prop="join_users" :show-overflow-tooltip="true" min-width="120">
+  <el-input v-model="formData.join_users" autocomplete="off" />
+</el-form-item>
+<el-form-item label="参与组ids" prop="join_groups" min-width="100">
+  <el-input v-model="formData.join_groups" autocomplete="off" />
+</el-form-item>
+<el-form-item label="所属项目id" prop="project_id" min-width="100">
+  <el-input v-model="formData.project_id" autocomplete="off" />
+</el-form-item>
+<el-form-item label="备注" prop="remark" min-width="100">
+  <el-input v-model="formData.remark" autocomplete="off" />
+</el-form-item>
+<el-form-item label="排序" prop="rank" min-width="100">
+  <el-input-number v-model="formData.rank" autocomplete="off" />
+</el-form-item>

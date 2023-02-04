@@ -154,7 +154,7 @@
 
 <script>
 export default {
-  name: "List1"
+  name: "List2"
 }
 </script>
 
@@ -265,6 +265,7 @@ service.interceptors.response.use(
 // 获取列表信息
 const getList = async (val) => {
   console.log("getList",val)
+
   let res = await service({
     url: '/admin/Application/v1/gets',
     method: 'post',
@@ -490,7 +491,7 @@ const handleBatchDelete = async() => {
 const handleSizeChange = (val) => {
   pageSize.value = val
   let query = []
-  if(searchKW.value === ""){
+  if(searchKW.value != ""){
     query = [
       {
         "handle": "like",
@@ -511,7 +512,7 @@ const handleSizeChange = (val) => {
 const handleCurrentChange = (val) => {
   currentPage.value = val
   let query = []
-  if(searchKW.value === ""){
+  if(searchKW.value != ""){
     query = [
       {
         "handle": "like",
@@ -615,278 +616,6 @@ const beforeReferenc = () => {
   formData.value = rowHistory
 }
 
-
-// axios.put(baseUrl+"/admin/Application/v1/", val, {
-//   timeout: 99999,
-//   headers: {
-//     'Content-Type': 'application/json; charset=UTF-8',
-//     'token':'000'
-//   }
-// }).catch(function (error) {
-//   ElMessage({
-//     showClose: true,
-//     message: error,
-//     type: 'error'
-//   })
-// }).then(function (response) {
-//   if (!response) {
-//     ElMessage({
-//       showClose: true,
-//       message: "请求接口失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   if (response.status >= 300) {
-//     ElMessage({
-//       showClose: true,
-//       message: "操作失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   var res = response.data;
-//   console.log("res", res)
-//   if (res.code != 200) {
-//     ElMessage({
-//       showClose: true,
-//       message: "操作出错," + res.msg,
-//       type: 'warning'
-//     })
-//     return
-//   }
-//   ElMessage({
-//     showClose: true,
-//     message: "操作成功",
-//     type: 'success'
-//   })
-// })
-
-// axios.post(baseUrl+"/admin/Application/v1/", val, {
-//   timeout: 99999,
-//   headers: {
-//     'Content-Type': 'application/json; charset=UTF-8',
-//     'token':'000'
-//   }
-// }).catch(function (error) {
-//   ElMessage({
-//     showClose: true,
-//     message: error,
-//     type: 'error'
-//   })
-// }).then(function (response) {
-//   if (!response) {
-//     ElMessage({
-//       showClose: true,
-//       message: "请求接口失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   if (response.status >= 300) {
-//     ElMessage({
-//       showClose: true,
-//       message: "操作失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   var res = response.data;
-//   console.log("res", res)
-//   if (res.code != 200) {
-//     ElMessage({
-//       showClose: true,
-//       message: "操作出错," + res.msg,
-//       type: 'warning'
-//     })
-//     return
-//   }
-//   ElMessage({
-//     showClose: true,
-//     message: "操作成功",
-//     type: 'success'
-//   })
-//   getList({
-//     "current": 1,
-//     "orderBy": "create_time",
-//     "pageSize": pageSize.value,
-//     "query": [],
-//     "sort": "desc"
-//   })
-// })
-
-// axios.post(baseUrl+"/admin/Application/v1/gets", val, {
-//   timeout: 99999,
-//   headers: {
-//     'Content-Type': 'application/json; charset=UTF-8',
-//     'token':'000'
-//   }
-// }).catch(function (error) {
-//   ElMessage({
-//     showClose: true,
-//     message: error,
-//     type: 'error'
-//   })
-// }).then(function (response) {
-//   if (!response){
-//     ElMessage({
-//       showClose: true,
-//       message: "数据获取失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   if (response.status >= 300){
-//     ElMessage({
-//       showClose: true,
-//       message: "数据获取失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   var res = response.data;
-//   console.log("res", res)
-//   if (res.code != 200){
-//     ElMessage({
-//       showClose: true,
-//       message: "数据获取出错,"+res.msg,
-//       type: 'warning'
-//     })
-//     return
-//   }
-//   if (!res.data.list){
-//     tableData.value = []
-//     ElMessage({
-//       showClose: true,
-//       message: "找不到数据",
-//       type: 'warning'
-//     })
-//     return
-//   }
-//
-//   const tmp = []
-//   const tmp_ = []
-//   res.data.list.forEach((item) => {
-//     item.create_time = formatDate(item.create_time)
-//     //人名筛选功能
-//     if ( !tmp_.includes(item.create_user )){
-//       tmp.push({ text: item.create_user, value: item.create_user })
-//       tmp_.push(item.create_user)
-//     }
-//   });
-//   nameList.value = tmp
-//
-//   tableData.value = res.data.list
-//   currentPage.value = res.data.current
-//   const total_ = res.data.current===1? res.data.list.length : (res.data.pageSize*(res.data.current-1))+res.data.list.length
-//   total.value = res.data.isNext? total_+1 : total_
-//   pageSize.value = res.data.pageSize
-//   console.log("total", total_, total.value, currentPage.value, pageSize.value)
-// })
-
-//xx
-// const formChangeData = {}
-// const formDataChange = (env) => {
-//   console.log("formDataChange",env, env.target.value, env.target.key)
-//   // formChangeData[]
-//   // 因为vue生成的原生html代码里面，没有key，所以在事件里面找不到key；要么通过中文名称进行转一下取值，做成代码生成的话，也要解决从key到中文的问题
-// }
-
-// return new Promise((resolve, reject) => {
-//   axios.delete(baseUrl+"/admin/Application/v1/", { data:val }, {
-//     timeout: 99999,
-//     headers: {
-//       'Content-Type': 'application/json; charset=UTF-8',
-//       'token':'000'
-//     }
-//   }).catch(error => {
-//     ElMessage({
-//       showClose: true,
-//       message: error,
-//       type: 'error'
-//     })
-//     reject(error)
-//   }).then(function (response) {
-//     if (!response) {
-//       ElMessage({
-//         showClose: true,
-//         message: "请求接口失败",
-//         type: 'error'
-//       })
-//       reject("请求接口失败")
-//     }
-//     if (response.status >= 300) {
-//       ElMessage({
-//         showClose: true,
-//         message: "操作失败",
-//         type: 'error'
-//       })
-//       reject("操作失败")
-//     }
-//     var res = response.data;
-//     console.log("res", res)
-//     if (res.code != 200) {
-//       ElMessage({
-//         showClose: true,
-//         message: "操作出错," + res.msg,
-//         type: 'warning'
-//       })
-//       return
-//     }
-//     ElMessage({
-//       showClose: true,
-//       message: val.id+"操作成功",
-//       type: 'success'
-//     })
-//     resolve(res)
-//   })
-// })
-
-// return axios.delete(baseUrl+"/admin/Application/v1/", { data:val }, {
-//   timeout: 99999,
-//   headers: {
-//     'Content-Type': 'application/json; charset=UTF-8',
-//     'token':'000'
-//   }
-// }).catch(function (error) {
-//   ElMessage({
-//     showClose: true,
-//     message: error,
-//     type: 'error'
-//   })
-// }).then(function (response) {
-//   if (!response) {
-//     ElMessage({
-//       showClose: true,
-//       message: "请求接口失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   if (response.status >= 300) {
-//     ElMessage({
-//       showClose: true,
-//       message: "操作失败",
-//       type: 'error'
-//     })
-//     return
-//   }
-//   var res = response.data;
-//   console.log("res", res)
-//   if (res.code != 200) {
-//     ElMessage({
-//       showClose: true,
-//       message: "操作出错," + res.msg,
-//       type: 'warning'
-//     })
-//     return
-//   }
-//   ElMessage({
-//     showClose: true,
-//     message: val.id+"操作成功",
-//     type: 'success'
-//   })
-// })
 </script>
 
 <style lang="scss">
