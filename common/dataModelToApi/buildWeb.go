@@ -8,8 +8,8 @@ import (
 	"path"
 	"text/template"
 
-	"github.com/zeromicro/go-zero/core/stringx"
 	"github.com/zeromicro/go-zero/core/errorx"
+	"github.com/zeromicro/go-zero/core/stringx"
 
 	"project-admin/common/dataModelToApi/parser"
 )
@@ -26,7 +26,7 @@ func (m BuildWeb)BuildWebCode() error {
 	//typesOutputs := []string{}
 	//moduleHandlerOutputs := []string{}
 	//循环表的列表
-	for _, item := range m.TableList {
+	for _, table := range m.TableList {
 		//加载html部分的模版
 		//组织好相关数据，生成代码，存为字节流
 		htmlText, err := LoadTemplate(fmt.Sprintf("%s/common/dataModelToApi/template/web/html.tpl", m.RootPkgPath))
@@ -40,11 +40,22 @@ func (m BuildWeb)BuildWebCode() error {
 		createList := []*parser.Field{}
 		//修改接口相关字段
 		updateList := []*parser.Field{}
-		for _, item := range item.Fields {
+		for _, item := range table.Fields {
 			if !stringx.Contains(ignoreColumns, item.Name.Source()) {
 				updateList = append(updateList, item)
+				//编辑页面字段
+
+				//table.Name 表名
+				//table.PrimaryKey 主键
+				//table.PrimaryKey.DataType 字段数据类型
+				//table.UniqueIndex 联合索引
+				//table.Fields 表的所有字段
+				//item.DataType 字段类型
+
 				if !stringx.Contains(updateColumns, item.Name.Source()) {
 					createList = append(createList, item)
+					//列表显示字段、新增弹窗字段
+					//textTpl := "<el-table-column prop=\"project_id\" label=\"所属项目id\" min-width=\"80\" align=\"center\"/>"
 				}
 			}
 		}
@@ -57,9 +68,7 @@ func (m BuildWeb)BuildWebCode() error {
 		//
 		//updateField := "<el-form-item label=\"英文名称\" prop=\"en_name\">\n  <el-input v-model=\"formData.en_name\" autocomplete=\"off\" />\n</el-form-item>"
 
-		htmlOutput, err := m.buildCode(htmlText, map[string]string{
-
-})
+		htmlOutput, err := m.buildCode(htmlText, map[string]string{})
 		if err != nil {
 			return err
 		}
@@ -99,7 +108,7 @@ func (m BuildWeb)BuildWebCode() error {
 		if err = os.MkdirAll(outDir, os.ModePerm); err != nil {
 			fmt.Printf("MkdirAll outDir: %s", err.Error())
 		}
-		outFile := path.Join(outDir, fmt.Sprintf("%sList.vue", item.Name.ToCamel() ) )
+		outFile := path.Join(outDir, fmt.Sprintf("%sList.vue", table.Name.ToCamel() ) )
 		//创建api文件
 		err = ioutil.WriteFile(outFile, listOutput.Bytes(), os.ModePerm)
 		if err != nil {
