@@ -22,7 +22,7 @@
       </div>
     </div>
     <el-table
-        row-key="id"
+        row-key="{{ .PrimaryKey }}"
         :data="tableData"
         :default-sort="{ prop: 'date', order: 'descending' }"
         @selection-change="handleSelectionChange"

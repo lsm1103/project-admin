@@ -34,6 +34,10 @@ func (m BuildWeb)BuildWebCode() error {
 			return err
 		}
 
+		primaryKey := table.PrimaryKey.Name.Source()
+		primaryKeyTpl := "<el-table-column prop=\"%s\" label=\"主键\" min-width=\"60\" :show-overflow-tooltip=\" true\" align=\"center\"/>"
+		htmlTextOutPuts := []string{fmt.Sprintf(primaryKeyTpl, primaryKey), }
+
 		//所有字段
 		//allFields := item.Fields
 		//新增接口相关字段
@@ -44,18 +48,31 @@ func (m BuildWeb)BuildWebCode() error {
 			if !stringx.Contains(ignoreColumns, item.Name.Source()) {
 				updateList = append(updateList, item)
 				//编辑页面字段
-
 				//table.Name 表名
-				//table.PrimaryKey 主键
+				//table.PrimaryKey 主键 row-key="id"
 				//table.PrimaryKey.DataType 字段数据类型
-				//table.UniqueIndex 联合索引
+				//table.UniqueIndex 联合索引 暂时没用到
 				//table.Fields 表的所有字段
 				//item.DataType 字段类型
+
+
+
+
 
 				if !stringx.Contains(updateColumns, item.Name.Source()) {
 					createList = append(createList, item)
 					//列表显示字段、新增弹窗字段
-					//textTpl := "<el-table-column prop=\"project_id\" label=\"所属项目id\" min-width=\"80\" align=\"center\"/>"
+					if stringx.Contains([]string{"create_user", "user_id"}, item.Name.Source()){
+						createUserFieldTpl := "<el-table-column\n  column-key=\"{{ .FiledName }}\"\n  :filters=\"nameList\"\n  :filter-method=\"filterHandler\"\n  prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"{{ .MinWidth }}\" align=\"center\" :show-overflow-tooltip=\" true\"/>"
+						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(createUserFieldTpl,
+							item.Name.Source(), item.Name.Source(), item.Comment, item.DataType,
+						))
+
+
+					} else {
+						fieldTpl := "<el-table-column prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"{{ .MinWidth }}\" align=\"center\" :show-overflow-tooltip=\" true\"/>"
+					}
+
 				}
 			}
 		}
