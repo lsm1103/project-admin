@@ -36,7 +36,8 @@ func (m BuildWeb)BuildWebCode() error {
 
 		primaryKey := table.PrimaryKey.Name.Source()
 		primaryKeyTpl := "<el-table-column prop=\"%s\" label=\"主键\" min-width=\"60\" :show-overflow-tooltip=\" true\" align=\"center\"/>"
-		htmlTextOutPuts := []string{fmt.Sprintf(primaryKeyTpl, primaryKey), }
+		primaryKeyTextOutPut := fmt.Sprintf(primaryKeyTpl, primaryKey)
+		htmlTextOutPuts := []string{}
 
 		//所有字段
 		//allFields := item.Fields
@@ -44,7 +45,14 @@ func (m BuildWeb)BuildWebCode() error {
 		createList := []*parser.Field{}
 		//修改接口相关字段
 		updateList := []*parser.Field{}
+
 		for _, item := range table.Fields {
+			showOverflowTooltip := ""
+			minWidth := "80"
+			if item.DataType == "string"{
+				showOverflowTooltip = ":show-overflow-tooltip=\" true\""
+				minWidth = "100"
+			}
 			if !stringx.Contains(ignoreColumns, item.Name.Source()) {
 				updateList = append(updateList, item)
 				//编辑页面字段
@@ -54,28 +62,24 @@ func (m BuildWeb)BuildWebCode() error {
 				//table.UniqueIndex 联合索引 暂时没用到
 				//table.Fields 表的所有字段
 				//item.DataType 字段类型
-
-
-
-
-
 				if !stringx.Contains(updateColumns, item.Name.Source()) {
 					createList = append(createList, item)
 					//列表显示字段、新增弹窗字段
 					if stringx.Contains([]string{"create_user", "user_id"}, item.Name.Source()){
-						createUserFieldTpl := "<el-table-column\n  column-key=\"{{ .FiledName }}\"\n  :filters=\"nameList\"\n  :filter-method=\"filterHandler\"\n  prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"{{ .MinWidth }}\" align=\"center\" :show-overflow-tooltip=\" true\"/>"
-						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(createUserFieldTpl,
-							item.Name.Source(), item.Name.Source(), item.Comment, item.DataType,
-						))
-
-
+						createUserFieldTpl := "<el-table-column\n  column-key=\"{{ .FiledName }}\"\n  :filters=\"nameList\"\n  :filter-method=\"filterHandler\"\n  prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"%s\" align=\"center\" %s/>"
+						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(createUserFieldTpl, item.Name.Source(),
+							item.Name.Source(), item.Comment, minWidth, showOverflowTooltip ))
 					} else {
-						fieldTpl := "<el-table-column prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"{{ .MinWidth }}\" align=\"center\" :show-overflow-tooltip=\" true\"/>"
+						fieldTpl := "<el-table-column prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"%s\" align=\"center\" %s/>"
+						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(fieldTpl,
+							item.Name.Source(), item.Comment, minWidth, showOverflowTooltip ))
 					}
 
 				}
 			}
 		}
+
+
 
 		//for _,item := range createList{
 		//	item.Name
@@ -85,7 +89,9 @@ func (m BuildWeb)BuildWebCode() error {
 		//
 		//updateField := "<el-form-item label=\"英文名称\" prop=\"en_name\">\n  <el-input v-model=\"formData.en_name\" autocomplete=\"off\" />\n</el-form-item>"
 
-		htmlOutput, err := m.buildCode(htmlText, map[string]string{})
+		htmlOutput, err := m.buildCode(htmlText, map[string]string{
+			"primaryKeyTextOutPut": primaryKeyTextOutPut,
+		})
 		if err != nil {
 			return err
 		}
@@ -96,9 +102,7 @@ func (m BuildWeb)BuildWebCode() error {
 		if err != nil {
 			return err
 		}
-		styleOutput, err := m.buildCode(styleText, map[string]string{
-
-		})
+		styleOutput, err := m.buildCode(styleText, map[string]string{})
 		if err != nil {
 			return err
 		}
@@ -110,8 +114,8 @@ func (m BuildWeb)BuildWebCode() error {
 			return err
 		}
 		listOutput, err := m.buildCode(listText, map[string]string{
-			"H  tml":htmlOutput.String(),
-			"St yle":styleOutput.String(),
+			"Html":htmlOutput.String(),
+			"Style":styleOutput.String(),
 		})
 		if err != nil {
 			return err
