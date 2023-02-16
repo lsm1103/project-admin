@@ -100,37 +100,37 @@
         <el-form-item label="英文名称" prop="en_name">
           <el-input v-model="formData.en_name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="图标" prop="ico" min-width="120">
+        <el-form-item label="图标" prop="ico">
           <el-input v-model="formData.ico" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="简介" prop="info" :show-overflow-tooltip="true" min-width="50">
+        <el-form-item label="简介" prop="info" :show-overflow-tooltip="true">
           <el-input v-model="formData.info" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="创建者id" prop="create_user" min-width="100">
+        <el-form-item label="创建者id" prop="create_user">
           <el-input v-model="formData.create_user" autocomplete="off" maxlength="36" />
         </el-form-item>
-        <el-form-item label="需求组ids" prop="demand_ids" min-width="80">
+        <el-form-item label="需求组ids" prop="demand_ids">
           <el-input v-model="formData.demand_ids" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="文档组ids" prop="doc_ids" min-width="80">
+        <el-form-item label="文档组ids" prop="doc_ids">
           <el-input v-model="formData.doc_ids" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="参与者ids" prop="join_users" :show-overflow-tooltip="true" min-width="120">
+        <el-form-item label="参与者ids" prop="join_users" :show-overflow-tooltip="true">
           <el-input v-model="formData.join_users" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="参与组ids" prop="join_groups" min-width="100">
+        <el-form-item label="参与组ids" prop="join_groups">
           <el-input v-model="formData.join_groups" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="所属项目id" prop="project_id" min-width="100">
+        <el-form-item label="所属项目id" prop="project_id">
           <el-input v-model="formData.project_id" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="备注" prop="remark" min-width="100">
+        <el-form-item label="备注" prop="remark">
           <el-input v-model="formData.remark" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="排序" prop="rank" min-width="100">
+        <el-form-item label="排序" prop="rank">
           <el-input-number v-model="formData.rank" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="状态" prop="state" min-width="40">
+        <el-form-item label="状态" prop="state">
           <el-switch
               v-model="formData.state"
               inline-prompt
@@ -138,7 +138,7 @@
               :inactive-value="-1"
           />
         </el-form-item>
-        <el-form-item label="创建时间" prop="create_time" min-width="40" v-if="dialogType === 'edit'" >
+        <el-form-item label="创建时间" prop="create_time" v-if="dialogType === 'edit'" >
           <el-input v-model="formData.create_time" autocomplete="off"/>
         </el-form-item>
       </el-form>

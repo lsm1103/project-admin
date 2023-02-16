@@ -66,15 +66,32 @@ func (m BuildWeb)BuildWebCode() error {
 					createList = append(createList, item)
 					//列表显示字段、新增弹窗字段
 					if stringx.Contains([]string{"create_user", "user_id"}, item.Name.Source()){
-						createUserFieldTpl := "<el-table-column\n  column-key=\"{{ .FiledName }}\"\n  :filters=\"nameList\"\n  :filter-method=\"filterHandler\"\n  prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"%s\" align=\"center\" %s/>"
-						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(createUserFieldTpl, item.Name.Source(),
-							item.Name.Source(), item.Comment, minWidth, showOverflowTooltip ))
+						createUserFieldTpl := "<el-table-column\n  column-key=\"%s\"\n  :filters=\"nameList\"\n  :filter-method=\"filterHandler\"\n  prop=\"%s\" label=\"%s\" min-width=\"%s\" align=\"center\" %s/>"
+						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(
+							createUserFieldTpl,
+							item.Name.Source(),
+							item.Name.Source(),
+							item.Comment,
+							minWidth,
+							showOverflowTooltip ))
 					} else {
-						fieldTpl := "<el-table-column prop=\"{{ .FiledName }}\" label=\"{{ .Label }}\" min-width=\"%s\" align=\"center\" %s/>"
-						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(fieldTpl,
-							item.Name.Source(), item.Comment, minWidth, showOverflowTooltip ))
+						fieldTpl := "<el-table-column prop=\"%s\" label=\"%s\" min-width=\"%s\" align=\"center\" %s/>"
+						htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(
+							fieldTpl,
+							item.Name.Source(),
+							item.Comment,
+							minWidth,
+							showOverflowTooltip ))
 					}
 
+
+					dialogFieldTpl := "<el-form-item label=\"英文名称\" prop=\"{{.en_name}}\">\n  <el-input v-model=\"formData.{{.en_name}}\" autocomplete=\"off\" %s/>\n</el-form-item>"
+					//maxlength="36"
+					htmlTextOutPuts = append(htmlTextOutPuts, fmt.Sprintf(
+						dialogFieldTpl,
+						item.Name.Source(),
+						item.Name.Source(),
+						showOverflowTooltip ))
 				}
 			}
 		}
