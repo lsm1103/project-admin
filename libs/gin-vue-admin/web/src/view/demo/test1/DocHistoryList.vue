@@ -1,8 +1,112 @@
-{{ .Html }}
+<template>
+  <div class="gva-table-box">
+    <div class="gva-btn-list" style="text-align: justify;">
+      <div style="width: 80%; height: 100%">
+        <el-button size="small" type="primary" icon="plus" @click="handleAdd">新增</el-button>
+        <el-button size="small" type="primary" icon="turnOff" @click="handleBatchStateChange()">批量禁用</el-button>
+        <el-button size="small" type="danger" icon="delete" @click="handleBatchDelete()">批量删除</el-button>
+      </div>
+      <div style="width: 20%; height: 100%">
+        <el-input
+            clearable
+            :prefix-icon="Search"
+            size="small"
+            v-model="searchKW"
+            show-word-limit
+            min-width="160"
+            minlength="1"
+            maxlength="100"
+            placeholder="zh_name模糊搜索"
+            @keyup.enter.native="toSearch"
+        />
+      </div>
+    </div>
+    <el-table
+        row-key="id"
+        :data="tableData"
+        :default-sort="{ prop: 'date', order: 'descending' }"
+        @selection-change="handleSelectionChange"
+        border style="width: 100%" height="600" >
+      <el-table-column type="selection" width="40" />
+      <el-table-column fixed sortable prop="create_time" label="创建时间" min-width="80" :show-overflow-tooltip=" true" align="center" />
+      <!--机器生成，请勿修改-->
+      <el-table-column prop="id" label="主键" min-width="60" :show-overflow-tooltip=" true" align="center"/>
+            <el-table-column prop="pre_content" label="编辑内容" min-width="100" align="center" :show-overflow-tooltip=" true"/>
+<el-table-column
+          column-key="create_user"
+          :filters="nameList"
+          :filter-method="filterHandler"
+          prop="create_user" label="所属用户" min-width="80" align="center" />
+      <el-table-column prop="doc_id" label="文档id" min-width="80" align="center" />
+      <!--机器生成，请勿修改-->
+      <el-table-column label="操作" min-width="100" fixed="right" align="center">
+        <template #default="scope">
+          <el-popover :visible="scope.row.visible" placement="top" width="160">
+            <p>确定要删除此用户吗</p>
+            <div style="text-align: right; margin-top: 8px;">
+              <el-button size="small" type="primary" link @click="scope.row.visible = false">取消</el-button>
+              <el-button type="primary" size="small"  @click="handleDelete(scope.$index, scope.row)">确定</el-button>
+            </div>
+            <template #reference>
+              <el-button type="danger" link icon="delete" size="small" @click="scope.row.visible = true">删除</el-button>
+            </template>
+          </el-popover>
+          <el-button type="primary" link icon="edit" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!--分页-->
+    <div class="pagination">
+      <el-pagination background
+          layout="total, sizes, prev, pager, next"
+          :page-sizes="[10, 20, 30, 50]"
+          :total="total"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+      />
+    </div>
+    <!-- 弹窗 -->
+    <el-dialog v-model="dialogFormVisible" :show-close="false" width="40%" >
+      <template #header="{ close, titleId, titleClass }">
+        <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: baseline;">
+          <h4 :id="titleId" :class="titleClass">{{ dialogTitle }}</h4>
+          <div>
+            <el-button type="primary" v-show="dialogType === 'add'" @click="beforeReferenc" >参考之前</el-button>
+            <el-button :icon="CloseBold" @click="closeDialog" />
+          </div>
+        </div>
+      </template>
+      <el-form :model="formData" :rules="rules" label-width="80px">
+          <!--机器生成，请勿修改-->
+                  <el-form-item label="编辑内容" prop="pre_content" :show-overflow-tooltip="true">
+          <el-input v-model="formData.pre_content" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="所属用户" prop="create_user" min-width="100">
+          <el-input-number v-model="formData.create_user" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="文档id" prop="doc_id" min-width="100">
+          <el-input-number v-model="formData.doc_id" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="创建时间" prop="create_time" v-if="dialogType === 'edit'" >
+          <el-input v-model="formData.create_time" autocomplete="off"/>
+        </el-form-item>
+          <!--机器生成，请勿修改-->
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button size="small" @click="closeDialog">取 消</el-button>
+          <el-button size="small" type="primary" @click="enterDialog">确 定</el-button>
+        </div>
+      </template>
+    </el-dialog>
+  </div>
+</template>
 
 <script>
 export default {
-  name: "{{ .ModuleName }}List"
+  name: "DocHistoryList"
 }
 </script>
 
@@ -97,7 +201,7 @@ const getList = async (val) => {
   console.log("getList",val)
 
   let res = await service({
-    url: '/admin/{{ .ModuleName }}/v1/gets',
+    url: '/admin/DocHistory/v1/gets',
     method: 'post',
     data:val
   })
@@ -196,7 +300,7 @@ const add = (val) => {
     val.create_user = parseInt(val.create_user)
   }
   return service({
-    url: '/admin/{{ .ModuleName }}/v1/',
+    url: '/admin/DocHistory/v1/',
     method: 'post',
     data:val
   })
@@ -204,7 +308,7 @@ const add = (val) => {
 //del
 const del = (val) =>{
   return service({
-    url: '/admin/{{ .ModuleName }}/v1/',
+    url: '/admin/DocHistory/v1/',
     method: 'delete',
     data:val
   })
@@ -215,7 +319,7 @@ const update = (val) =>{
     val.create_user = parseInt(val.create_user)
   }
   return service({
-    url: '/admin/{{ .ModuleName }}/v1/',
+    url: '/admin/DocHistory/v1/',
     method: 'put',
     data:val
   })
@@ -396,7 +500,7 @@ const enterDialog = async() => {
       tableData.value.push(JSON.parse(JSON.stringify(formData.value)) )
     }
   } else if (dialogType.value == "edit"){
-    let data = {"{{ .PrimaryKey }}":formData.value["{{ .PrimaryKey }}"] }
+    let data = {"id":formData.value["id"] }
     for (let key in formData.value ){
       if ( formData.value[key] != rowHistory[key] ){
         data[key] = formData.value[key]
@@ -430,4 +534,12 @@ const beforeReferenc = () => {
 
 </script>
 
-{{ .Style }}
+<style lang="scss">
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  .el-pagination {
+    padding: 10px 0 0 0 !important;
+  }
+}
+</style>

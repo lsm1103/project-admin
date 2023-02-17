@@ -9,9 +9,9 @@ CREATE TABLE `group`
     `ico`            char(20) NOT NULL DEFAULT '' COMMENT '组图标',
     `remark`         varchar(250) NOT NULL COMMENT '备注',
     `parent_id`      bigint NOT NULL COMMENT '父级id',
-    `group_type`     tinyint(100) NOT NULL DEFAULT '1' COMMENT '类型: 1部门、2用户组、3群组、4圈子、5话题',
+    `group_type`     tinyint(100) NOT NULL DEFAULT '1' COMMENT '类型',    #1部门、2用户组、3群组、4圈子、5话题
     `rank`           tinyint(100) NOT NULL DEFAULT '1' COMMENT '排序',
-    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',    #-2删除，-1禁用，待审核0，启用1
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -28,7 +28,7 @@ CREATE TABLE `user_group`
     `id`             bigint unsigned NOT NULL COMMENT '自增主键',
     `user_id`        bigint NOT NULL COMMENT '用户id',
     `group_id`       bigint NOT NULL COMMENT '组id',
-    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',    #-2删除，-1禁用，待审核0，启用1
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -45,8 +45,8 @@ CREATE TABLE `group_group_relation` (
     `create_user`     bigint NOT NULL COMMENT '创建者id',
     `master_group_id` bigint NOT NULL COMMENT '主组id',
     `from_group_id`   bigint NOT NULL COMMENT '从组id',
-    `relation`        tinyint(4) NOT NULL DEFAULT '1' COMMENT '关系，-1禁止(非自己)，1可读(非自己)，2可读写(非自己)',
-    `state`           tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `relation`        tinyint(4) NOT NULL DEFAULT '1' COMMENT '关系',  #-1禁止(非自己)，1可读(非自己)，2可读写(非自己)
+    `state`           tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',    #-2删除，-1禁用，待审核0，启用1
     `create_time`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -64,7 +64,7 @@ CREATE TABLE `config`
     `user_id`        bigint NOT NULL COMMENT '用户id',
     `key`            char(100) NOT NULL COMMENT 'key',
     `value`          text NOT NULL COMMENT 'value',
-    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',    #-2删除，-1禁用，待审核0，启用1
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -82,13 +82,13 @@ CREATE TABLE `project`
     `name`           char(20) NOT NULL COMMENT '名称',
     `ico`            char(20) NOT NULL DEFAULT '' COMMENT '图标',
     `info`           char(20) NOT NULL COMMENT '简介',
-    `project_type`   tinyint(100) NOT NULL DEFAULT '1' COMMENT '类型: 1编程、2其他',
+    `project_type`   tinyint(100) NOT NULL DEFAULT '1' COMMENT '类型',  #1编程、2其他
     `create_user`    bigint NOT NULL COMMENT '创建者id',
     `join_users`     char(200) NOT NULL COMMENT '参与者ids',
     `join_groups`    char(200) NOT NULL COMMENT '参与组ids',
     `remark`         varchar(250) NOT NULL COMMENT '备注',
     `rank`           tinyint(100) NOT NULL DEFAULT '1' COMMENT '排序',
-    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',    #-2删除，-1禁用，待审核0，启用1
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -104,7 +104,7 @@ CREATE TABLE `application`
 (
     `id`             bigint unsigned NOT NULL COMMENT '主键',
     `zh_name`        char(20) NOT NULL COMMENT '中文名称',
-    `en_name`        char(20) NOT NULL COMMENT '英文名称，相当于程序名称',
+    `en_name`        char(20) NOT NULL COMMENT '英文名称',  #相当于程序名称
     `ico`            char(200) NOT NULL DEFAULT '' COMMENT '图标',
     `info`           char(200) NOT NULL COMMENT '简介',
     `create_user`    bigint NOT NULL COMMENT '创建者id',
@@ -115,7 +115,7 @@ CREATE TABLE `application`
     `project_id`     char(200) NOT NULL COMMENT '所属项目id',
     `remark`         varchar(250) NOT NULL COMMENT '备注',
     `rank`           tinyint(100) NOT NULL DEFAULT '1' COMMENT '排序',
-    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',  #-2删除，-1禁用，待审核0，启用1
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -134,8 +134,8 @@ CREATE TABLE `application_info`
     `create_user`    bigint NOT NULL COMMENT '所属用户',
     `application_id` bigint NOT NULL COMMENT '应用id',
     `version`        char(20) NOT NULL COMMENT '版本号',
-    `config_ids`     varchar(500) NOT NULL COMMENT '配置ids ","号分隔',
-    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，-2删除，-1禁用，待审核0，启用1',
+    `config_ids`     varchar(500) NOT NULL COMMENT '配置ids', #,号分隔
+    `state`          tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态',  #-2删除，-1禁用，待审核0，启用1
     `create_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -156,10 +156,10 @@ CREATE TABLE `doc` (
     `parent_doc`    int(20) NOT NULL COMMENT '上级文档',
     `group_id`       int(20) NOT NULL COMMENT '所属文档组',
     `sort`          int(20) NOT NULL COMMENT '排序',
-    `editor_mode`   tinyint(4) NOT NULL COMMENT '编辑器模式,1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器',
+    `editor_mode`   tinyint(4) NOT NULL COMMENT '编辑器模式',  #1表示Editormd编辑器，2表示Vditor编辑器，3表示iceEditor编辑器
     `open_children` tinyint(4) NOT NULL COMMENT '展开下级目录',
     `show_children` tinyint(4) NOT NULL COMMENT '显示下级文档',
-    `state`         tinyint(4) NOT NULL DEFAULT '1' COMMENT '文档状态，-2删除，-1禁用，待审核-草稿0，启用1',
+    `state`         tinyint(4) NOT NULL DEFAULT '1' COMMENT '文档状态',  #-2删除，-1禁用，待审核-草稿0，启用1
     `create_time`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),

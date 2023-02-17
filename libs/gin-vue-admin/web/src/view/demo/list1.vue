@@ -285,6 +285,7 @@ const getList = async (val) => {
     const tmp_ = []
     res.data.list.forEach((item) => {
       item.create_time = formatDate(item.create_time)
+      item.update_time = formatDate(item.update_time)
       //人名筛选功能
       if ( !tmp_.includes(item.create_user )){
         tmp.push({ text: item.create_user, value: item.create_user })
@@ -345,6 +346,8 @@ const toSearch = () => {
     searchHistoryKW = searchKW.value
   }
 }
+
+// todo 更新时间问题,要么每次新增、修改都重新请求列表、要么请求该条数据进行更新，要么后端接口返回时加上
 
 //列表多选事件触发处理
 const multipleSelection = ref([])
@@ -560,7 +563,7 @@ const rules = ref({
 const enterDialog = async() => {
   console.log("enterDialog", formData.value)
   if (dialogType.value == "add"){
-    // add(formData.value)
+    let time_ = new Date().Format("yyyy-MM-dd hh:mm:ss")
     let res = await add(formData.value)
     console.log("enterDialog-add-res", res)
     if (res.code === 200) {
@@ -569,23 +572,26 @@ const enterDialog = async() => {
         message: "新增操作成功",
         type: 'success'
       })
-      getList({
-        "current": 1,
-        "orderBy": "create_time",
-        "pageSize": pageSize.value,
-        "query": [],
-        "sort": "desc"
-      })
+      formData.value["id"] = res.data["id"]
+      formData.value["create_time"] = time_
+      tableData.value.push(JSON.parse(JSON.stringify(formData.value)) )
+      // getList({
+      //   "current": 1,
+      //   "orderBy": "create_time",
+      //   "pageSize": pageSize.value,
+      //   "query": [],
+      //   "sort": "desc"
+      // })
     }
   } else if (dialogType.value == "edit"){
-    let data = {}
-    formData.value.forEach(function(value,key){
-      if ( value != rowHistory[key] ){
-        data[key] = value
+    let data = {"id":formData.value["id"] }
+    for (let key in formData.value ){
+      if ( formData.value[key] != rowHistory[key] ){
+        data[key] = formData.value[key]
       }
-    });
+    }
     console.log("data", data)
-    // update(data)
+    let time_ = new Date().Format("yyyy-MM-dd hh:mm:ss")
     let res = await update(data)
     console.log("enterDialog-update-res", res)
     if (res.code === 200) {
@@ -594,18 +600,20 @@ const enterDialog = async() => {
         message: "编辑操作成功",
         type: 'success'
       })
-      getList({
-        "current": 1,
-        "orderBy": "create_time",
-        "pageSize": pageSize.value,
-        "query": [],
-        "sort": "desc"
-      })
+      formData.value["id"] = res.data["id"]
+      formData.value["create_time"] = time_
+      tableData.value[editIndex] = JSON.parse(JSON.stringify(formData.value))
+      // getList({
+      //   "current": 1,
+      //   "orderBy": "create_time",
+      //   "pageSize": pageSize.value,
+      //   "query": [],
+      //   "sort": "desc"
+      // })
     }
   }
   // 历史记录
   rowHistory = JSON.parse(JSON.stringify(formData.value))
-  tableData.value[editIndex] = JSON.parse(JSON.stringify(formData.value))
   dialogFormVisible.value = false
 }
 const closeDialog = () => {

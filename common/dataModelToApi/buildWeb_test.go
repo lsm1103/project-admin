@@ -14,11 +14,12 @@ func TestBuildWebCode(t *testing.T) {
 		t.Error(err)
 	}
 
-	BuildWeb{
+	err = BuildWeb{
 		RootPkgPath: RootPkgPath,
 		TableList:   tables,
-		ServiceCfg:  ServiceInfo{},
+		ServiceCfg: ServiceInfo{
+			ProjectName: "test1",
+		},
 	}.BuildWebCode()
-	
-	t.Logf("r")
+	t.Logf("r:%v", err)
 }

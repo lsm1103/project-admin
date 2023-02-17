@@ -51,9 +51,9 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="100" fixed="right" align="center">
-<!--        <template #header>-->
-<!--          <el-input v-model="search" size="small" placeholder="模糊搜索" />-->
-<!--        </template>-->
+        <!--        <template #header>-->
+        <!--          <el-input v-model="search" size="small" placeholder="模糊搜索" />-->
+        <!--        </template>-->
         <template #default="scope">
           <el-popover :visible="scope.row.visible" placement="top" width="160">
             <p>确定要删除此用户吗</p>
@@ -72,18 +72,18 @@
     <!--分页-->
     <div class="pagination">
       <el-pagination background
-          layout="total, sizes, prev, pager, next"
-          :page-sizes="[10, 20, 30, 50]"
-          :total="total"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+                     layout="total, sizes, prev, pager, next"
+                     :page-sizes="[10, 20, 30, 50]"
+                     :total="total"
+                     :current-page="currentPage"
+                     :page-size="pageSize"
+                     @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
       />
     </div>
     <!-- 弹窗 -->
     <el-dialog v-model="dialogFormVisible" :show-close="false" width="40%" >
-<!--    <el-dialog v-model="dialogFormVisible" :title="dialogTitle">-->
+      <!--    <el-dialog v-model="dialogFormVisible" :title="dialogTitle">-->
       <template #header="{ close, titleId, titleClass }">
         <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: baseline;">
           <h4 :id="titleId" :class="titleClass">{{ dialogTitle }}</h4>
@@ -100,37 +100,37 @@
         <el-form-item label="英文名称" prop="en_name">
           <el-input v-model="formData.en_name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="图标" prop="ico">
+        <el-form-item label="图标" prop="ico" min-width="120">
           <el-input v-model="formData.ico" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="简介" prop="info" :show-overflow-tooltip="true">
+        <el-form-item label="简介" prop="info" :show-overflow-tooltip="true" min-width="50">
           <el-input v-model="formData.info" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="创建者id" prop="create_user">
+        <el-form-item label="创建者id" prop="create_user" min-width="100">
           <el-input v-model="formData.create_user" autocomplete="off" maxlength="36" />
         </el-form-item>
-        <el-form-item label="需求组ids" prop="demand_ids">
+        <el-form-item label="需求组ids" prop="demand_ids" min-width="80">
           <el-input v-model="formData.demand_ids" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="文档组ids" prop="doc_ids">
+        <el-form-item label="文档组ids" prop="doc_ids" min-width="80">
           <el-input v-model="formData.doc_ids" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="参与者ids" prop="join_users" :show-overflow-tooltip="true">
+        <el-form-item label="参与者ids" prop="join_users" :show-overflow-tooltip="true" min-width="120">
           <el-input v-model="formData.join_users" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="参与组ids" prop="join_groups">
+        <el-form-item label="参与组ids" prop="join_groups" min-width="100">
           <el-input v-model="formData.join_groups" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="所属项目id" prop="project_id">
+        <el-form-item label="所属项目id" prop="project_id" min-width="100">
           <el-input v-model="formData.project_id" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
+        <el-form-item label="备注" prop="remark" min-width="100">
           <el-input v-model="formData.remark" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="排序" prop="rank">
+        <el-form-item label="排序" prop="rank" min-width="100">
           <el-input-number v-model="formData.rank" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="状态" prop="state">
+        <el-form-item label="状态" prop="state" min-width="40">
           <el-switch
               v-model="formData.state"
               inline-prompt
@@ -138,7 +138,7 @@
               :inactive-value="-1"
           />
         </el-form-item>
-        <el-form-item label="创建时间" prop="create_time" v-if="dialogType === 'edit'" >
+        <el-form-item label="创建时间" prop="create_time" min-width="40" v-if="dialogType === 'edit'" >
           <el-input v-model="formData.create_time" autocomplete="off"/>
         </el-form-item>
       </el-form>
@@ -265,7 +265,6 @@ service.interceptors.response.use(
 // 获取列表信息
 const getList = async (val) => {
   console.log("getList",val)
-
   let res = await service({
     url: '/admin/Application/v1/gets',
     method: 'post',
@@ -442,7 +441,7 @@ const handleEdit = (index, row) => {
 const handleDelete = async(index, row) => {
   console.log("handleDelete", index, row)
   let res = await del({
-        "id": row.id
+    "id": row.id
   })
   console.log("handleDelete-res", res)
   if (res.code === 200) {
@@ -491,7 +490,7 @@ const handleBatchDelete = async() => {
 const handleSizeChange = (val) => {
   pageSize.value = val
   let query = []
-  if(searchKW.value != ""){
+  if(searchKW.value === ""){
     query = [
       {
         "handle": "like",
@@ -512,7 +511,7 @@ const handleSizeChange = (val) => {
 const handleCurrentChange = (val) => {
   currentPage.value = val
   let query = []
-  if(searchKW.value != ""){
+  if(searchKW.value === ""){
     query = [
       {
         "handle": "like",
@@ -561,7 +560,6 @@ const rules = ref({
 const enterDialog = async() => {
   console.log("enterDialog", formData.value)
   if (dialogType.value == "add"){
-    // add(formData.value)
     let res = await add(formData.value)
     console.log("enterDialog-add-res", res)
     if (res.code === 200) {
@@ -570,23 +568,23 @@ const enterDialog = async() => {
         message: "新增操作成功",
         type: 'success'
       })
-      getList({
-        "current": 1,
-        "orderBy": "create_time",
-        "pageSize": pageSize.value,
-        "query": [],
-        "sort": "desc"
-      })
+      tableData.value.push(JSON.parse(JSON.stringify(formData.value)) )
+      // getList({
+      //   "current": 1,
+      //   "orderBy": "create_time",
+      //   "pageSize": pageSize.value,
+      //   "query": [],
+      //   "sort": "desc"
+      // })
     }
   } else if (dialogType.value == "edit"){
-    let data = {}
-    formData.value.forEach(function(value,key){
-      if ( value != rowHistory[key] ){
-        data[key] = value
+    let data = {"id":formData.value["id"] }
+    for (let key in formData.value ){
+      if ( formData.value[key] != rowHistory[key] ){
+        data[key] = formData.value[key]
       }
-    });
+    }
     console.log("data", data)
-    // update(data)
     let res = await update(data)
     console.log("enterDialog-update-res", res)
     if (res.code === 200) {
@@ -595,18 +593,18 @@ const enterDialog = async() => {
         message: "编辑操作成功",
         type: 'success'
       })
-      getList({
-        "current": 1,
-        "orderBy": "create_time",
-        "pageSize": pageSize.value,
-        "query": [],
-        "sort": "desc"
-      })
+      tableData.value[editIndex] = JSON.parse(JSON.stringify(formData.value))
+      // getList({
+      //   "current": 1,
+      //   "orderBy": "create_time",
+      //   "pageSize": pageSize.value,
+      //   "query": [],
+      //   "sort": "desc"
+      // })
     }
   }
   // 历史记录
   rowHistory = JSON.parse(JSON.stringify(formData.value))
-  tableData.value[editIndex] = JSON.parse(JSON.stringify(formData.value))
   dialogFormVisible.value = false
 }
 const closeDialog = () => {
@@ -616,14 +614,286 @@ const beforeReferenc = () => {
   formData.value = rowHistory
 }
 
+
+// axios.put(baseUrl+"/admin/Application/v1/", val, {
+//   timeout: 99999,
+//   headers: {
+//     'Content-Type': 'application/json; charset=UTF-8',
+//     'token':'000'
+//   }
+// }).catch(function (error) {
+//   ElMessage({
+//     showClose: true,
+//     message: error,
+//     type: 'error'
+//   })
+// }).then(function (response) {
+//   if (!response) {
+//     ElMessage({
+//       showClose: true,
+//       message: "请求接口失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   if (response.status >= 300) {
+//     ElMessage({
+//       showClose: true,
+//       message: "操作失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   var res = response.data;
+//   console.log("res", res)
+//   if (res.code != 200) {
+//     ElMessage({
+//       showClose: true,
+//       message: "操作出错," + res.msg,
+//       type: 'warning'
+//     })
+//     return
+//   }
+//   ElMessage({
+//     showClose: true,
+//     message: "操作成功",
+//     type: 'success'
+//   })
+// })
+
+// axios.post(baseUrl+"/admin/Application/v1/", val, {
+//   timeout: 99999,
+//   headers: {
+//     'Content-Type': 'application/json; charset=UTF-8',
+//     'token':'000'
+//   }
+// }).catch(function (error) {
+//   ElMessage({
+//     showClose: true,
+//     message: error,
+//     type: 'error'
+//   })
+// }).then(function (response) {
+//   if (!response) {
+//     ElMessage({
+//       showClose: true,
+//       message: "请求接口失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   if (response.status >= 300) {
+//     ElMessage({
+//       showClose: true,
+//       message: "操作失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   var res = response.data;
+//   console.log("res", res)
+//   if (res.code != 200) {
+//     ElMessage({
+//       showClose: true,
+//       message: "操作出错," + res.msg,
+//       type: 'warning'
+//     })
+//     return
+//   }
+//   ElMessage({
+//     showClose: true,
+//     message: "操作成功",
+//     type: 'success'
+//   })
+//   getList({
+//     "current": 1,
+//     "orderBy": "create_time",
+//     "pageSize": pageSize.value,
+//     "query": [],
+//     "sort": "desc"
+//   })
+// })
+
+// axios.post(baseUrl+"/admin/Application/v1/gets", val, {
+//   timeout: 99999,
+//   headers: {
+//     'Content-Type': 'application/json; charset=UTF-8',
+//     'token':'000'
+//   }
+// }).catch(function (error) {
+//   ElMessage({
+//     showClose: true,
+//     message: error,
+//     type: 'error'
+//   })
+// }).then(function (response) {
+//   if (!response){
+//     ElMessage({
+//       showClose: true,
+//       message: "数据获取失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   if (response.status >= 300){
+//     ElMessage({
+//       showClose: true,
+//       message: "数据获取失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   var res = response.data;
+//   console.log("res", res)
+//   if (res.code != 200){
+//     ElMessage({
+//       showClose: true,
+//       message: "数据获取出错,"+res.msg,
+//       type: 'warning'
+//     })
+//     return
+//   }
+//   if (!res.data.list){
+//     tableData.value = []
+//     ElMessage({
+//       showClose: true,
+//       message: "找不到数据",
+//       type: 'warning'
+//     })
+//     return
+//   }
+//
+//   const tmp = []
+//   const tmp_ = []
+//   res.data.list.forEach((item) => {
+//     item.create_time = formatDate(item.create_time)
+//     //人名筛选功能
+//     if ( !tmp_.includes(item.create_user )){
+//       tmp.push({ text: item.create_user, value: item.create_user })
+//       tmp_.push(item.create_user)
+//     }
+//   });
+//   nameList.value = tmp
+//
+//   tableData.value = res.data.list
+//   currentPage.value = res.data.current
+//   const total_ = res.data.current===1? res.data.list.length : (res.data.pageSize*(res.data.current-1))+res.data.list.length
+//   total.value = res.data.isNext? total_+1 : total_
+//   pageSize.value = res.data.pageSize
+//   console.log("total", total_, total.value, currentPage.value, pageSize.value)
+// })
+
+//xx
+// const formChangeData = {}
+// const formDataChange = (env) => {
+//   console.log("formDataChange",env, env.target.value, env.target.key)
+//   // formChangeData[]
+//   // 因为vue生成的原生html代码里面，没有key，所以在事件里面找不到key；要么通过中文名称进行转一下取值，做成代码生成的话，也要解决从key到中文的问题
+// }
+
+// return new Promise((resolve, reject) => {
+//   axios.delete(baseUrl+"/admin/Application/v1/", { data:val }, {
+//     timeout: 99999,
+//     headers: {
+//       'Content-Type': 'application/json; charset=UTF-8',
+//       'token':'000'
+//     }
+//   }).catch(error => {
+//     ElMessage({
+//       showClose: true,
+//       message: error,
+//       type: 'error'
+//     })
+//     reject(error)
+//   }).then(function (response) {
+//     if (!response) {
+//       ElMessage({
+//         showClose: true,
+//         message: "请求接口失败",
+//         type: 'error'
+//       })
+//       reject("请求接口失败")
+//     }
+//     if (response.status >= 300) {
+//       ElMessage({
+//         showClose: true,
+//         message: "操作失败",
+//         type: 'error'
+//       })
+//       reject("操作失败")
+//     }
+//     var res = response.data;
+//     console.log("res", res)
+//     if (res.code != 200) {
+//       ElMessage({
+//         showClose: true,
+//         message: "操作出错," + res.msg,
+//         type: 'warning'
+//       })
+//       return
+//     }
+//     ElMessage({
+//       showClose: true,
+//       message: val.id+"操作成功",
+//       type: 'success'
+//     })
+//     resolve(res)
+//   })
+// })
+
+// return axios.delete(baseUrl+"/admin/Application/v1/", { data:val }, {
+//   timeout: 99999,
+//   headers: {
+//     'Content-Type': 'application/json; charset=UTF-8',
+//     'token':'000'
+//   }
+// }).catch(function (error) {
+//   ElMessage({
+//     showClose: true,
+//     message: error,
+//     type: 'error'
+//   })
+// }).then(function (response) {
+//   if (!response) {
+//     ElMessage({
+//       showClose: true,
+//       message: "请求接口失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   if (response.status >= 300) {
+//     ElMessage({
+//       showClose: true,
+//       message: "操作失败",
+//       type: 'error'
+//     })
+//     return
+//   }
+//   var res = response.data;
+//   console.log("res", res)
+//   if (res.code != 200) {
+//     ElMessage({
+//       showClose: true,
+//       message: "操作出错," + res.msg,
+//       type: 'warning'
+//     })
+//     return
+//   }
+//   ElMessage({
+//     showClose: true,
+//     message: val.id+"操作成功",
+//     type: 'success'
+//   })
+// })
 </script>
 
 <style lang="scss">
 .pagination {
   display: flex;
   justify-content: flex-end;
-  .el-pagination {
-    padding: 10px 0 0 0 !important;
-  }
+.el-pagination {
+  padding: 10px 0 0 0 !important;
+}
 }
 </style>
